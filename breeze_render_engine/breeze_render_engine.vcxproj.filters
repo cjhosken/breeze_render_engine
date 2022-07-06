@@ -46,6 +46,9 @@
     <None Include="assets\shaders\canvas.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\README.md">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opengl\canvas.h">
