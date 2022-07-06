@@ -1,14 +1,15 @@
 #include "glwidget.h"
 
-//#define STB_IMAGE_WRITE_STATIC
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
+
+#include "rendersettings.h"
 
 QVector3D ray_color(Ray r, World world, int depth) {
     if (depth < 1) {
         return QVector3D(0.0f, 0.0f, 0.0f);
     }
-    
+
     HitData ht = world.hit(r);
 
     if (ht.t > 0.00001f) {
@@ -21,21 +22,22 @@ QVector3D ray_color(Ray r, World world, int depth) {
     return (1.0f - t) * QVector3D(1.0f, 1.0f, 1.0f) + t * QVector3D(0.5, 0.7, 1.0);
 }
 
-
 void GLWidget::render() {
     if (!rendering) {
         rendering = true;
-        const int width = 160;
-        const int height = 90;
-        const int channels = 3;
-        const int samples = 4;
-        const int depth = 2;
+        renderCamera.setupForRender();
 
-        unsigned char data[width * height * channels];
+        RenderSettings renderSettings = renderCamera.settings;
+
+        const int width = renderSettings.width;
+        const int height = renderSettings.height;
+        const int channels = renderSettings.channels;
+        const int samples = renderSettings.samples;
+        const int depth = renderSettings.depth;
+
+        unsigned char* data = new unsigned char[width * height * channels];
 
         int index = 0;
-
-        renderCamera.setupForRender();
 
         for (int y = height - 1; y >= 0; y--) {
             qDebug() << "Line: " << y;

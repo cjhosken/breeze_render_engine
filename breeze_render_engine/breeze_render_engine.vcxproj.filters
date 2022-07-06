@@ -5,32 +5,26 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
+    <Filter Include="Source Files\interface">
+      <UniqueIdentifier>{3e0e490e-6440-4762-901b-37ec38e3a4f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Translation Files">
-      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
-      <Extensions>ts</Extensions>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{3ef0c9bb-e0b6-4298-88e8-08d36029fab4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\interface\GLWidget.cpp">
+      <Filter>Source Files\interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\GLWidget.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\Texture.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,55 +48,73 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\window.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="src\glwidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="common.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\canvas.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\material.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\mesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\mesh.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\vertex.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\model.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\model.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\primitives.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\material.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\ray.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\viewportcamera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\rendercamera.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\world.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\shader.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\primitives.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\texture.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\canvas.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\vertex.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\rendercamera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\viewportcamera.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\ray.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\opengl\world.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\texture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\interface\applicationsettings.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\rendersettings.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\ui_mainwindow.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interface\dragbar.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\propertiespanel.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\root.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\tabs.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\interface\glwidget.h">
+      <Filter>Source Files\interface</Filter>
+    </QtMoc>
+    <QtMoc Include="src\interface\mainwindow.h">
+      <Filter>Source Files\interface</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

@@ -265,5 +265,89 @@ public:
 	}
 };
 
+class OBJModel : public Model {
+public:
+	OBJModel(std::string path, std::string n) : Model(n) {
+		std::vector<Vertex> vertices;
+		
+		std::string line;
+
+		std::ifstream input_file(path);
+		if (!input_file.is_open()) {
+			std::cerr << "Could not open the file - '"
+				<< path << "'" << std::endl;
+			return;
+		}
+
+		std::vector<QVector3D> positions;
+
+		std::vector<QVector3D> normals;
+
+		std::vector<QVector2D> uvs;
+		
+		while (std::getline(input_file, line)) {
+			char delim = ' ';
+			std::vector<std::string> splits;
+
+			std::string tmp;
+
+			std::stringstream stream(line);
+			while (std::getline(stream, tmp, delim)) {
+				splits.push_back(tmp);
+			}
+
+			if (splits.at(0) == "v") {
+				float vx = std::stof(splits.at(1));
+				float vy = std::stof(splits.at(2));
+				float vz = std::stof(splits.at(3));
+				positions.push_back(QVector3D(vx, vy, vz));
+			}
+
+			else if (splits.at(0) == "vn") {
+				float vnx = std::stof(splits.at(1));
+				float vny = std::stof(splits.at(2));
+				float vnz = std::stof(splits.at(3));
+				normals.push_back(QVector3D(vnx, vny, vnz));
+			}
+
+			if (splits.at(0) == "vt") {
+				float ux = std::stof(splits.at(1));
+				float uy = std::stof(splits.at(2));
+				uvs.push_back(QVector2D(ux, uy));
+			}
+
+			else if (splits.at(0) == "f") {
+				for (int idx = 1; idx < 4; idx++) {
+					std::vector<std::string> vertexSplits;
+					delim = '/';
+					std::string vertex_str = splits.at(idx);
+					stream = std::stringstream(vertex_str);
+
+					while (std::getline(stream, tmp, delim)) {
+						vertexSplits.push_back(tmp);
+					}
+
+					int pi = std::stoi(vertexSplits.at(0)) - 1;
+					int ui = std::stoi(vertexSplits.at(1)) - 1;
+					int ni = std::stoi(vertexSplits.at(2)) - 1;
+
+					QVector3D p = positions.at(pi );
+					QVector3D n = normals.at(ni);
+					QVector2D u = uvs.at(ui);
+
+					Vertex v = { p, n, u };
+					vertices.push_back(v);
+				}
+			}
+		}
+
+		input_file.close();
+
+		Mesh objMesh = Mesh(vertices);
+
+		mesh = objMesh;
+	}
+};
+
 
 #endif

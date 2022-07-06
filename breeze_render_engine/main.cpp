@@ -1,16 +1,19 @@
-#include <QApplication>
-#include <QSurfaceFormat>
-#include <QIcon>
+#include "src/interface/mainwindow.h"
 
-#include "src/window.h"
+#include <QTTest/QTest>
 
 int main(int argc, char** argv) {
 	QApplication app(argc, argv);
 
 	QCoreApplication::setApplicationName("Breeze Render Engine");
 	QCoreApplication::setOrganizationName("cjhosken");
-	QCoreApplication::setApplicationVersion("2022.3.7");
+	QCoreApplication::setApplicationVersion("2022.6.7");
 	app.setWindowIcon(QIcon("assets/images/logo.png"));
+
+	QPixmap pixmap("assets/images/splash.png");
+	QSplashScreen* splash = new QSplashScreen(pixmap);
+	splash->show();
+	app.processEvents();
 
 	QSurfaceFormat format;
 	format.setSamples(16);
@@ -18,11 +21,12 @@ int main(int argc, char** argv) {
 	format.setProfile(QSurfaceFormat::CoreProfile);
 	QSurfaceFormat::setDefaultFormat(format);
 
-	Window window = Window();
-	window.layout()->setSizeConstraint(QLayout::SetFixedSize);
-	window.setAttribute(Qt::WA_TranslucentBackground);
-	window.setAttribute(Qt::WA_NoSystemBackground, false);
-	window.show();
+	ApplicationSettings settings = ApplicationSettings();
+
+	MainWindow mainWindow = MainWindow(settings);
+
+	QTimer::singleShot(settings.splashTime, splash, SLOT(close()));
+	QTimer::singleShot(settings.splashTime, &mainWindow, SLOT(show()));
 
 	return app.exec();
 }

@@ -23,6 +23,14 @@ public:
         return scene.at(idx).get();
     }
 
+    Model* get(std::string n) {
+        for (int mdx = 0; mdx < scene.size(); mdx++) {
+            if (scene.at(mdx).get()->name == n) {
+                return scene.at(mdx).get();
+            }
+        }
+    }
+
     HitData hit(Ray r) {
         bool isHit = false;
         HitData out = { INFINITY, QVector3D(0.0f, 0.0f, 0.0f), nullptr };

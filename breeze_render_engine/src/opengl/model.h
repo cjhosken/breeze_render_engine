@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "material.h"
+#include "../interface/applicationsettings.h"
 
 class Model : protected QOpenGLFunctions_4_5_Core {
 public:
@@ -27,7 +28,7 @@ public:
 		id = rand();
 	}
 	
-	void draw(Shader &shader, DrawType draw) {
+	void draw(Shader &shader, DrawType draw, ApplicationSettings &settings) {
 		shader.use();
 		shader.setMat4("model", getModelMatrix());
 		if (draw == DEFAULT) {
@@ -35,14 +36,14 @@ public:
 			shader.setMaterial(material);
 
 			if (selected) {
-				QVector3D newColor = (material.color + SELECTED_COLOR) / 2.0f;
+				QVector3D newColor = (material.color + settings.COLOR_SELECTED) / 2.0f;
 				shader.setVec3("material.color", newColor);
 			}
 		}
 		else if (draw == WIRE) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			if (selected) {
-				shader.setVec3("color", SELECTED_COLOR);
+				shader.setVec3("color", settings.COLOR_SELECTED);
 				glLineWidth(5.0f);
 			}
 			else {
@@ -91,7 +92,7 @@ public:
 	ObjectType type = SOLID;
 	Mesh mesh;
 	Material material = {
-		QVector3D(0.9f, 0.9f, 0.9f),
+		QVector3D(1.0f, 1.0f, 1.0f),
 		1.0f,
 		0.5f
 	};

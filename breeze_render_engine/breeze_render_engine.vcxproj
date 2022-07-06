@@ -93,8 +93,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\GLWidget.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\interface\GLWidget.cpp" />
+    <ClCompile Include="src\opengl\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\canvas.frag" />
@@ -105,22 +105,28 @@
     <None Include="assets\shaders\flat.frag" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="src\canvas.h" />
+    <ClInclude Include="src\common.h" />
+    <ClInclude Include="src\interface\applicationsettings.h" />
     <ClInclude Include="src\interface\dragbar.h" />
-    <ClInclude Include="src\material.h" />
-    <ClInclude Include="src\mesh.h" />
-    <ClInclude Include="src\model.h" />
-    <ClInclude Include="src\primitives.h" />
-    <ClInclude Include="src\ray.h" />
-    <ClInclude Include="src\rendercamera.h" />
-    <ClInclude Include="src\shader.h" />
-    <ClInclude Include="src\texture.h" />
-    <ClInclude Include="src\vertex.h" />
-    <ClInclude Include="src\viewportcamera.h" />
-    <ClInclude Include="src\world.h" />
-    <QtMoc Include="src\glwidget.h" />
-    <QtMoc Include="src\window.h" />
+    <ClInclude Include="src\interface\propertiespanel.h" />
+    <ClInclude Include="src\interface\rendersettings.h" />
+    <QtMoc Include="src\interface\mainwindow.h" />
+    <QtMoc Include="src\interface\glwidget.h" />
+    <ClInclude Include="src\interface\root.h" />
+    <ClInclude Include="src\interface\tabs.h" />
+    <ClInclude Include="src\interface\ui_mainwindow.h" />
+    <ClInclude Include="src\opengl\canvas.h" />
+    <ClInclude Include="src\opengl\material.h" />
+    <ClInclude Include="src\opengl\mesh.h" />
+    <ClInclude Include="src\opengl\model.h" />
+    <ClInclude Include="src\opengl\primitives.h" />
+    <ClInclude Include="src\opengl\ray.h" />
+    <ClInclude Include="src\opengl\rendercamera.h" />
+    <ClInclude Include="src\opengl\shader.h" />
+    <ClInclude Include="src\opengl\texture.h" />
+    <ClInclude Include="src\opengl\vertex.h" />
+    <ClInclude Include="src\opengl\viewportcamera.h" />
+    <ClInclude Include="src\opengl\world.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

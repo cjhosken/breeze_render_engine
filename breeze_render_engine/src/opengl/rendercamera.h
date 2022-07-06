@@ -6,12 +6,15 @@
 #include "model.h"
 #include "ray.h"
 
+#include "../interface/rendersettings.h"
+
 class RenderCamera : public Model {
 public:
+	RenderSettings settings;
+
 	RenderCamera() : Model() {
-		fov = 35.0f;
-		width = 480;
-		height = 240;
+		settings = RenderSettings();
+		settings.fov = 35.0f;
 
 		rescale();
 	}
@@ -42,7 +45,7 @@ public:
 	}
 
 	void rescale() {
-		scale = QVector3D(float(width) / float(height), 1.0f, fov / 180.0f);
+		scale = QVector3D(float(settings.width) / float(settings.height), 1.0f, settings.fov / 180.0f);
 	}
 
 	void setupForRender() {
@@ -54,9 +57,9 @@ public:
 		QVector3D vup = QVector3D(0.0, -1.0f, 0.0);
 
 
-		float aspect_ratio = float(width) / float(height);
+		float aspect_ratio = float(settings.width) / float(settings.height);
 
-		float theta = qDegreesToRadians(fov);
+		float theta = qDegreesToRadians(settings.fov);
 		float h = tan(theta / 2);
 		float viewport_height = 1.0 * h;
 		float viewport_width = aspect_ratio * viewport_height;
@@ -75,9 +78,6 @@ public:
 	}
 
 private:
-	int width, height;
-	float fov;
-
 	QVector3D lower_left_corner;
 	QVector3D horizontal;
 	QVector3D vertical;

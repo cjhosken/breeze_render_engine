@@ -1,45 +1,36 @@
 #ifndef DRAGBAR_H
 #define DRAGBAR_H
 
-#include "../../common.h"
-#include <QWidget>
+#include "../common.h"
 
 class DragBar : public QWidget {
 public:
-	DragBar() {
-        setGeometry(0, 0, APP_WIDTH, 100);
-
-        QPalette pal = QPalette();
-
-        // set black background
-        // Qt::black / "#000000" / "black"
-        pal.setColor(QPalette::Window, Qt::red);
-
-        setAutoFillBackground(true);
-        setPalette(pal);
-        show();
-	}
+    DragBar(QWidget* parent = nullptr) : QWidget(parent) {
+        
+    }
 
 protected:
-    void mousePressEvent(QMouseEvent* ev)
-    {
-        if (ev->button() == Qt::LeftButton) {
-            dragPosition = ev->globalPos() - frameGeometry().topLeft();
-            ev->accept();
+
+    void mousePressEvent(QMouseEvent* ev) override {
+        isMouseDown = true;
+        mouseClick = ev->pos();
+    }
+
+    void mouseReleaseEvent(QMouseEvent* ev) override {
+        isMouseDown = false;
+    }
+
+    void mouseMoveEvent(QMouseEvent* ev) override {
+        if (isMouseDown) {
+            QPoint mousePoint = ev->globalPos() - mouseClick;
+            window()->move(mousePoint);
         }
     }
-    void mouseMoveEvent(QMouseEvent* ev)
-    {
-        if (ev->buttons() & Qt::LeftButton) {
-            move(ev->globalPos() - dragPosition);
-            ev->accept();
-        }
-    }
+
 private:
-    QPoint dragPosition;
+    QPoint mouseClick;
+    bool isMouseDown = false;
 
 };
-
-
-
-#endif // !DRAGBAR_H
+ 
+#endif

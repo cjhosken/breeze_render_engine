@@ -16,14 +16,28 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_4_5_Core>
+#include <QApplication>
+#include <QSurfaceFormat>
+#include <QIcon>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QStackedWidget>
+#include <QHBoxLayout>
+#include <QVariant>
+#include <QApplication>
+#include <QMainWindow>
+#include <QLabel>
+#include <QLineEdit>
+
+#include <QKeyEvent>
+#include <QMouseEvent>
+
+#include <QPushButton>
+#include <QTimer>
+#include <QSplashScreen>
 
 #include <QMouseEvent>
 #include <QWheelEvent>
-
-#define APP_WIDTH 1280
-#define APP_HEIGHT 700
-
-#define SELECTED_COLOR QVector3D(0.66f, 0.29f, 0.84f)
 
 #include <cmath>
 

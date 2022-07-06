@@ -2,15 +2,14 @@
 #define GLWIDGET_H
 
 #include "../common.h"
-#include "shader.h"
-#include "viewportcamera.h"
-#include "world.h"
-#include "primitives.h"
-#include "canvas.h"
-#include "rendercamera.h"
-#include "texture.h"
-
-#include <QOpenGLFrameBufferObject>
+#include "../opengl/shader.h"
+#include "../opengl/viewportcamera.h"
+#include "../opengl/world.h"
+#include "../opengl/primitives.h"
+#include "../opengl/canvas.h"
+#include "../opengl/rendercamera.h"
+#include "../opengl/texture.h"
+#include "../interface/applicationsettings.h"
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
 	Q_OBJECT
@@ -18,15 +17,22 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
 public:
     GLWidget(QWidget* parent = nullptr) : QOpenGLWidget(parent) {
         setMouseTracking(true);
-
+        settings = ApplicationSettings();
     }
+
+    GLWidget(ApplicationSettings &set) : QOpenGLWidget() {
+        setMouseTracking(true);
+        settings = set;
+    }
+
 	~GLWidget() {}
 
     QSize minimumSizeHint() const override {
         return QSize(50, 50);
     };
+
     QSize sizeHint() const override {
-        return QSize(APP_WIDTH, APP_HEIGHT);
+        return QSize(settings.APP_WIDTH, settings.APP_HEIGHT);
     };
 
     void render();
@@ -36,10 +42,10 @@ protected:
     void initializeGL() override {
         initializeOpenGLFunctions();
 
-        glViewport(0, 0, APP_WIDTH, APP_HEIGHT);
+        glViewport(0, 0, settings.APP_WIDTH, settings.APP_HEIGHT);
 
         projection.setToIdentity();
-        projection.perspective(35, float(APP_WIDTH) / float(APP_HEIGHT), 0.01f, 100.0f);
+        projection.perspective(35, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
        
         Texture matcap("assets/images/matcap.jpg");
         textures.push_back(matcap);
@@ -59,7 +65,18 @@ protected:
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
 
-        world.add(std::make_shared<Sphere>("coob"));
+        world.add(std::make_shared<Plane>("ground"));
+        world.get("ground")->scale = QVector3D(10, 10, 10);
+        
+        world.add(std::make_shared<Cube>("cube"));
+        world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
+
+        world.add(std::make_shared<Sphere>("sphere"));
+        world.get("sphere")->scale = QVector3D(2, 2, 2);
+        world.get("sphere")->location = QVector3D(1.0f, 1.5f, 2.0f);
+
+        world.add(std::make_shared<OBJModel>("assets/models/teapot.obj", "monke"));
+        world.get("monke")->location = QVector3D(0.0f, 2.0f, -3.0f);
 
 
         glEnable(GL_DEPTH_TEST);
@@ -90,7 +107,7 @@ protected:
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        renderCamera.draw(shaders.at(1), WIRE);
+        renderCamera.draw(shaders.at(1), WIRE, settings);
 
 
         glActiveTexture(GL_TEXTURE0);
@@ -98,18 +115,18 @@ protected:
         shaders[0].setInt("matcap", 0);
 
         for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            world.get(mdx)->draw(shaders.at(0), DEFAULT);
+            world.get(mdx)->draw(shaders.at(0), DEFAULT, settings);
 
             if (world.scene[mdx]->type == SOLID) {
-                world.get(mdx)->draw(shaders.at(0), DEFAULT);
+                world.get(mdx)->draw(shaders.at(0), DEFAULT, settings);
 
             }
             else if (world.scene[mdx]->type == WIREFRAME) {
-                world.get(mdx)->draw(shaders.at(1), WIRE);
+                world.get(mdx)->draw(shaders.at(1), WIRE, settings);
             }
 
             if (world.get(mdx)->selected) {
-                world.get(mdx)->draw(shaders.at(1), WIRE);
+                world.get(mdx)->draw(shaders.at(1), WIRE, settings);
             }
         }
     };
@@ -146,7 +163,7 @@ protected:
 
         if (ev->buttons() == Qt::LeftButton) {
             click = false;
-            viewCamera.processMouseMovement(xOffset, yOffset);
+                viewCamera.processMouseMovement(xOffset, yOffset);
         }
 
         repaint();
@@ -158,6 +175,7 @@ protected:
     }
 
 private:
+    ApplicationSettings settings;
     World world = World();
     Canvas cvs = Canvas();
 
@@ -166,10 +184,10 @@ private:
     ViewportCamera viewCamera = ViewportCamera();
     RenderCamera renderCamera = RenderCamera();
 
-    float lastX = APP_WIDTH / 2.0f;
-    float lastY = APP_HEIGHT / 2.0f;
+    float lastX = settings.APP_WIDTH / 2.0f;
+    float lastY = settings.APP_HEIGHT / 2.0f;
 
-    float pixelScreenHeight = APP_HEIGHT;
+    float pixelScreenHeight = settings.APP_HEIGHT;
 
     bool firstMouse = true;
     bool click = false;
