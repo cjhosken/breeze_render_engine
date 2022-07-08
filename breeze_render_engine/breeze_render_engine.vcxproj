@@ -109,6 +109,7 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\interface\applicationsettings.h" />
     <ClInclude Include="src\interface\dragbar.h" />
+    <ClInclude Include="src\interface\fields.h" />
     <ClInclude Include="src\interface\propertiespanel.h" />
     <ClInclude Include="src\interface\rendersettings.h" />
     <QtMoc Include="src\interface\mainwindow.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="src\interface\tabs.h" />
     <ClInclude Include="src\interface\ui_mainwindow.h" />
     <ClInclude Include="src\opengl\canvas.h" />
+    <ClInclude Include="src\opengl\light.h" />
     <ClInclude Include="src\opengl\material.h" />
     <ClInclude Include="src\opengl\mesh.h" />
     <ClInclude Include="src\opengl\model.h" />

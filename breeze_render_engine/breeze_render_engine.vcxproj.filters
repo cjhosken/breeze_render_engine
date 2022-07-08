@@ -111,6 +111,12 @@
     <ClInclude Include="src\interface\tabs.h">
       <Filter>Source Files\interface</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\fields.h">
+      <Filter>Source Files\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\light.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\interface\glwidget.h">

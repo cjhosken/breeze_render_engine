@@ -37,6 +37,10 @@ public:
 
     void render();
 
+    void setSceneDrawType(DrawType t) {
+        sceneDrawType = t;
+    }
+
 protected:
 
     void initializeGL() override {
@@ -65,6 +69,9 @@ protected:
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
 
+        world.scene = {};
+
+        /*
         world.add(std::make_shared<Plane>("ground"));
         world.get("ground")->scale = QVector3D(10, 10, 10);
         
@@ -77,6 +84,7 @@ protected:
 
         world.add(std::make_shared<OBJModel>("assets/models/teapot.obj", "monke"));
         world.get("monke")->location = QVector3D(0.0f, 2.0f, -3.0f);
+        */
 
 
         glEnable(GL_DEPTH_TEST);
@@ -176,13 +184,8 @@ protected:
 
 private:
     ApplicationSettings settings;
-    World world = World();
-    Canvas cvs = Canvas();
 
     QMatrix4x4 projection = QMatrix4x4();
-
-    ViewportCamera viewCamera = ViewportCamera();
-    RenderCamera renderCamera = RenderCamera();
 
     float lastX = settings.APP_WIDTH / 2.0f;
     float lastY = settings.APP_HEIGHT / 2.0f;
@@ -195,6 +198,16 @@ private:
 
     std::vector<Shader> shaders;
     std::vector<Texture> textures;
+
+    DrawType sceneDrawType;
+
+public:
+    ViewportCamera viewCamera = ViewportCamera();
+    RenderCamera renderCamera = RenderCamera();
+    World world = World();
+    Canvas cvs = Canvas();
+    bool selecting;
+
 };
 
 #endif // !GLWIDGET_H

@@ -21,7 +21,7 @@ public:
 
 		COLOR_SELECTED = QVector3D(0.66f, 0.29f, 0.84f);
 
-		splashTime = 2500;
+		splashTime = 5000;
 
 		appRadius = 50.0f;
 

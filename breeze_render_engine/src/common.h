@@ -28,6 +28,8 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QLineEdit>
+#include <QGroupBox>
+#include <QCheckBox>
 
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -49,7 +51,8 @@ enum ObjectType {
 enum DrawType {
     DEFAULT,
     WIRE,
-    ID
+    ID,
+    LIGHT
 };
 
 inline float random_float() {

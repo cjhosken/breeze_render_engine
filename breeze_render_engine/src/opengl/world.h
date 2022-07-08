@@ -4,6 +4,7 @@
 #include "../common.h"
 #include "model.h"
 #include "ray.h"
+#include "light.h"
 
 struct HitData {
 	float t;
@@ -14,9 +15,14 @@ struct HitData {
 class World {
 public:
     std::vector<std::shared_ptr<Model>> scene;
+    std::vector<std::shared_ptr<Light>> lights;
 
     void add(std::shared_ptr<Model> m) {
         scene.push_back(m);
+    }
+
+    void add(std::shared_ptr<Light> l) {
+        lights.push_back(l);
     }
 
     Model* get(int idx) {
