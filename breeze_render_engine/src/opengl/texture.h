@@ -7,9 +7,11 @@ class Texture : protected QOpenGLFunctions_4_5_Core {
 public:
 	const char* path;
 	unsigned int TXO;
+	bool alpha;
 
-	Texture(const char* p) {
+	Texture(const char* p, bool a) {
 		path = p;
+		alpha = a;
 		load();
 	}
 
@@ -17,11 +19,13 @@ public:
 
 	Texture(const Texture& s) {
 		path = s.path;
+		alpha = s.alpha;
 		load();
 	}
 
 	Texture& operator=(Texture const& t) {
 		path = t.path;
+		alpha = t.alpha;
 		load();
 
 		return *this;

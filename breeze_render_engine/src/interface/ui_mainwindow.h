@@ -24,24 +24,34 @@ public:
 
     QPushButton* appButton;
 
-    QPushButton* b1;
-    QPushButton* b2;
-    QPushButton* b3;
-    QPushButton* b4;
-    QPushButton* b5;
-    QPushButton* b6;
-    QPushButton* b7;
+    QPushButton* toggleObjectSelectionButton;
+    QPushButton* addCubeButton;
+    QPushButton* addPlaneButton;
+    QPushButton* addSphereButton;
+    QPushButton* addOBJButton;
+    QPushButton* addLightButton;
+    QPushButton* addExtrasButton;
 
-    //QPushButton* d0;
-    QPushButton* d1;
-    QPushButton* d2;
+    QPushButton* docsButton;
+    QPushButton* codeButton;
 
-    QPushButton* t1;
-    QPushButton* t2;
-    QPushButton* t3;
+    QPushButton* wireViewButton;
+    QPushButton* solidViewButton;
+    QPushButton* shadedViewButton;
 
-    QPushButton* r1;
-    QPushButton* r2;
+    QPushButton* reportBugButton;
+    QPushButton* closeButton;
+
+
+
+    QMenu* extraButtonsMenu;
+
+    QAction* addCircle;
+    QAction* addTriangle;
+    QAction* addCylinder;
+    QAction* addMonkey;
+    QAction* addTeapot;
+
 
     void setupUi(QMainWindow* Window)
     {
@@ -68,105 +78,115 @@ public:
         toolBar->setGeometry(QRect(23, 105, 50, 350));
         toolBar->setStyleSheet(".QWidget{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
 
-        b1 = new QPushButton(toolBar);
-        b1->setGeometry(QRect(0, 0, 50, 50));
-        b1->setIcon(QIcon("assets/images/icons/cursor.png"));
-        b1->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b1->setIconSize(QSize(28, 28));
+        toggleObjectSelectionButton = new QPushButton(toolBar);
+        toggleObjectSelectionButton->setGeometry(QRect(0, 0, 50, 50));
+        toggleObjectSelectionButton->setIcon(QIcon("assets/images/icons/cursor.png"));
+        toggleObjectSelectionButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        toggleObjectSelectionButton->setIconSize(QSize(28, 28));
 
-        b2 = new QPushButton(toolBar);
-        b2->setGeometry(QRect(0, 50, 50, 50));
-        b2->setIcon(QIcon("assets/images/icons/cube.png"));
-        b2->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b2->setIconSize(QSize(28, 28));
+        addCubeButton = new QPushButton(toolBar);
+        addCubeButton->setGeometry(QRect(0, 50, 50, 50));
+        addCubeButton->setIcon(QIcon("assets/images/icons/cube.png"));
+        addCubeButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addCubeButton->setIconSize(QSize(28, 28));
 
-        b3 = new QPushButton(toolBar);
-        b3->setGeometry(QRect(0, 100, 50, 50));
-        b3->setIcon(QIcon("assets/images/icons/plane.png"));
-        b3->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b3->setIconSize(QSize(28, 28));
+        addPlaneButton = new QPushButton(toolBar);
+        addPlaneButton->setGeometry(QRect(0, 100, 50, 50));
+        addPlaneButton->setIcon(QIcon("assets/images/icons/plane.png"));
+        addPlaneButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addPlaneButton->setIconSize(QSize(28, 28));
 
-        b4 = new QPushButton(toolBar);
-        b4->setGeometry(QRect(0, 150, 50, 50));
-        b4->setIcon(QIcon("assets/images/icons/sphere.png"));
-        b4->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b4->setIconSize(QSize(28, 28));
+        addSphereButton = new QPushButton(toolBar);
+        addSphereButton->setGeometry(QRect(0, 150, 50, 50));
+        addSphereButton->setIcon(QIcon("assets/images/icons/sphere.png"));
+        addSphereButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addSphereButton->setIconSize(QSize(28, 28));
 
-        b5 = new QPushButton(toolBar);
-        b5->setGeometry(QRect(0, 200, 50, 50));
-        b5->setIcon(QIcon("assets/images/icons/add.png"));
-        b5->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b5->setIconSize(QSize(28, 28));
+        addOBJButton = new QPushButton(toolBar);
+        addOBJButton->setGeometry(QRect(0, 200, 50, 50));
+        addOBJButton->setIcon(QIcon("assets/images/icons/add.png"));
+        addOBJButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addOBJButton->setIconSize(QSize(28, 28));
 
-        b6 = new QPushButton(toolBar);
-        b6->setGeometry(QRect(0, 250, 50, 50));
-        b6->setIcon(QIcon("assets/images/icons/light.png"));
-        b6->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b6->setIconSize(QSize(28, 28));
+        addLightButton = new QPushButton(toolBar);
+        addLightButton->setGeometry(QRect(0, 250, 50, 50));
+        addLightButton->setIcon(QIcon("assets/images/icons/light.png"));
+        addLightButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addLightButton->setIconSize(QSize(28, 28));
 
-        b7 = new QPushButton(toolBar);
-        b7->setGeometry(QRect(0, 300, 50, 50));
-        b7->setIcon(QIcon("assets/images/icons/more.png"));
-        b7->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        b7->setIconSize(QSize(28, 28));
+        addExtrasButton = new QPushButton(toolBar);
+        addExtrasButton->setGeometry(QRect(0, 300, 50, 50));
+        addExtrasButton->setIcon(QIcon("assets/images/icons/more.png"));
+        addExtrasButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addExtrasButton->setIconSize(QSize(28, 28));
+
+
+        extraButtonsMenu = new QMenu();
+        extraButtonsMenu->hideTearOffMenu();
+        addCircle = new QAction("Circle");
+        extraButtonsMenu->addAction(addCircle);
+        addTriangle = new QAction("Triangle");
+        extraButtonsMenu->addAction(addTriangle);
+        addCylinder = new QAction("Cylinder");
+        extraButtonsMenu->addAction(addCylinder);
+        addMonkey = new QAction("Monkey");
+        extraButtonsMenu->addAction(addMonkey);
+        addTeapot = new QAction("Teapot");
+        extraButtonsMenu->addAction(addTeapot);
+
+        addExtrasButton->setMenu(extraButtonsMenu);
+
 
         debugBar = new QWidget(centralWidget);
         debugBar->setGeometry(QRect(23, 765, 50, 100));
         debugBar->setStyleSheet(".QWidget{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
 
-        /*
-        d0 = new QPushButton(centralWidget);
-        d0->setGeometry(QRect(23, 700, 50, 50));
-        d0->setIcon(QIcon("assets/images/icons/log.png"));
-        d0->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
-        d0->setIconSize(QSize(28, 28));
-        */
 
-        d1 = new QPushButton(debugBar);
-        d1->setGeometry(QRect(0, 0, 50, 50));
-        d1->setIcon(QIcon("assets/images/icons/info.png"));
-        d1->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px 0px 00px 20px;}");
-        d1->setIconSize(QSize(28, 28));
+        docsButton = new QPushButton(debugBar);
+        docsButton->setGeometry(QRect(0, 0, 50, 50));
+        docsButton->setIcon(QIcon("assets/images/icons/info.png"));
+        docsButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px 0px 00px 20px;}");
+        docsButton->setIconSize(QSize(28, 28));
 
-        d2 = new QPushButton(debugBar);
-        d2->setGeometry(QRect(0, 50, 50, 50));
-        d2->setIcon(QIcon("assets/images/icons/code.png"));
-        d2->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 0px 20px 20px 0px;}");
-        d2->setIconSize(QSize(28, 28));
+        codeButton = new QPushButton(debugBar);
+        codeButton->setGeometry(QRect(0, 50, 50, 50));
+        codeButton->setIcon(QIcon("assets/images/icons/code.png"));
+        codeButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 0px 20px 20px 0px;}");
+        codeButton->setIconSize(QSize(28, 28));
 
 
 
-        t1 = new QPushButton(centralWidget);
-        t1->setGeometry(QRect(738, 30, 35, 35));
-        t1->setIcon(QIcon("assets/images/icons/wire.png"));
-        t1->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
-        t1->setIconSize(QSize(26, 26));
+        wireViewButton = new QPushButton(centralWidget);
+        wireViewButton->setGeometry(QRect(738, 30, 35, 35));
+        wireViewButton->setIcon(QIcon("assets/images/icons/wire.png"));
+        wireViewButton->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
+        wireViewButton->setIconSize(QSize(26, 26));
 
-        t2 = new QPushButton(centralWidget);
-        t2->setGeometry(QRect(783, 30, 35, 35));
-        t2->setIcon(QIcon("assets/images/icons/solid.png"));
-        t2->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
-        t2->setIconSize(QSize(26, 26));
+        solidViewButton = new QPushButton(centralWidget);
+        solidViewButton->setGeometry(QRect(783, 30, 35, 35));
+        solidViewButton->setIcon(QIcon("assets/images/icons/solid.png"));
+        solidViewButton->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
+        solidViewButton->setIconSize(QSize(26, 26));
 
-        t3 = new QPushButton(centralWidget);
-        t3->setGeometry(QRect(828, 30, 35, 35));
-        t3->setIcon(QIcon("assets/images/icons/shaded.png"));
-        t3->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
-        t3->setIconSize(QSize(26, 26));
+        shadedViewButton = new QPushButton(centralWidget);
+        shadedViewButton->setGeometry(QRect(828, 30, 35, 35));
+        shadedViewButton->setIcon(QIcon("assets/images/icons/shaded.png"));
+        shadedViewButton->setStyleSheet(".QPushButton {color: white; background-color: transparent; border-radius: 17px;}");
+        shadedViewButton->setIconSize(QSize(26, 26));
 
 
 
-        r1 = new QPushButton(centralWidget);
-        r1->setGeometry(QRect(1480, 30, 35, 35));
-        r1->setIcon(QIcon("assets/images/icons/bug.png"));
-        r1->setStyleSheet(".QPushButton {color: white; background-color: rgba(15, 15, 15, 200); border-radius: 17px;}");
-        r1->setIconSize(QSize(26, 26));
+        reportBugButton = new QPushButton(centralWidget);
+        reportBugButton->setGeometry(QRect(1480, 30, 35, 35));
+        reportBugButton->setIcon(QIcon("assets/images/icons/bug.png"));
+        reportBugButton->setStyleSheet(".QPushButton {color: white; background-color: rgba(15, 15, 15, 200); border-radius: 17px;}");
+        reportBugButton->setIconSize(QSize(26, 26));
 
-        r2 = new QPushButton(centralWidget);
-        r2->setGeometry(QRect(1520, 30, 35, 35));
-        r2->setIcon(QIcon("assets/images/icons/close.png"));
-        r2->setStyleSheet(".QPushButton {color: white; background-color: rgba(15, 15, 15, 200); border-radius: 17px;}");
-        r2->setIconSize(QSize(26, 26));
+        closeButton = new QPushButton(centralWidget);
+        closeButton->setGeometry(QRect(1520, 30, 35, 35));
+        closeButton->setIcon(QIcon("assets/images/icons/close.png"));
+        closeButton->setStyleSheet(".QPushButton {color: white; background-color: rgba(15, 15, 15, 200); border-radius: 17px;}");
+        closeButton->setIconSize(QSize(26, 26));
      
 
         Window->setCentralWidget(centralWidget);

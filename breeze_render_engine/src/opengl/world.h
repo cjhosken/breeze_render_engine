@@ -29,6 +29,10 @@ public:
         return scene.at(idx).get();
     }
 
+    Light* getLight(int idx) {
+        return lights.at(idx).get();
+    }
+
     Model* get(std::string n) {
         for (int mdx = 0; mdx < scene.size(); mdx++) {
             if (scene.at(mdx).get()->name == n) {

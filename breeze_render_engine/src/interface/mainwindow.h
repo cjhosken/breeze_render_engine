@@ -5,9 +5,6 @@
 #include "applicationsettings.h"
 #include "ui_mainwindow.h"
 
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QMenu>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -34,24 +31,28 @@ public:
 
 		connect(ui->appButton, SIGNAL(clicked()), this, SLOT(onLogoMenuButtonClick()));
 
-		connect(ui->b1, SIGNAL(clicked()), this, SLOT(onToggleSelectButtonClick()));
-		connect(ui->b2, SIGNAL(clicked()), this, SLOT(onAddCubeButtonClick()));
-		connect(ui->b3, SIGNAL(clicked()), this, SLOT(onAddPlaneButtonClick()));
-		connect(ui->b4, SIGNAL(clicked()), this, SLOT(onAddSphereButtonClick()));
-		connect(ui->b5, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
-		connect(ui->b6, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
-		connect(ui->b7, SIGNAL(clicked()), this, SLOT(onExtraToolsButtonClick()));
+		connect(ui->toggleObjectSelectionButton, SIGNAL(clicked()), this, SLOT(onToggleSelectButtonClick()));
+		connect(ui->addCubeButton, SIGNAL(clicked()), this, SLOT(onAddCubeButtonClick()));
+		connect(ui->addPlaneButton, SIGNAL(clicked()), this, SLOT(onAddPlaneButtonClick()));
+		connect(ui->addSphereButton, SIGNAL(clicked()), this, SLOT(onAddSphereButtonClick()));
+		connect(ui->addOBJButton, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
+		connect(ui->addLightButton, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
+		// Extra Buttons
+		connect(ui->addCircle, SIGNAL(clicked()), this, SLOT(onAddCircleButton()));
+		connect(ui->addTriangle, SIGNAL(clicked()), this, SLOT(onAddTriangleButton()));
+		connect(ui->addCylinder, SIGNAL(clicked()), this, SLOT(onAddCylinderButton()));
+		connect(ui->addMonkey, SIGNAL(clicked()), this, SLOT(onAddMonkeyButton()));
+		connect(ui->addTeapot, SIGNAL(clicked()), this, SLOT(onAddTeapotButton()));
 
-		connect(ui->t1, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
-		connect(ui->t2, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
-		connect(ui->t3, SIGNAL(clicked()), this, SLOT(onLightViewButtonClick()));
+		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
+		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
+		connect(ui->shadedViewButton, SIGNAL(clicked()), this, SLOT(onLightViewButtonClick()));
 
-		//connect(ui->d0, SIGNAL(clicked()), this, SLOT(onConsoleButtonClick()));
-		connect(ui->d1, SIGNAL(clicked()), this, SLOT(onDocumentationButtonClick()));
-		connect(ui->d2, SIGNAL(clicked()), this, SLOT(onCodeButtonClick()));
+		connect(ui->docsButton, SIGNAL(clicked()), this, SLOT(onDocumentationButtonClick()));
+		connect(ui->codeButton, SIGNAL(clicked()), this, SLOT(onCodeButtonClick()));
 
-		connect(ui->r1, SIGNAL(clicked()), this, SLOT(onBugButtonClick()));
-		connect(ui->r2, SIGNAL(clicked()), this, SLOT(onExitButtonClick()));
+		connect(ui->reportBugButton, SIGNAL(clicked()), this, SLOT(onBugButtonClick()));
+		connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(onExitButtonClick()));
 	}
 
 	~MainWindow() {
@@ -84,31 +85,41 @@ private slots:
 	}
 
 	void onAddCubeButtonClick() {
-		ui->glCanvas->world.add(std::make_shared<Cube>("cube"));
+		ui->glCanvas->addCube();
 	}
 
 	void onAddPlaneButtonClick() {
-		ui->glCanvas->world.add(std::make_shared<Plane>("plane"));
+		ui->glCanvas->addPlane();
 	}
 
 	void onAddSphereButtonClick() {
-		ui->glCanvas->world.add(std::make_shared<Sphere>("sphere"));
+		ui->glCanvas->addSphere();
+	}
+
+	void onAddCircleButtonClick() {
+		ui->glCanvas->addCircle();
+	}
+
+	void onAddTriangleButtonClick() {
+		ui->glCanvas->addTriangle();
+	}
+
+	void onAddMonkeyButtonClick() {
+		ui->glCanvas->addOBJ("assets/models/suzanne.obj");
+	}
+
+	void onAddTeapotButtonClick() {
+		ui->glCanvas->addOBJ("assets/models/teapot.obj");
 	}
 
 	void onAddOBJButtonClick() {
 		std::string path = QFileDialog::getOpenFileName(this, tr("Open File"), "assets/models", tr(".OBJ Files (*.obj)")).toStdString();
 
-		ui->glCanvas->world.add(std::make_shared<OBJModel>(path, "obj"));
+		ui->glCanvas->addOBJ(path);
 	}
 
 	void onAddLightButtonClick() {
-		ui->glCanvas->world.add(std::make_shared<Light>());
-	}
-
-	void onExtraToolsButtonClick() {
-		QMenu* menu = new QMenu(this);
-		menu->addAction(tr("Sub-action"));
-		ui->b7->setMenu(menu);
+		ui->glCanvas->world.add(std::make_shared<Light>("Light"));
 	}
 
 	void onSolidViewButtonClick() {
@@ -131,9 +142,6 @@ private slots:
 		system("explorer https://github.com/Christopher-Hosken/breeze_render_engine/issues/new");
 	}
 
-	void onConsoleButtonClick() {
-		
-	}
 
 	void onCodeButtonClick() {
 		system("explorer https://github.com/Christopher-Hosken/breeze_render_engine");

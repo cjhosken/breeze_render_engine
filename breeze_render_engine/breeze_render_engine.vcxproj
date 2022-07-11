@@ -104,6 +104,7 @@
     <None Include="assets\shaders\default.vert" />
     <None Include="assets\shaders\id.frag" />
     <None Include="assets\shaders\flat.frag" />
+    <None Include="assets\shaders\light.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h" />

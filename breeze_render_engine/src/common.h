@@ -30,6 +30,10 @@
 #include <QLineEdit>
 #include <QGroupBox>
 #include <QCheckBox>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QMenu>
+#include <QAction>
 
 #include <QKeyEvent>
 #include <QMouseEvent>

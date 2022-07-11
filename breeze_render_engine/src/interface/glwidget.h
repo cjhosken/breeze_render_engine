@@ -41,6 +41,42 @@ public:
         sceneDrawType = t;
     }
 
+    void addCube() {
+        world.add(std::make_shared<Cube>("cube"));
+    }
+
+    void addPlane() {
+        world.add(std::make_shared<Plane>("plane"));
+    }
+
+    void addSphere() {
+        world.add(std::make_shared<Sphere>("sphere"));
+    }
+
+    void addOBJ(std::string path) {
+        world.add(std::make_shared<OBJModel>(path, "obj"));
+    }
+
+    void addTriangle() {
+        world.add(std::make_shared<Triangle>("triangle"));
+    }
+
+    void addCircle() {
+        world.add(std::make_shared<Circle>("circle"));
+    }
+
+    void addCylinder() {
+        world.add(std::make_shared<Cylinder>("cylinder"));
+    }
+
+    void addMonkey() {
+        world.add(std::make_shared<OBJModel>("assets/models/suzanne.obj", "monkey"));
+    }
+
+    void addTeapot() {
+        world.add(std::make_shared<OBJModel>("assets/models/teapot.obj", "teapot"));
+    }
+
 protected:
 
     void initializeGL() override {
@@ -51,17 +87,21 @@ protected:
         projection.setToIdentity();
         projection.perspective(35, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
        
-        Texture matcap("assets/images/matcap.jpg");
+        Texture matcap("assets/images/matcap.jpg", false);
+        Texture light("assets/images/light.jpg", false);
         textures.push_back(matcap);
+        textures.push_back(light);
 
         Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
         Shader wireShader("assets/shaders/default.vert", "assets/shaders/flat.frag");
         Shader IDShader("assets/shaders/default.vert", "assets/shaders/flat.frag");
+        Shader lightShader("assets/shaders/default.vert", "assets/shaders/light.frag");
         Shader canvasShader("assets/shaders/canvas.vert", "assets/shaders/canvas.frag");
 
         shaders.push_back(defaultShader);
         shaders.push_back(wireShader);
         shaders.push_back(IDShader);
+        shaders.push_back(lightShader);
         shaders.push_back(canvasShader);
 
         cvs.init();
@@ -69,7 +109,7 @@ protected:
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
 
-        world.scene = {};
+        world.add(std::make_shared<Light>("Light"));
 
         /*
         world.add(std::make_shared<Plane>("ground"));
@@ -88,7 +128,11 @@ protected:
 
 
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     };
+   
+
     
     void paintGL() override {
         glClearColor(0, 0, 0, 1);
@@ -111,7 +155,12 @@ protected:
         shaders[2].setMat4("projection", projection);
         shaders[2].setMat4("view", view);
 
-        cvs.draw(shaders.at(3));
+        // Light Shader
+        shaders[3].use();
+        shaders[3].setMat4("projection", projection);
+        shaders[3].setMat4("view", view);
+
+        cvs.draw(shaders.at(4));
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -137,6 +186,16 @@ protected:
                 world.get(mdx)->draw(shaders.at(1), WIRE, settings);
             }
         }
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textures[1].TXO);
+        shaders[3].setInt("light", 0);
+
+        for (int ldx = 0; ldx < world.lights.size(); ldx++) {
+            world.getLight(ldx)->draw(shaders.at(3), DEFAULT, settings);
+        }
+
+        glBindTexture(GL_TEXTURE_2D, 0);
     };
 
     void resizeGL(int width, int height) override {
