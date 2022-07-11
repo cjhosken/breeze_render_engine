@@ -109,8 +109,6 @@ protected:
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
 
-        world.add(std::make_shared<Light>("Light"));
-
         /*
         world.add(std::make_shared<Plane>("ground"));
         world.get("ground")->scale = QVector3D(10, 10, 10);

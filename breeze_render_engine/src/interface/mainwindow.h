@@ -29,7 +29,7 @@ public:
 		QRegion mask = QRegion(path.toFillPolygon().toPolygon());
 		setMask(mask);
 
-		connect(ui->appButton, SIGNAL(clicked()), this, SLOT(onLogoMenuButtonClick()));
+		connect(ui->appQuitButton, SIGNAL(triggered()), this, SLOT(onExitButtonClick()));
 
 		connect(ui->toggleObjectSelectionButton, SIGNAL(clicked()), this, SLOT(onToggleSelectButtonClick()));
 		connect(ui->addCubeButton, SIGNAL(clicked()), this, SLOT(onAddCubeButtonClick()));
@@ -38,11 +38,11 @@ public:
 		connect(ui->addOBJButton, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
 		connect(ui->addLightButton, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
 		// Extra Buttons
-		connect(ui->addCircle, SIGNAL(clicked()), this, SLOT(onAddCircleButton()));
-		connect(ui->addTriangle, SIGNAL(clicked()), this, SLOT(onAddTriangleButton()));
-		connect(ui->addCylinder, SIGNAL(clicked()), this, SLOT(onAddCylinderButton()));
-		connect(ui->addMonkey, SIGNAL(clicked()), this, SLOT(onAddMonkeyButton()));
-		connect(ui->addTeapot, SIGNAL(clicked()), this, SLOT(onAddTeapotButton()));
+		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButton()));
+		connect(ui->addTriangle, SIGNAL(triggered()), this, SLOT(onAddTriangleButton()));
+		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButton()));
+		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButton()));
+		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButton()));
 
 		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
 		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
@@ -53,6 +53,10 @@ public:
 
 		connect(ui->reportBugButton, SIGNAL(clicked()), this, SLOT(onBugButtonClick()));
 		connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(onExitButtonClick()));
+
+		// PROPERTIES
+
+		connect(ui->propertiesPanel->renderTab->renderButton, SIGNAL(clicked()), this, SLOT(onRenderButton()));
 	}
 
 	~MainWindow() {
@@ -74,12 +78,6 @@ public:
 	}
 
 private slots:
-	void onLogoMenuButtonClick() {
-		QMenu* menu = new QMenu(this);
-		menu->addAction(tr("Sub-action"));
-		ui->appButton->setMenu(menu);
-	}
-
 	void onToggleSelectButtonClick() {
 		ui->glCanvas->selecting = !ui->glCanvas->selecting;
 	}

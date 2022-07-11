@@ -23,7 +23,14 @@ QVector3D ray_color(Ray r, World world, int depth) {
 }
 
 void GLWidget::render() {
+    
     if (!rendering) {
+        QMessageBox* renderBox = new QMessageBox(this);
+        renderBox->setWindowTitle("Rendering");
+        renderBox->setText("Rendering...");
+        renderBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
+        
+        renderBox->show();
         rendering = true;
         renderCamera.setupForRender();
 
@@ -41,8 +48,11 @@ void GLWidget::render() {
 
         for (int y = height - 1; y >= 0; y--) {
             qDebug() << "Line: " << y;
+            float pct = float(height - y) / float(height);
+            renderBox->setText(QString::fromStdString(std::to_string(pct * 100) + "%"));
             for (int x = 0; x < width; x++) {
                 QVector3D pixel_color(0.0f, 0.0f, 0.0f);
+
                 for (int s = 0; s < samples; s++) {
                     float i = (float(x) + random_float()) / float(width - 1);
                     float j = (float(y) + random_float()) / float(height - 1);
@@ -62,5 +72,6 @@ void GLWidget::render() {
         stbi_write_png("render.png", width, height, channels, data, width * channels);
 
         rendering = false;
+        renderBox->setText("Rendered.");
     }
 }

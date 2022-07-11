@@ -1,4 +1,3 @@
 ﻿  Reading Qt configuration (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
-  main.cpp
-  moc_mainwindow.cpp
+  GLWidget.cpp
   breeze_render_engine.vcxproj -> C:\Users\user\source\repos\breeze_render_engine\x64\Debug\breeze_render_engine.exe

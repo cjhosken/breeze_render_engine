@@ -22,7 +22,9 @@ public:
     QWidget* toolBar;
     QWidget* debugBar;
 
-    QPushButton* appButton;
+    QPushButton* appButtons;
+    QMenu* appButtonsMenu;
+    QAction* appQuitButton;
 
     QPushButton* toggleObjectSelectionButton;
     QPushButton* addCubeButton;
@@ -68,11 +70,18 @@ public:
         propertiesPanel->setGeometry(QRect(1320, 100, 235, 755));
         propertiesPanel->root->setGeometry(QRect(10, 10, 215, 735));
 
-        appButton = new QPushButton(centralWidget);
-        appButton->setGeometry(QRect(23, 21, 50, 50));
-        appButton->setIcon(QIcon("assets/images/logo.png"));
-        appButton->setStyleSheet(".QPushButton {color: white; background-color: transparent;}");
-        appButton->setIconSize(QSize(45, 45));
+        appButtons = new QPushButton(centralWidget);
+        appButtons->setGeometry(QRect(23, 21, 50, 50));
+        appButtons->setIcon(QIcon("assets/images/logo.png"));
+        appButtons->setStyleSheet(".QPushButton {color: white; background-color: transparent;}  .QPushButton::menu-indicator {width: 0px;}");
+        appButtons->setIconSize(QSize(45, 45));
+
+        appButtonsMenu = new QMenu();
+        appButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
+        appQuitButton = new QAction("Quit");
+        appButtonsMenu->addAction(appQuitButton);
+        appButtons->setMenu(appButtonsMenu);
+
 
         toolBar = new QWidget(centralWidget);
         toolBar->setGeometry(QRect(23, 105, 50, 350));
@@ -117,12 +126,11 @@ public:
         addExtrasButton = new QPushButton(toolBar);
         addExtrasButton->setGeometry(QRect(0, 300, 50, 50));
         addExtrasButton->setIcon(QIcon("assets/images/icons/more.png"));
-        addExtrasButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;};");
+        addExtrasButton->setStyleSheet(".QPushButton {color: white; transparent; border-radius: 20px;} .QPushButton::menu-indicator {width: 0px;}");
         addExtrasButton->setIconSize(QSize(28, 28));
 
-
         extraButtonsMenu = new QMenu();
-        extraButtonsMenu->hideTearOffMenu();
+        extraButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
         addCircle = new QAction("Circle");
         extraButtonsMenu->addAction(addCircle);
         addTriangle = new QAction("Triangle");

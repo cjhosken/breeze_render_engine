@@ -6,6 +6,14 @@
 
 class RenderTab : public QWidget {
 public:
+    IntegerField* widthInput;
+    IntegerField* heightInput;
+
+    IntegerField* samplesInput;
+    IntegerField* bouncesInput;
+
+    QPushButton* renderButton;
+
     RenderTab(QWidget* parent = nullptr) : QWidget(parent) {
         setAutoFillBackground(true);
         /*
@@ -19,28 +27,28 @@ public:
         */
         QGroupBox* dims = new QGroupBox("Dimensions");
         dims->setStyleSheet("QGroupBox {color: white;}");
-        IntegerField* width = new IntegerField("Width:");
+        widthInput = new IntegerField("Width:");
 
-        IntegerField* height = new IntegerField("Height:");
+        heightInput = new IntegerField("Height:");
 
         QVBoxLayout* dimsVBox = new QVBoxLayout;
-        dimsVBox->addWidget(width);
-        dimsVBox->addWidget(height);
+        dimsVBox->addWidget(widthInput);
+        dimsVBox->addWidget(heightInput);
         dims->setLayout(dimsVBox);
 
 
         QGroupBox* rays = new QGroupBox("Rays");
         rays->setStyleSheet("QGroupBox {color: white;}");
-        IntegerField* samples = new IntegerField("Samples:");
+        samplesInput = new IntegerField("Samples:");
 
-        IntegerField* bounces = new IntegerField("Bounces:");
+        bouncesInput = new IntegerField("Bounces:");
 
         QVBoxLayout* raysVBox = new QVBoxLayout;
-        raysVBox->addWidget(samples);
-        raysVBox->addWidget(bounces);
+        raysVBox->addWidget(samplesInput);
+        raysVBox->addWidget(bouncesInput);
         rays->setLayout(raysVBox);
 
-        QPushButton* renderButton = new QPushButton("Render");
+        renderButton = new QPushButton("Render");
 
         QVBoxLayout* vbox = new QVBoxLayout();
         vbox->addWidget(dims);
