@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/images/light.jpg</file>
+        <file>assets/images/logo.png</file>
+        <file>assets/images/matcap.jpg</file>
+        <file>assets/images/splash.png</file>
+        <file>assets/images/icons/add.png</file>
+        <file>assets/images/icons/bug.png</file>
+        <file>assets/images/icons/close.png</file>
+        <file>assets/images/icons/code.png</file>
+        <file>assets/images/icons/cube.png</file>
+        <file>assets/images/icons/cursor.png</file>
+        <file>assets/images/icons/info.png</file>
+        <file>assets/images/icons/light.png</file>
+        <file>assets/images/icons/log.png</file>
+        <file>assets/images/icons/more.png</file>
+        <file>assets/images/icons/plane.png</file>
+        <file>assets/images/icons/shaded.png</file>
+        <file>assets/images/icons/solid.png</file>
+        <file>assets/images/icons/sphere.png</file>
+        <file>assets/images/icons/wire.png</file>
+        <file>assets/models/suzanne.obj</file>
+        <file>assets/models/teapot.obj</file>
+        <file>assets/shaders/canvas.frag</file>
+        <file>assets/shaders/canvas.vert</file>
+        <file>assets/shaders/default.frag</file>
+        <file>assets/shaders/default.vert</file>
+        <file>assets/shaders/flat.frag</file>
+        <file>assets/shaders/id.frag</file>
+        <file>assets/shaders/light.frag</file>
+    </qresource>
+</RCC>

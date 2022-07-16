@@ -33,23 +33,25 @@ public:
 	QVector3D data;
 	QHBoxLayout* root;
 	QLabel* label;
-	QLineEdit* xEdit;
-	QLineEdit* yEdit;
-	QLineEdit* zEdit;
+	QPushButton* edit;
+	QColorDialog* popup;
 
 	ColorField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
 		label->setStyleSheet(".QLabel {color: white;}");
-		xEdit = new QLineEdit();
-		yEdit = new QLineEdit();
-		zEdit = new QLineEdit();
+		edit = new QPushButton();
+		connect(edit, SIGNAL(triggered()), this, SLOT(openDialog()));
 
 		root->addWidget(label);
-		root->addWidget(xEdit);
-		root->addWidget(yEdit);
-		root->addWidget(zEdit);
+		root->addWidget(edit);
+	}
+
+public slots:
+	void openDialog() {
+		popup = new QColorDialog();
+		popup->open();
 	}
 };
 
@@ -84,6 +86,28 @@ public:
 		label = new QLabel(n);
 		label->setStyleSheet(".QLabel {color: white;}");
 		edit = new QLineEdit();
+
+		root->addWidget(label);
+		root->addWidget(edit);
+	}
+};
+
+class SliderField : public QWidget {
+public:
+	QHBoxLayout* root;
+	QLabel*label;
+	QSlider* edit;
+
+	SliderField(QString n, int min, int max, int set, QWidget* parent = nullptr) : QWidget(parent) {
+		root = new QHBoxLayout(this);
+
+		label = new QLabel(n);
+		label->setStyleSheet(".QLabel {color: white;}");
+		edit = new QSlider();
+		edit->setMaximum(max);
+		edit->setMinimum(min);
+		edit->setValue(set);
+		edit->setOrientation(Qt::Horizontal);
 
 		root->addWidget(label);
 		root->addWidget(edit);

@@ -15,7 +15,7 @@
 #include <QMatrix4x4>
 
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions_4_5_Core>
+#include <QOpenGLExtraFunctions>
 #include <QApplication>
 #include <QSurfaceFormat>
 #include <QIcon>
@@ -34,6 +34,10 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QAction>
+#include <QSlider>
+#include <QTemporaryDir>
+
+#include <QColorDialog>
 
 #include <QKeyEvent>
 #include <QMouseEvent>

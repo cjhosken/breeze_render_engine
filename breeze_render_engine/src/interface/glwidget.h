@@ -2,6 +2,7 @@
 #define GLWIDGET_H
 
 #include "../common.h"
+#include "../opengl/vertex.h"
 #include "../opengl/shader.h"
 #include "../opengl/viewportcamera.h"
 #include "../opengl/world.h"
@@ -11,7 +12,7 @@
 #include "../opengl/texture.h"
 #include "../interface/applicationsettings.h"
 
-class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
+class GLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions {
 	Q_OBJECT
 
 public:
@@ -34,6 +35,12 @@ public:
     QSize sizeHint() const override {
         return QSize(settings.APP_WIDTH, settings.APP_HEIGHT);
     };
+
+    void setFOV(float f) {
+        fov = f;
+        projection.setToIdentity();
+        projection.perspective(fov, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
+    }
 
     void render();
 
@@ -70,33 +77,54 @@ public:
     }
 
     void addMonkey() {
-        world.add(std::make_shared<OBJModel>("assets/models/suzanne.obj", "monkey"));
+        world.add(std::make_shared<OBJModel>(":/assets/models/suzanne.obj", "monkey"));
     }
 
     void addTeapot() {
-        world.add(std::make_shared<OBJModel>("assets/models/teapot.obj", "teapot"));
+        world.add(std::make_shared<OBJModel>(":/assets/models/teapot.obj", "teapot"));
     }
 
 protected:
+    unsigned int VAO, VBO;
+
+    void setupVAOs() {
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
+
+        glGenBuffers(1, &VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, 0, {}, GL_STATIC_DRAW);
+
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+    }
 
     void initializeGL() override {
         initializeOpenGLFunctions();
+        setupVAOs();
 
         glViewport(0, 0, settings.APP_WIDTH, settings.APP_HEIGHT);
 
         projection.setToIdentity();
-        projection.perspective(35, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
+        projection.perspective(fov, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
        
-        Texture matcap("assets/images/matcap.jpg", false);
-        Texture light("assets/images/light.jpg", false);
+        Texture matcap(":/assets/images/matcap.jpg", false);
+        Texture light(":/assets/images/light.jpg", false);
         textures.push_back(matcap);
         textures.push_back(light);
 
-        Shader defaultShader("assets/shaders/default.vert", "assets/shaders/default.frag");
-        Shader wireShader("assets/shaders/default.vert", "assets/shaders/flat.frag");
-        Shader IDShader("assets/shaders/default.vert", "assets/shaders/flat.frag");
-        Shader lightShader("assets/shaders/default.vert", "assets/shaders/light.frag");
-        Shader canvasShader("assets/shaders/canvas.vert", "assets/shaders/canvas.frag");
+        Shader defaultShader(":/assets/shaders/default.vert", ":/assets/shaders/default.frag");
+        Shader wireShader(":/assets/shaders/default.vert", ":/assets/shaders/flat.frag");
+        Shader IDShader(":/assets/shaders/default.vert", ":/assets/shaders/flat.frag");
+        Shader lightShader(":/assets/shaders/default.vert", ":/assets/shaders/light.frag");
+        Shader canvasShader(":/assets/shaders/canvas.vert", ":/assets/shaders/canvas.frag");
 
         shaders.push_back(defaultShader);
         shaders.push_back(wireShader);
@@ -108,33 +136,20 @@ protected:
 
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
-
-        /*
-        world.add(std::make_shared<Plane>("ground"));
-        world.get("ground")->scale = QVector3D(10, 10, 10);
         
         world.add(std::make_shared<Cube>("cube"));
         world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
-
-        world.add(std::make_shared<Sphere>("sphere"));
-        world.get("sphere")->scale = QVector3D(2, 2, 2);
-        world.get("sphere")->location = QVector3D(1.0f, 1.5f, 2.0f);
-
-        world.add(std::make_shared<OBJModel>("assets/models/teapot.obj", "monke"));
-        world.get("monke")->location = QVector3D(0.0f, 2.0f, -3.0f);
-        */
-
-
+        
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     };
-   
-
     
     void paintGL() override {
         glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glBindVertexArray(VAO);
 
         QMatrix4x4 view = viewCamera.getViewMatrix();
 
@@ -194,12 +209,14 @@ protected:
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
+
+
     };
 
     void resizeGL(int width, int height) override {
         glViewport(0, 0, width, height);
         projection.setToIdentity();
-        projection.perspective(35, float(width) / float(height), 0.01f, 100.0f);
+        projection.perspective(fov, float(width) / float(height), 0.01f, 100.0f);
     };
 
     void mousePressEvent(QMouseEvent* ev) override {
@@ -257,6 +274,8 @@ private:
     std::vector<Texture> textures;
 
     DrawType sceneDrawType;
+
+    float fov = 35.0f;
 
 public:
     ViewportCamera viewCamera = ViewportCamera();

@@ -64,10 +64,14 @@ public:
 
 class WorldTab : public QWidget {
 public:
+    SliderField* fov;
+    ColorField* gradIn;
+    ColorField* gradOut;
+    
     WorldTab(QWidget* parent = nullptr) : QWidget(parent) {
         setAutoFillBackground(true);
         /*
-            fov:    ( f )s
+            fov:    ( f )
             
             Gradient-Inner:    ( r ), ( g ), ( b )
             Gradient-Outer:    ( r ), ( g ), ( b )
@@ -75,7 +79,7 @@ public:
         */
         QGroupBox* view = new QGroupBox("Viewport Controls");
         view->setStyleSheet(".QGroupBox {color: white;}");
-        FloatField* fov = new FloatField("Viewport Fov:");
+        fov = new SliderField("Viewport FOV:", 0, 180, 35);
 
         QVBoxLayout* viewVBox = new QVBoxLayout;
         viewVBox->addWidget(fov);
@@ -83,8 +87,8 @@ public:
 
         QGroupBox* back = new QGroupBox("Viewport Background");
         back->setStyleSheet(".QGroupBox {color: white;}");
-        ColorField* gradIn = new ColorField("Inner Gradient:");
-        ColorField* gradOut = new ColorField("Outer Gradient:");
+        gradIn = new ColorField("Inner Gradient:");
+        gradOut = new ColorField("Outer Gradient:");
 
         QVBoxLayout* backVBox = new QVBoxLayout;
         backVBox->addWidget(gradIn);
@@ -103,6 +107,26 @@ public:
 
 class ObjectTab : public QWidget {
 public:
+    QLineEdit* name;
+    QVector3DField* loc;
+    QVector3DField* rot;
+    QVector3DField* sca;
+
+    ColorField* color;
+    SliderField* rough;
+    SliderField* spec;
+
+    SliderField* fov;
+
+    BoolField* isDOF;
+
+    FloatField* focusDist;
+
+    FloatField* aper;
+
+    
+    bool isCamera;
+
     ObjectTab(QWidget* parent = nullptr) : QWidget(parent) {
         setAutoFillBackground(true);
 
@@ -133,13 +157,13 @@ public:
         */
 
 
-        QLineEdit* name = new QLineEdit();
+        name = new QLineEdit();
 
         QGroupBox* transform = new QGroupBox("Transforms");
         transform->setStyleSheet(".QGroupBox {color: white;}");
-        QVector3DField* loc = new QVector3DField("Location:");
-        QVector3DField* rot = new QVector3DField("Rotation:");
-        QVector3DField* sca = new QVector3DField("Scale:");
+        loc = new QVector3DField("Location:");
+        rot = new QVector3DField("Rotation:");
+        sca = new QVector3DField("Scale:");
 
         QVBoxLayout* transVBox = new QVBoxLayout;
         transVBox->addWidget(loc);
@@ -148,26 +172,50 @@ public:
 
         transform->setLayout(transVBox);
 
-
-        QGroupBox* material = new QGroupBox("Material");
-        material->setStyleSheet(".QGroupBox {color: white;}");
-        ColorField* color = new ColorField("Color:");
-        FloatField* rough = new FloatField("Roughness:");
-        FloatField* spec = new FloatField("Specular:");
-
-        QVBoxLayout* matVBox = new QVBoxLayout;
-        matVBox->addWidget(color);
-        matVBox->addWidget(rough);
-        matVBox->addWidget(spec);
-
-        material->setLayout(matVBox);
-
-
         QVBoxLayout* vbox = new QVBoxLayout();
 
-        vbox->addWidget(name);
+        if (!isCamera) {
+            vbox->addWidget(name);
+        }
+
         vbox->addWidget(transform);
-        vbox->addWidget(material);
+
+        if (!isCamera) {
+            QGroupBox* material = new QGroupBox("Material");
+            material->setStyleSheet(".QGroupBox {color: white;}");
+            color = new ColorField("Color:");
+            rough = new SliderField("Roughness:", 0, 100, 50);
+            spec = new SliderField("Specular:", 0, 100, 50);
+
+            QVBoxLayout* matVBox = new QVBoxLayout;
+            matVBox->addWidget(color);
+            matVBox->addWidget(rough);
+            matVBox->addWidget(spec);
+
+            material->setLayout(matVBox);
+            vbox->addWidget(material);
+        }
+        else {
+            QGroupBox* camera = new QGroupBox("Camera");
+            camera->setStyleSheet(".QGroupBox {color: white;}");
+            fov = new SliderField("FOV:", 0, 180, 35);
+
+            isDOF = new BoolField("DOF:");
+
+            focusDist = new FloatField("Distance: ");
+
+            aper = new FloatField("Aperture:");
+
+            QVBoxLayout* camVBox = new QVBoxLayout;
+            camVBox->addWidget(fov);
+            camVBox->addWidget(isDOF);
+            camVBox->addWidget(focusDist);
+            camVBox->addWidget(aper);
+
+            camera->setLayout(camVBox);
+            vbox->addWidget(camera);
+        }
+
         vbox->addStretch();
 
         setLayout(vbox);

@@ -1,0 +1,7 @@
+﻿  Reading Qt configuration (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
+breeze_render_engine.vcxproj : error : ERROR running qmake
+breeze_render_engine.vcxproj : error : qmake: (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
+breeze_render_engine.vcxproj : error : qmake: $PWD=C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\Release\qmake\temp
+breeze_render_engine.vcxproj : error : qmake: Project ERROR: Unknown module(s) in QT: openglextensions
+breeze_render_engine.vcxproj : error : qmake: Error creating .vcxproj file
+breeze_render_engine.vcxproj : error : 

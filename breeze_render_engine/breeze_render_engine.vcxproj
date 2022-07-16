@@ -34,6 +34,7 @@
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;openglwidgets;opengl</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
@@ -131,6 +132,9 @@
     <ClInclude Include="src\opengl\vertex.h" />
     <ClInclude Include="src\opengl\viewportcamera.h" />
     <ClInclude Include="src\opengl\world.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resource.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

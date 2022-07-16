@@ -57,6 +57,8 @@ public:
 		// PROPERTIES
 
 		connect(ui->propertiesPanel->renderTab->renderButton, SIGNAL(clicked()), this, SLOT(onRenderButton()));
+
+		connect(ui->propertiesPanel->worldTab->fov->edit, SIGNAL(edit.valueChanged(int)), this, SLOT(onViewportFOVChanged(int)));
 	}
 
 	~MainWindow() {
@@ -78,6 +80,11 @@ public:
 	}
 
 private slots:
+	void onViewportFOVChanged(int value) {
+		qDebug("TEST");
+		ui->glCanvas->setFOV(float(value));
+	}
+
 	void onToggleSelectButtonClick() {
 		ui->glCanvas->selecting = !ui->glCanvas->selecting;
 	}
@@ -103,15 +110,15 @@ private slots:
 	}
 
 	void onAddMonkeyButtonClick() {
-		ui->glCanvas->addOBJ("assets/models/suzanne.obj");
+		ui->glCanvas->addOBJ(":/assets/models/suzanne.obj");
 	}
 
 	void onAddTeapotButtonClick() {
-		ui->glCanvas->addOBJ("assets/models/teapot.obj");
+		ui->glCanvas->addOBJ(":/assets/models/teapot.obj");
 	}
 
 	void onAddOBJButtonClick() {
-		std::string path = QFileDialog::getOpenFileName(this, tr("Open File"), "assets/models", tr(".OBJ Files (*.obj)")).toStdString();
+		std::string path = QFileDialog::getOpenFileName(this, tr("Open File"), ":/assets/models", tr(".OBJ Files (*.obj)")).toStdString();
 
 		ui->glCanvas->addOBJ(path);
 	}

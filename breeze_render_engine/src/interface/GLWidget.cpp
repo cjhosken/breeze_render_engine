@@ -27,10 +27,10 @@ void GLWidget::render() {
     if (!rendering) {
         QMessageBox* renderBox = new QMessageBox(this);
         renderBox->setWindowTitle("Rendering");
-        renderBox->setText("Rendering...");
         renderBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
-        
         renderBox->show();
+        renderBox->setText("Rendering...");
+       
         rendering = true;
         renderCamera.setupForRender();
 
@@ -48,8 +48,6 @@ void GLWidget::render() {
 
         for (int y = height - 1; y >= 0; y--) {
             qDebug() << "Line: " << y;
-            float pct = float(height - y) / float(height);
-            renderBox->setText(QString::fromStdString(std::to_string(pct * 100) + "%"));
             for (int x = 0; x < width; x++) {
                 QVector3D pixel_color(0.0f, 0.0f, 0.0f);
 

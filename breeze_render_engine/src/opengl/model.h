@@ -7,7 +7,7 @@
 #include "material.h"
 #include "../interface/applicationsettings.h"
 
-class Model : protected QOpenGLFunctions_4_5_Core {
+class Model : protected QOpenGLExtraFunctions {
 public:
 	std::string name;
 	QVector3D location = QVector3D(0.0f, 0.0f, 0.0f);
@@ -49,6 +49,7 @@ public:
 			else {
 				shader.setVec3("color", QVector3D(0.6f, 0.6f, 0.6f));
 			}
+			glLineWidth(1.0f);
 		}
 		else if (draw == ID) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -60,11 +61,8 @@ public:
 			shader.setVec3("color", QVector3D(rID / 255.0f, gID / 255.0f, bID / 255.0f));
 		}
 
-		glBindVertexArray(mesh.getVAO());
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.getVBO());
 		glDrawArrays(GL_TRIANGLES, 0, mesh.data.size());
-		glBindVertexArray(0);
-
-		glLineWidth(1.0f);
 	}
 
 	QMatrix4x4 getModelMatrix() {

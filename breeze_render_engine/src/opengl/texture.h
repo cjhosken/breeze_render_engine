@@ -3,14 +3,14 @@
 
 #include "../common.h"
 
-class Texture : protected QOpenGLFunctions_4_5_Core {
+class Texture : protected QOpenGLExtraFunctions {
 public:
-	const char* path;
+	QFileInfo path;
 	unsigned int TXO;
 	bool alpha;
 
 	Texture(const char* p, bool a) {
-		path = p;
+		path = QFileInfo(p);
 		alpha = a;
 		load();
 	}

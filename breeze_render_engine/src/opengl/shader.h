@@ -4,24 +4,24 @@
 #include "../common.h"
 #include "material.h"
 
-class Shader : protected QOpenGLFunctions_4_5_Core {
+class Shader : protected QOpenGLExtraFunctions {
 public:
-    const char* vertexPath {};
-    const char* fragmentPath {};
+    QFileInfo vertexPath{};
+    QFileInfo fragmentPath{};
 
     Shader() {
         initializeOpenGLFunctions();
     }
 
-    Shader(const Shader &s) {
+    Shader(const Shader& s) {
         vertexPath = s.vertexPath;
         fragmentPath = s.fragmentPath;
         load();
     }
 
     Shader(const char* vPath, const char* fPath) {
-        vertexPath = vPath;
-        fragmentPath = fPath;
+        vertexPath = QFileInfo(vPath);
+        fragmentPath = QFileInfo(fPath);
         load();
     }
 
@@ -36,33 +36,35 @@ public:
     void load() {
         initializeOpenGLFunctions();
 
-        qDebug() << "SHADER::LOADING_VERTEX_PATH:: " << vertexPath;
-        qDebug() << "SHADER::LOADING_FRAGMENT_PATH:: " << fragmentPath;
+        qDebug() << "SHADER::LOADING_VERTEX_PATH:: " << vertexPath.absoluteFilePath().toStdString().c_str();
+        qDebug() << "SHADER::LOADING_FRAGMENT_PATH:: " << fragmentPath.absoluteFilePath().toStdString().c_str();
 
         std::string vertexCode;
         std::string fragmentCode;
-        std::ifstream vShaderFile;
-        std::ifstream fShaderFile;
 
-        vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
-            vShaderFile.open(vertexPath);
-            fShaderFile.open(fragmentPath);
-            std::stringstream vShaderStream, fShaderStream;
-            vShaderStream << vShaderFile.rdbuf();
-            fShaderStream << fShaderFile.rdbuf();
+
+            QFile vShaderFile(vertexPath.absoluteFilePath());
+            if (!vShaderFile.open(QFile::ReadOnly | QFile::Text)) throw std::ifstream::failure{ "" };
+            QTextStream vStream(&vShaderFile);
+
+            vertexCode = vStream.readAll().toStdString();
+
+
+            QFile fShaderFile(fragmentPath.absoluteFilePath());
+            if (!fShaderFile.open(QFile::ReadOnly | QFile::Text)) throw std::ifstream::failure{ "" };
+            QTextStream fStream(&fShaderFile);
+
+            fragmentCode = fStream.readAll().toStdString();
 
             vShaderFile.close();
             fShaderFile.close();
 
-            vertexCode = vShaderStream.str();
-            fragmentCode = fShaderStream.str();
         }
         catch (std::ifstream::failure e)
         {
             qDebug() << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ";
-    
+
         }
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
@@ -123,7 +125,6 @@ public:
         glUniform3f(glGetUniformLocation(id, name.c_str()), value.x(), value.y(), value.z());
     };
     void setMat4(const std::string& name, QMatrix4x4 value) {
-        glMultMatrixf(value.constData());
         glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, value.constData());
     };
     void setMaterial(Material material) {
@@ -133,7 +134,7 @@ public:
     }
 
 private:
-    unsigned int id {};
+    unsigned int id{};
 };
 
 #endif // !SHADER_H

@@ -129,4 +129,9 @@
       <Filter>Source Files\interface</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resource.qrc">
+      <Filter>Source Files</Filter>
+    </QtRcc>
+  </ItemGroup>
 </Project>
