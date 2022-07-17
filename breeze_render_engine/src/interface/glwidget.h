@@ -101,6 +101,8 @@ protected:
         glEnableVertexAttribArray(2);
     }
 
+
+
     void initializeGL() override {
         makeCurrent();
         initializeOpenGLFunctions();
@@ -135,7 +137,6 @@ protected:
         
         world.add(std::make_shared<Cube>("cube"));
         world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
-        world.get("cube")->material.color = QVector3D(1.0, 0.0, 0.0);
         
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
@@ -170,7 +171,42 @@ protected:
         shaders[3].setMat4("projection", projection);
         shaders[3].setMat4("view", view);
 
+        if (click) {
+            click = false;
+            for (int mdx = 0; mdx < world.scene.size(); mdx++) {
+                world.get(mdx)->draw(shaders.at(2), ID, settings);
+            }
 
+            renderCamera.draw(shaders.at(2), ID, settings);
+            qDebug() << "CamID: " << renderCamera.id;
+
+            glFlush();
+            glFinish();
+
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            unsigned char data[3];
+            glReadPixels(lastX, settings.APP_HEIGHT - lastY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+            int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
+
+            if (pickedID != 0) {
+                for (int mdx = 0; mdx < world.scene.size(); mdx++) {
+                    if (world.get(mdx)->id == pickedID) {
+                        Model *m = world.get(mdx);
+                        selectObject(m);
+                        renderCamera.selected = false;
+                    }
+                }
+
+                if (pickedID == renderCamera.id) {
+                    selectCamera(renderCamera);
+                }
+            }
+
+
+            glClearColor(0, 0, 0, 1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
 
         cvs.draw(shaders.at(4));
 
@@ -208,8 +244,6 @@ protected:
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
-
-
     };
 
     void resizeGL(int width, int height) override {
@@ -253,6 +287,22 @@ protected:
     void wheelEvent(QWheelEvent* ev) {
         viewCamera.processMouseScroll(ev->angleDelta().y());
         repaint();
+    }
+
+    void selectObject(Model* &m) {
+        for (int mdx = 0; mdx < world.scene.size(); mdx++) {
+            world.get(mdx)->selected = false;
+        }
+
+        m->selected = true;
+    }
+
+    void selectCamera(RenderCamera& c) {
+        for (int mdx = 0; mdx < world.scene.size(); mdx++) {
+            world.get(mdx)->selected = false;
+        }
+
+        c.selected = true;
     }
 
 private:
