@@ -10,7 +10,7 @@ public:
 
 	Mesh() {}
 
-	Mesh(std::vector<Vertex> inData) {
+	Mesh(std::vector<Vertex>& inData) {
 		data = inData;
 		bind();
 	}

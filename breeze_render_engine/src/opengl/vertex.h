@@ -3,6 +3,7 @@
 
 #include "../common.h"
 
+#pragma pack(1)
 struct Vertex {
 	QVector3D position;
 	QVector3D normal;

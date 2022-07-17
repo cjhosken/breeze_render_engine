@@ -61,7 +61,10 @@ public:
 			shader.setVec3("color", QVector3D(rID / 255.0f, gID / 255.0f, bID / 255.0f));
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, mesh.getVBO());
+
+		glBindVertexBuffer(0, mesh.getVBO(), 0, sizeof(Vertex));
+		glBindVertexBuffer(1, mesh.getVBO(), offsetof(Vertex, normal), sizeof(Vertex));
+		glBindVertexBuffer(2, mesh.getVBO(), offsetof(Vertex, uv), sizeof(Vertex));
 		glDrawArrays(GL_TRIANGLES, 0, mesh.data.size());
 	}
 

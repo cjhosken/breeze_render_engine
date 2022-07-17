@@ -85,28 +85,24 @@ public:
     }
 
 protected:
-    unsigned int VAO, VBO;
+    unsigned int VAO;
 
     void setupVAOs() {
         glGenVertexArrays(1, &VAO);
         glBindVertexArray(VAO);
 
-        glGenBuffers(1, &VBO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, 0, {}, GL_STATIC_DRAW);
-
-
-        glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+        glEnableVertexAttribArray(0);
 
-        glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+        glEnableVertexAttribArray(1);
 
-        glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+        glEnableVertexAttribArray(2);
     }
 
     void initializeGL() override {
+        makeCurrent();
         initializeOpenGLFunctions();
         setupVAOs();
 
@@ -139,6 +135,7 @@ protected:
         
         world.add(std::make_shared<Cube>("cube"));
         world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
+        world.get("cube")->material.color = QVector3D(1.0, 0.0, 0.0);
         
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
@@ -172,6 +169,8 @@ protected:
         shaders[3].use();
         shaders[3].setMat4("projection", projection);
         shaders[3].setMat4("view", view);
+
+
 
         cvs.draw(shaders.at(4));
 

@@ -222,12 +222,12 @@ public:
 				float x3 = radius * sin(theta2) * cos(phi1);
 				float y3 = radius * sin(theta2) * sin(phi1);
 				float z3 = radius * cos(theta2);
-
+				
 				Vertex v0 = { QVector3D(x0, y0, z0), QVector3D(x0, y0, z0), QVector2D(0.0, 0.0) };
 				Vertex v1 = { QVector3D(x1, y1, z1), QVector3D(x1, y1, z1), QVector2D(0.0, 0.0) };
 				Vertex v2 = { QVector3D(x2, y2, z2), QVector3D(x2, y2, z2), QVector2D(0.0, 0.0) };
 				Vertex v3 = { QVector3D(x3, y3, z3), QVector3D(x3, y3, z3), QVector2D(0.0, 0.0) };
-
+				
 				//vertex1 = vertex on a sphere of radius r at spherical coords theta1, phi1
 				//vertex2 = vertex on a sphere of radius r at spherical coords theta1, phi2
 				//vertex3 = vertex on a sphere of radius r at spherical coords theta2, phi2

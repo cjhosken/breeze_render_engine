@@ -5,21 +5,26 @@
 #include "vertex.h"
 #include "shader.h"
 
-class Canvas : protected QOpenGLExtraFunctions{
+class Canvas : public Model {
 public:
 	QVector3D innerColor = QVector3D(0, 0, 0);
 	QVector3D outerColor = QVector3D(0, 0, 0);
 
-	Canvas() {	
+	Canvas() : Model() {
+		
 	}
 
 	void init() {
 		initializeOpenGLFunctions();
+		std::vector<Vertex> vertices = {
+		{QVector3D(-1.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 0.0f)},
+		{QVector3D(-1.0f, 3.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 1.0f)},
+		{QVector3D(3.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(1.0, 0.0f)},
+		};
 
-		glGenBuffers(1, &VBO);
+		Mesh canvasMesh = Mesh(vertices);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+		mesh = canvasMesh;
 	}
 
 	void draw(Shader &shader) {
@@ -29,26 +34,11 @@ public:
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+		glBindVertexBuffer(0, mesh.getVBO(), 0, sizeof(Vertex));
+		glBindVertexBuffer(1, mesh.getVBO(), offsetof(Vertex, normal), sizeof(Vertex));
+		glBindVertexBuffer(2, mesh.getVBO(), offsetof(Vertex, uv), sizeof(Vertex));
+		glDrawArrays(GL_TRIANGLES, 0, mesh.data.size());
 	}
-
-	void dispose() {
-		glDeleteBuffers(1, &VBO);
-	}
-
-private:
-	unsigned int VBO;
-
-	std::vector<Vertex> vertices = {
-			{QVector3D(1.0f, 1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(1.0f, 1.0f)},
-			{QVector3D(1.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(1.0f, 0.0f)},
-			{QVector3D(-1.0f, 1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0, 1.0f)},
-
-			{QVector3D(1.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(1.0f, 0.0f)},
-			{QVector3D(-1.0f, -1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 0.0f)},
-			{QVector3D(-1.0f, 1.0f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 1.0f)}
-	};
 };
 
 
