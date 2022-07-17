@@ -38,11 +38,11 @@ public:
 		connect(ui->addOBJButton, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
 		connect(ui->addLightButton, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
 		// Extra Buttons
-		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButton()));
-		connect(ui->addTriangle, SIGNAL(triggered()), this, SLOT(onAddTriangleButton()));
-		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButton()));
-		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButton()));
-		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButton()));
+		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButtonClick()));
+		connect(ui->addTriangle, SIGNAL(triggered()), this, SLOT(onAddTriangleButtonClick()));
+		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButtonClick()));
+		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButtonClick()));
+		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButtonClick()));
 
 		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
 		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
@@ -56,9 +56,40 @@ public:
 
 		// PROPERTIES
 
+		// RENDERING
+
+		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderWidth(QString)));
+		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderHeight(QString)));
+
+		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderSamples(QString)));
+		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderBounces(QString)));
+
 		connect(ui->propertiesPanel->renderTab->renderButton, SIGNAL(clicked()), this, SLOT(onRenderButton()));
 
-		connect(ui->propertiesPanel->worldTab->fov->edit, SIGNAL(edit.valueChanged(int)), this, SLOT(onViewportFOVChanged(int)));
+		// WORLD
+
+		connect(ui->propertiesPanel->worldTab->fov->edit, SIGNAL(valueChanged(int)), this, SLOT(onViewportFOVChanged(int)));
+
+		connect(ui->propertiesPanel->worldTab->gradIn->popup, SIGNAL(colorSelected(QColor)), this, SLOT(updateInnerBackgroundGradient(QColor)));
+		connect(ui->propertiesPanel->worldTab->gradOut->popup, SIGNAL(colorSelected(QColor)), this, SLOT(updateOuterBackgroundGradient(QColor)));
+		connect(ui->propertiesPanel->worldTab->gradIn->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateInnerBackgroundGradient(QColor)));
+		connect(ui->propertiesPanel->worldTab->gradOut->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateOuterBackgroundGradient(QColor)));
+
+
+		// OBJECT
+
+		connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updatePropertiesPanel()));
+
+		connect(ui->propertiesPanel->objectTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
+
+		connect(ui->propertiesPanel->objectTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
+		connect(ui->propertiesPanel->objectTab->rot, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectRotation(QVector3D)));
+		connect(ui->propertiesPanel->objectTab->sca, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectScale(QVector3D)));
+
+		connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+		connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+		connect(ui->propertiesPanel->objectTab->rough->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectRoughness(int)));
+		connect(ui->propertiesPanel->objectTab->spec->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectSpecular(int)));
 	}
 
 	~MainWindow() {
@@ -80,9 +111,86 @@ public:
 	}
 
 private slots:
+
+	void setSelectedObjectLocation(QVector3D l) {
+		ui->glCanvas->selectedObject->location = l;
+		ui->glCanvas->repaint();
+	}
+
+	void setSelectedObjectRotation(QVector3D r) {
+		ui->glCanvas->selectedObject->rotation = r;
+		ui->glCanvas->repaint();
+	}
+
+	void setSelectedObjectScale(QVector3D s) {
+		ui->glCanvas->selectedObject->scale = s;
+		ui->glCanvas->repaint();
+	}
+
+	void renameSelectedObject(QString n) {
+		ui->glCanvas->selectedObject->name = n.toStdString();
+		ui->glCanvas->repaint();
+	}
+
+	void setSelectedObjectColor(QColor col) {
+		QVector3D vCol(col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
+
+		ui->glCanvas->selectedObject->material.color = vCol;
+		ui->glCanvas->repaint();
+
+	}
+
+	void setSelectedObjectRoughness(int r) {
+		ui->glCanvas->selectedObject->material.roughness = r / 100.0f;
+		ui->glCanvas->repaint();
+	}
+
+	void setSelectedObjectSpecular(int s) {
+		ui->glCanvas->selectedObject->material.specular = s / 100.0f;
+		ui->glCanvas->repaint();
+	}
+
+	void setRenderWidth(QString num_s) {
+		ui->glCanvas->renderCamera.settings.width = num_s.toInt();
+	}
+
+
+	void setRenderHeight(QString num_s) {
+		ui->glCanvas->renderCamera.settings.height = num_s.toInt();
+	}
+
+
+	void setRenderSamples(QString num_s) {
+		ui->glCanvas->renderCamera.settings.samples = num_s.toInt();
+	}
+
+
+	void setRenderBounces(QString num_s) {
+		ui->glCanvas->renderCamera.settings.bounces = num_s.toInt();
+	}
+
+	void updatePropertiesPanel() {
+		ui->propertiesPanel->objectTab->loadModel(ui->glCanvas->selectedObject);
+	}
+
+	void updateInnerBackgroundGradient(QColor innerColor) {
+		QVector3D inner(innerColor.red() / 255.0f, innerColor.green() / 255.0f, innerColor.blue() / 255.0f);
+
+		ui->glCanvas->cvs.setInnerColor(inner);
+		ui->glCanvas->repaint();
+	}
+
+	void updateOuterBackgroundGradient(QColor outerColor) {
+
+		QVector3D outer(outerColor.red() / 255.0f, outerColor.green() / 255.0f, outerColor.blue() / 255.0f);
+
+		ui->glCanvas->cvs.setOuterColor(outer);
+		ui->glCanvas->repaint();
+	}
+
 	void onViewportFOVChanged(int value) {
-		qDebug("TEST");
 		ui->glCanvas->setFOV(float(value));
+		ui->glCanvas->repaint();
 	}
 
 	void onToggleSelectButtonClick() {
@@ -103,6 +211,10 @@ private slots:
 
 	void onAddCircleButtonClick() {
 		ui->glCanvas->addCircle();
+	}
+
+	void onAddCylinderButtonClick() {
+		ui->glCanvas->addCylinder();
 	}
 
 	void onAddTriangleButtonClick() {

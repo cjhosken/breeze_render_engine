@@ -39,6 +39,12 @@ I can't count how many stack overflow posts I've read trying to complete this pr
 
 - [*Qt Documentation*](https://doc.qt.io/)
 
+## Special Thanks
+
+A very special thanks to `deccer#1371` and those on the Graphics Programming Discord. They really saved the day.
+
+If you would like help with your own graphics programs, join their Discord server. https://discord.gg/6mgNGk7
+
 ## Contact
 
 *Breeze Render Engine* was written by me, Christopher Hosken. You can get in contact with me here.

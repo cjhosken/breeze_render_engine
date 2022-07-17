@@ -32,7 +32,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;openglwidgets;opengl</QtModules>
+    <QtModules>core;gui;widgets;openglwidgets;opengl;</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -107,12 +107,19 @@
     <None Include="assets\shaders\id.frag" />
     <None Include="assets\shaders\flat.frag" />
     <None Include="assets\shaders\light.frag" />
+    <None Include="CONTIBUTION.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\interface\applicationsettings.h" />
     <ClInclude Include="src\interface\dragbar.h" />
     <ClInclude Include="src\interface\fields.h" />
+    <ClInclude Include="src\interface\fields\boolfield.h" />
+    <ClInclude Include="src\interface\fields\colorfield.h" />
+    <ClInclude Include="src\interface\fields\floatfield.h" />
+    <ClInclude Include="src\interface\fields\integerfield.h" />
+    <QtMoc Include="src\interface\fields\qvector3dfield.h" />
+    <ClInclude Include="src\interface\fields\sliderfield.h" />
     <ClInclude Include="src\interface\propertiespanel.h" />
     <ClInclude Include="src\interface\rendersettings.h" />
     <QtMoc Include="src\interface\mainwindow.h" />

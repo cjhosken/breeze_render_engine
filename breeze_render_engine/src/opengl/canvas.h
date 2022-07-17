@@ -27,6 +27,14 @@ public:
 		mesh = canvasMesh;
 	}
 
+	void setInnerColor(QVector3D col) {
+		innerColor = col;
+	}
+
+	void setOuterColor(QVector3D col) {
+		outerColor = col;
+	}
+
 	void draw(Shader &shader) {
 		shader.use();
 		shader.setVec3("inner", innerColor);

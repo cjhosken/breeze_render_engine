@@ -7,7 +7,7 @@ public:
 	int height;
 	int channels;
 	int samples;
-	int depth;
+	int bounces;
 	float fov;
 
 	RenderSettings() {
@@ -16,9 +16,7 @@ public:
 
 		channels = 3;
 		samples = 4;
-		depth = 2;
-
-		fov = 45.0f;
+		bounces = 2;
 	}
 };
 

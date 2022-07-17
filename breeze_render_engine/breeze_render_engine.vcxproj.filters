@@ -15,6 +15,9 @@
     <Filter Include="Source Files\opengl">
       <UniqueIdentifier>{3ef0c9bb-e0b6-4298-88e8-08d36029fab4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\interface\fields">
+      <UniqueIdentifier>{abffef38-08a8-4fcd-b6a4-783563b3efc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +56,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\.gitignore">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="CONTIBUTION.md">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -123,6 +129,21 @@
     <ClInclude Include="src\opengl\light.h">
       <Filter>Source Files\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\fields\floatfield.h">
+      <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\fields\integerfield.h">
+      <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\fields\boolfield.h">
+      <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\fields\sliderfield.h">
+      <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\fields\colorfield.h">
+      <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\interface\glwidget.h">
@@ -130,6 +151,9 @@
     </QtMoc>
     <QtMoc Include="src\interface\mainwindow.h">
       <Filter>Source Files\interface</Filter>
+    </QtMoc>
+    <QtMoc Include="src\interface\fields\qvector3dfield.h">
+      <Filter>Source Files\interface\fields</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -134,6 +134,7 @@ protected:
 
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
+        renderCamera.selected = true;
         
         world.add(std::make_shared<Cube>("cube"));
         world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
@@ -178,7 +179,6 @@ protected:
             }
 
             renderCamera.draw(shaders.at(2), ID, settings);
-            qDebug() << "CamID: " << renderCamera.id;
 
             glFlush();
             glFinish();
@@ -191,10 +191,10 @@ protected:
 
             if (pickedID != 0) {
                 for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-                    if (world.get(mdx)->id == pickedID) {
-                        Model *m = world.get(mdx);
-                        selectObject(m);
-                        renderCamera.selected = false;
+                    if (world.get(mdx)->id) {
+                                Model* m = world.get(mdx);
+                                selectObject(m);
+                                renderCamera.selected = false;
                     }
                 }
 
@@ -202,7 +202,6 @@ protected:
                     selectCamera(renderCamera);
                 }
             }
-
 
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -295,6 +294,10 @@ protected:
         }
 
         m->selected = true;
+        selectedObject = m;
+
+        cameraSelected = false;
+        emit updateSelection();
     }
 
     void selectCamera(RenderCamera& c) {
@@ -303,7 +306,15 @@ protected:
         }
 
         c.selected = true;
+
+        cameraSelected = true;
+
+        emit updateSelection();
     }
+
+
+signals:
+    void updateSelection();
 
 private:
     ApplicationSettings settings;
@@ -332,6 +343,9 @@ public:
     World world = World();
     Canvas cvs = Canvas();
     bool selecting;
+
+    Model* selectedObject;
+    bool cameraSelected = true;
 
 };
 

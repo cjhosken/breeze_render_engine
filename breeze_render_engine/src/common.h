@@ -36,8 +36,10 @@
 #include <QAction>
 #include <QSlider>
 #include <QTemporaryDir>
-
 #include <QColorDialog>
+#include <QRegularExpression>
+#include <QIntValidator>
+#include <QDoubleValidator>
 
 #include <QKeyEvent>
 #include <QMouseEvent>

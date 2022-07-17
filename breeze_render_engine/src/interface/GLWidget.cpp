@@ -5,6 +5,8 @@
 
 #include "rendersettings.h"
 
+#include <QProgressBar>
+
 QVector3D ray_color(Ray r, World world, int depth) {
     if (depth < 1) {
         return QVector3D(0.0f, 0.0f, 0.0f);
@@ -25,30 +27,46 @@ QVector3D ray_color(Ray r, World world, int depth) {
 void GLWidget::render() {
     
     if (!rendering) {
-        QMessageBox* renderBox = new QMessageBox(this);
-        renderBox->setWindowTitle("Rendering");
-        renderBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
-        renderBox->show();
-        renderBox->setText("Rendering...");
-       
-        rendering = true;
-        renderCamera.setupForRender();
-
         RenderSettings renderSettings = renderCamera.settings;
 
         const int width = renderSettings.width;
         const int height = renderSettings.height;
         const int channels = renderSettings.channels;
         const int samples = renderSettings.samples;
-        const int depth = renderSettings.depth;
+        const int depth = renderSettings.bounces;
 
         unsigned char* data = new unsigned char[width * height * channels];
+
+        QMessageBox* renderBox = new QMessageBox(this);
+        renderBox->setWindowTitle("Rendering");
+        renderBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
+        
+
+        /*QVBoxLayout* vbox = new QVBoxLayout();
+
+        QProgressBar* progressBar = new QProgressBar();
+        progressBar->setMinimum(0);
+        progressBar->setMaximum(height);
+
+
+        vbox->addWidget(progressBar);
+
+        renderBox->setLayout(vbox);
+        */
+        renderBox->show();
+       
+        rendering = true;
+        renderCamera.setupForRender();
 
         int index = 0;
 
         for (int y = height - 1; y >= 0; y--) {
-            qDebug() << "Line: " << y;
             for (int x = 0; x < width; x++) {
+
+                int pct = x + ((height - y) * width);
+
+                //progressBar->setValue(pct);
+
                 QVector3D pixel_color(0.0f, 0.0f, 0.0f);
 
                 for (int s = 0; s < samples; s++) {

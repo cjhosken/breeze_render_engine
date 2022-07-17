@@ -11,10 +11,10 @@
 class RenderCamera : public Model {
 public:
 	RenderSettings settings;
+	float fov = 35.0f;
 
 	RenderCamera() : Model() {
 		settings = RenderSettings();
-		settings.fov = 35.0f;
 
 		rescale();
 	}
@@ -59,7 +59,7 @@ public:
 
 		float aspect_ratio = float(settings.width) / float(settings.height);
 
-		float theta = qDegreesToRadians(settings.fov);
+		float theta = qDegreesToRadians(fov);
 		float h = tan(theta / 2);
 		float viewport_height = 1.0 * h;
 		float viewport_width = aspect_ratio * viewport_height;

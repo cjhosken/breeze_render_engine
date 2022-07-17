@@ -27,9 +27,9 @@ public:
         */
         QGroupBox* dims = new QGroupBox("Dimensions");
         dims->setStyleSheet("QGroupBox {color: white;}");
-        widthInput = new IntegerField("Width:");
+        widthInput = new IntegerField("Width:", 1, 2147483647, 640);
 
-        heightInput = new IntegerField("Height:");
+        heightInput = new IntegerField("Height:", 1, 2147483647, 480);
 
         QVBoxLayout* dimsVBox = new QVBoxLayout;
         dimsVBox->addWidget(widthInput);
@@ -39,9 +39,9 @@ public:
 
         QGroupBox* rays = new QGroupBox("Rays");
         rays->setStyleSheet("QGroupBox {color: white;}");
-        samplesInput = new IntegerField("Samples:");
+        samplesInput = new IntegerField("Samples:", 1, 2147483647, 16);
 
-        bouncesInput = new IntegerField("Bounces:");
+        bouncesInput = new IntegerField("Bounces:", 1, 2147483647, 4);
 
         QVBoxLayout* raysVBox = new QVBoxLayout;
         raysVBox->addWidget(samplesInput);
@@ -116,14 +116,7 @@ public:
     SliderField* rough;
     SliderField* spec;
 
-    SliderField* fov;
-
-    BoolField* isDOF;
-
-    FloatField* focusDist;
-
-    FloatField* aper;
-
+    QVBoxLayout* vbox;
     
     bool isCamera;
 
@@ -143,20 +136,13 @@ public:
             Specular:    ( f )
         */
 
-        /*
-                Camera
+        isCamera = true;
+        drawPanels();
 
-            Location:    ( x ), ( y ), ( z )
-            Rotation:    ( x ), ( y ), ( z )
-            Scale:       ( x ), ( y ), ( z )
+        setLayout(vbox);
+    }
 
-            fov: ( f )
-
-            dof: ( b )
-            aperture: ( f )
-        */
-
-
+    void drawPanels() {
         name = new QLineEdit();
 
         QGroupBox* transform = new QGroupBox("Transforms");
@@ -172,15 +158,13 @@ public:
 
         transform->setLayout(transVBox);
 
-        QVBoxLayout* vbox = new QVBoxLayout();
+        vbox = new QVBoxLayout();
 
-        if (!isCamera) {
-            vbox->addWidget(name);
-        }
+        vbox->addWidget(name);
+
 
         vbox->addWidget(transform);
 
-        if (!isCamera) {
             QGroupBox* material = new QGroupBox("Material");
             material->setStyleSheet(".QGroupBox {color: white;}");
             color = new ColorField("Color:");
@@ -194,32 +178,22 @@ public:
 
             material->setLayout(matVBox);
             vbox->addWidget(material);
-        }
-        else {
-            QGroupBox* camera = new QGroupBox("Camera");
-            camera->setStyleSheet(".QGroupBox {color: white;}");
-            fov = new SliderField("FOV:", 0, 180, 35);
-
-            isDOF = new BoolField("DOF:");
-
-            focusDist = new FloatField("Distance: ");
-
-            aper = new FloatField("Aperture:");
-
-            QVBoxLayout* camVBox = new QVBoxLayout;
-            camVBox->addWidget(fov);
-            camVBox->addWidget(isDOF);
-            camVBox->addWidget(focusDist);
-            camVBox->addWidget(aper);
-
-            camera->setLayout(camVBox);
-            vbox->addWidget(camera);
-        }
 
         vbox->addStretch();
-
-        setLayout(vbox);
     }
+
+    void loadModel(Model* &m) {
+        name->setText(QString::fromStdString(m->name));
+        loc->fromQVector3D(m->location);
+        rot->fromQVector3D(m->rotation);
+        sca->fromQVector3D(m->scale);
+
+        color->fromQVector3D(m->material.color);
+
+        rough->set(m->material.roughness * 100);
+        spec->set(m->material.specular * 100);
+    }
+
 };
 
 #endif
