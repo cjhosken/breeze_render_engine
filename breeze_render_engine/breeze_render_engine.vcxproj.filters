@@ -52,6 +52,9 @@
     <None Include="assets\shaders\light.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\.gitignore">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opengl\canvas.h">

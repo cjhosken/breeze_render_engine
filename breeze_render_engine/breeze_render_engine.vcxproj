@@ -98,6 +98,7 @@
     <ClCompile Include="src\opengl\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.gitignore" />
     <None Include="..\README.md" />
     <None Include="assets\shaders\canvas.frag" />
     <None Include="assets\shaders\canvas.vert" />
