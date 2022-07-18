@@ -243,6 +243,7 @@ protected:
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     };
 
     void resizeGL(int width, int height) override {

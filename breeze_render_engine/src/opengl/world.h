@@ -25,6 +25,22 @@ public:
         lights.push_back(l);
     }
 
+    Model* getID(int id) {
+        for (int mdx = 0; mdx < scene.size(); mdx++) {
+            if (scene.at(mdx).get()->id == id) {
+                return scene.at(mdx).get();
+            }
+        }
+    }
+
+    void removeID(int id) {
+        for (int mdx = 0; mdx < scene.size(); mdx++) {
+            if (scene.at(mdx).get()->id == id) {
+                scene.erase(scene.begin() + mdx);
+            }
+        }
+    }
+
     Model* get(int idx) {
         return scene.at(idx).get();
     }

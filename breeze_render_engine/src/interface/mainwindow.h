@@ -103,8 +103,13 @@ public:
 			QKeyEvent* keyEvent = static_cast<QKeyEvent*>(ev);
 
 			if (keyEvent->key() == Qt::Key_Escape)
-			{		
-				exit();				
+			{
+				exit();
+			}
+
+			else if (keyEvent->key() == Qt::Key_Delete) {
+				ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
+				ui->glCanvas->selectedObject = NULL;
 			}
 		}
 		return QMainWindow::eventFilter(target, ev);
