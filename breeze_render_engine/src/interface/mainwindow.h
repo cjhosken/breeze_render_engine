@@ -2,9 +2,7 @@
 #define WINDOW_H
 
 #include "../common.h"
-#include "applicationsettings.h"
 #include "ui_mainwindow.h"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -15,23 +13,22 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 public:
-	ApplicationSettings settings;
 
-	MainWindow(ApplicationSettings &set) : QMainWindow(), ui(new Ui::Window) {
-		settings = set;
+	MainWindow() : QMainWindow(), ui(new Ui::Window) {
 		ui->setupUi(this);
 		installEventFilter(this);
+		QSettings settings;
 
-		float radius = 35.0f;
+		float radius = settings.value("app/borderRadius").toFloat();
 
 		QPainterPath path;
-		path.addRoundedRect(QRect(0, 0, settings.APP_WIDTH, settings.APP_HEIGHT), radius, radius);
+		path.addRoundedRect(QRect(0, 0, settings.value("app/width").toInt(), settings.value("app/height").toInt()), radius, radius);
 		QRegion mask = QRegion(path.toFillPolygon().toPolygon());
 		setMask(mask);
 
 		connect(ui->appQuitButton, SIGNAL(triggered()), this, SLOT(onExitButtonClick()));
 
-		connect(ui->toggleObjectSelectionButton, SIGNAL(clicked()), this, SLOT(onToggleSelectButtonClick()));
+		connect(ui->toggleObjectSelectionButton, SIGNAL(clicked()), this, SLOT(toggleSelectButton()));
 		connect(ui->addCubeButton, SIGNAL(clicked()), this, SLOT(onAddCubeButtonClick()));
 		connect(ui->addPlaneButton, SIGNAL(clicked()), this, SLOT(onAddPlaneButtonClick()));
 		connect(ui->addSphereButton, SIGNAL(clicked()), this, SLOT(onAddSphereButtonClick()));
@@ -75,15 +72,14 @@ public:
 		connect(ui->propertiesPanel->worldTab->gradIn->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateInnerBackgroundGradient(QColor)));
 		connect(ui->propertiesPanel->worldTab->gradOut->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateOuterBackgroundGradient(QColor)));
 
-		ui->propertiesPanel->worldTab->gradIn->popup->setCurrentColor(settings.innerGradientColor);
+		ui->propertiesPanel->worldTab->gradIn->popup->setCurrentColor(settings.value("color/viewportGradientInner").value<QColor>());
 		ui->propertiesPanel->worldTab->gradIn->changeColor();
-		ui->propertiesPanel->worldTab->gradOut->popup->setCurrentColor(settings.outerGradientColor);
+		ui->propertiesPanel->worldTab->gradOut->popup->setCurrentColor(settings.value("color/viewportGradientOuter").value<QColor>());
 		ui->propertiesPanel->worldTab->gradOut->changeColor();
-
 
 		// OBJECT
 
-		connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updatePropertiesPanel()));
+		connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updateObjectPanel()));
 
 		connect(ui->propertiesPanel->objectTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
 
@@ -143,11 +139,8 @@ private slots:
 	}
 
 	void setSelectedObjectColor(QColor col) {
-		QVector3D vCol(col.red() / 255.0f, col.green() / 255.0f, col.blue() / 255.0f);
-
-		ui->glCanvas->selectedObject->material.color = vCol;
+		ui->glCanvas->selectedObject->material.color = col;
 		ui->glCanvas->repaint();
-
 	}
 
 	void setSelectedObjectRoughness(int r) {
@@ -166,39 +159,46 @@ private slots:
 		ui->glCanvas->repaint();
 	}
 
-
 	void setRenderHeight(QString num_s) {
 		ui->glCanvas->renderCamera.settings.height = num_s.toInt();
 		ui->glCanvas->renderCamera.rescale(ui->glCanvas->renderCamera.settings.width, ui->glCanvas->renderCamera.settings.height);
 		ui->glCanvas->repaint();
 	}
 
-
 	void setRenderSamples(QString num_s) {
 		ui->glCanvas->renderCamera.settings.samples = num_s.toInt();
 	}
-
 
 	void setRenderBounces(QString num_s) {
 		ui->glCanvas->renderCamera.settings.bounces = num_s.toInt();
 	}
 
-	void updatePropertiesPanel() {
-		ui->propertiesPanel->objectTab->loadModel(ui->glCanvas->selectedObject);
+	void updateObjectPanel() {
+		if (ui->glCanvas->selecting) {
+			ui->propertiesPanel->objectTab->show();
+
+			if (ui->glCanvas->objectSelected) {
+				ui->propertiesPanel->objectTab->setModel(ui->glCanvas->selectedObject);
+			} 
+
+			if (ui->glCanvas->cameraSelected) {
+				ui->propertiesPanel->objectTab->setCamera(ui->glCanvas->renderCamera);
+			}
+		}
+		else {
+			ui->propertiesPanel->objectTab->hide();
+		}
 	}
 
-	void updateInnerBackgroundGradient(QColor innerColor) {
-		QVector3D inner(innerColor.red() / 255.0f, innerColor.green() / 255.0f, innerColor.blue() / 255.0f);
+	void updateInnerBackgroundGradient(QColor inner) {
 
-		ui->glCanvas->cvs.setInnerColor(inner);
+		ui->glCanvas->cvs.innerColor = inner;
 		ui->glCanvas->repaint();
 	}
 
-	void updateOuterBackgroundGradient(QColor outerColor) {
+	void updateOuterBackgroundGradient(QColor outer) {
 
-		QVector3D outer(outerColor.red() / 255.0f, outerColor.green() / 255.0f, outerColor.blue() / 255.0f);
-
-		ui->glCanvas->cvs.setOuterColor(outer);
+		ui->glCanvas->cvs.outerColor = outer;
 		ui->glCanvas->repaint();
 	}
 
@@ -207,7 +207,7 @@ private slots:
 		ui->glCanvas->repaint();
 	}
 
-	void onToggleSelectButtonClick() {
+	void toggleSelectButton() {
 		ui->glCanvas->selecting = !ui->glCanvas->selecting;
 	}
 
@@ -270,16 +270,19 @@ private slots:
 	}
 
 	void onBugButtonClick() {
-		system("explorer https://github.com/Christopher-Hosken/breeze_render_engine/issues/new");
+		QDesktopServices service = QDesktopServices();
+		service.openUrl(QUrl("https://github.com/Christopher-Hosken/breeze_render_engine/issues/new"));
 	}
 
 
 	void onCodeButtonClick() {
-		system("explorer https://github.com/Christopher-Hosken/breeze_render_engine");
+		QDesktopServices service = QDesktopServices();
+		service.openUrl(QUrl("https://github.com/Christopher-Hosken/breeze_render_engine"));
 	}
 
 	void onDocumentationButtonClick() {
-		system("explorer https://github.com/Christopher-Hosken/breeze_render_engine/blob/master/README.md");
+		QDesktopServices service = QDesktopServices();
+		service.openUrl(QUrl("https://github.com/Christopher-Hosken/breeze_render_engine/blob/master/README.md"));
 	}
 
 	void onRenderButton() {
@@ -289,12 +292,14 @@ private slots:
 private:
 	void exit() {
 		if (!quitting) {
+			QSettings settings;
 			quitting = true;
 			QMessageBox* confirmBox = new QMessageBox(this);
 			confirmBox->setWindowTitle("Quit?");
 			confirmBox->setText("Are you sure you want to quit? Your progress will not be saved.");
 			confirmBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-			confirmBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
+			confirmBox->setProperty("class", "confirmationBox");
+			confirmBox->setStyleSheet(settings.value("styles/root").toString());
 
 			if (confirmBox->exec() == QMessageBox::Yes) {
 				this->close();

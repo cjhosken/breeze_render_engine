@@ -18,6 +18,9 @@
     <Filter Include="Source Files\interface\fields">
       <UniqueIdentifier>{abffef38-08a8-4fcd-b6a4-783563b3efc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\interface\widgets">
+      <UniqueIdentifier>{c278471f-5969-4c45-90c7-20976b7b8eb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +64,9 @@
     <None Include="CONTIBUTION.md">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="assets\styles\styles.css">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opengl\canvas.h">
@@ -99,9 +105,6 @@
     <ClInclude Include="src\opengl\world.h">
       <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\interface\applicationsettings.h">
-      <Filter>Source Files\interface</Filter>
-    </ClInclude>
     <ClInclude Include="src\interface\rendersettings.h">
       <Filter>Source Files\interface</Filter>
     </ClInclude>
@@ -115,9 +118,6 @@
       <Filter>Source Files\interface</Filter>
     </ClInclude>
     <ClInclude Include="src\interface\propertiespanel.h">
-      <Filter>Source Files\interface</Filter>
-    </ClInclude>
-    <ClInclude Include="src\interface\root.h">
       <Filter>Source Files\interface</Filter>
     </ClInclude>
     <ClInclude Include="src\interface\tabs.h">
@@ -143,6 +143,12 @@
     </ClInclude>
     <ClInclude Include="src\interface\fields\colorfield.h">
       <Filter>Source Files\interface\fields</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\widgets\qiconbutton.h">
+      <Filter>Source Files\interface\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interface\widgets\qtoggleiconbutton.h">
+      <Filter>Source Files\interface\widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

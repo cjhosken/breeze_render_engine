@@ -11,12 +11,18 @@ public:
 	QColorDialog* popup;
 
 	ColorField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		popup = new QColorDialog();
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
+		label->setProperty("class", "label");
+		label->setStyleSheet(settings.value("styles/root").toString());
+
 		edit = new QPushButton();
+		edit->setProperty("class", "colorButton");
+		edit->setStyleSheet(settings.value("styles/root").toString());
+
 		connect(edit, &QPushButton::clicked, this, &ColorField::openDialog);
 		connect(popup, &QColorDialog::currentColorChanged, this, &ColorField::changeColor);
 		connect(popup, &QColorDialog::colorSelected, this, &ColorField::changeColor);
@@ -25,16 +31,10 @@ public:
 		root->addWidget(edit);
 	}
 
-	void fromQVector3D(QVector3D vec) {
-		QColor color(vec.x() * 255.0f, vec.y() * 255.0f, vec.z() * 255.0f);
-		popup->setCurrentColor(color);
-	}
-
+private:
 	QString colorToString() {
 		QColor color = popup->currentColor();
-
-		QString out = "rgb(" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ")";
-		return out;
+		return "rgb(" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ")";
 	}
 
 public slots:
@@ -43,7 +43,7 @@ public slots:
 	}
 
 	void changeColor() {
-		edit->setStyleSheet("QPushButton{background-color: " + colorToString() + "; border: 1px outset rgb(50, 50, 50); border-radius: 2px;}");
+		edit->setStyleSheet(".colorButton{background-color: " + colorToString() + ";}");
 		repaint();
 	}
 };

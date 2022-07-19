@@ -9,12 +9,13 @@ public:
 	QLabel* label;
 	QCheckBox* edit;
 
-	BoolField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
+	BoolField(QString n, bool set, QWidget* parent = nullptr) : QWidget(parent) {
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
 		label->setStyleSheet(".QLabel {color: white;}");
 		edit = new QCheckBox();
+		edit->setChecked(set);
 
 		root->addWidget(label);
 		root->addWidget(edit);

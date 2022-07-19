@@ -47,8 +47,6 @@ public:
 	void rescale(int w, int h) {
 		float ratio = float(w) / float(h);
 
-		qDebug() << ratio;
-
 		scale = QVector3D(ratio, 1.0f, fov / 180.0f);
 	}
 

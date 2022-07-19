@@ -5,7 +5,6 @@
 #include "mesh.h"
 #include "shader.h"
 #include "material.h"
-#include "../interface/applicationsettings.h"
 
 class Model : protected QOpenGLExtraFunctions {
 public:
@@ -28,7 +27,11 @@ public:
 		id = rand();
 	}
 	
-	void draw(Shader &shader, DrawType draw, ApplicationSettings &settings) {
+	void draw(Shader &shader, DrawType draw) {
+		QSettings settings;
+		QColor selectedColor = settings.value("color/selected").value<QColor>();
+		QColor wireDefaultColor = settings.value("color/wireDefault").value<QColor>();
+
 		shader.use();
 		shader.setMat4("model", getModelMatrix());
 		if (draw == DEFAULT) {
@@ -36,18 +39,21 @@ public:
 			shader.setMaterial(material);
 
 			if (selected) {
-				QVector3D newColor = (material.color + settings.COLOR_SELECTED) / 2.0f;
-				shader.setVec3("material.color", newColor);
+				float r = (material.color.red() + selectedColor.red()) / 2.0f;
+				float g = (material.color.green() + selectedColor.green()) / 2.0f;
+				float b = (material.color.blue() + selectedColor.blue()) / 2.0f;
+				QColor newColor = QColor(r, g, b);
+				shader.setColor("material.color", newColor);
 			}
 		}
 		else if (draw == WIRE) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			if (selected) {
-				shader.setVec3("color", settings.COLOR_SELECTED);
+				shader.setColor("color", selectedColor);
 				glLineWidth(5.0f);
 			}
 			else {
-				shader.setVec3("color", QVector3D(0.6f, 0.6f, 0.6f));
+				shader.setColor("color", wireDefaultColor);
 			}
 			glLineWidth(1.0f);
 		}
@@ -58,7 +64,7 @@ public:
 			float gID = (id & 0x0000FF00) >> 8;
 			float bID = (id & 0x00FF0000) >> 16;
 
-			shader.setVec3("color", QVector3D(rID / 255.0f, gID / 255.0f, bID / 255.0f));
+			shader.setColor("color", QColor(rID, gID, bID));
 		}
 
 
@@ -93,7 +99,7 @@ public:
 	ObjectType type = SOLID;
 	Mesh mesh;
 	Material material = {
-		QVector3D(1.0f, 1.0f, 1.0f),
+		QColor(0, 255, 255),
 		0.5f,
 		0.5f
 	};

@@ -10,7 +10,6 @@
 #include "../opengl/canvas.h"
 #include "../opengl/rendercamera.h"
 #include "../opengl/texture.h"
-#include "../interface/applicationsettings.h"
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions {
 	Q_OBJECT
@@ -18,12 +17,10 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions {
 public:
     GLWidget(QWidget* parent = nullptr) : QOpenGLWidget(parent) {
         setMouseTracking(true);
-        settings = ApplicationSettings();
     }
 
-    GLWidget(ApplicationSettings &set) : QOpenGLWidget() {
+    GLWidget() : QOpenGLWidget() {
         setMouseTracking(true);
-        settings = set;
     }
 
 	~GLWidget() {}
@@ -33,13 +30,12 @@ public:
     };
 
     QSize sizeHint() const override {
-        return QSize(settings.APP_WIDTH, settings.APP_HEIGHT);
+        return QSize(settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
     };
 
     void setFOV(float f) {
         fov = f;
-        projection.setToIdentity();
-        projection.perspective(fov, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
+        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
     }
 
     void render();
@@ -101,20 +97,17 @@ protected:
         glEnableVertexAttribArray(2);
     }
 
-
-
     void initializeGL() override {
         makeCurrent();
         initializeOpenGLFunctions();
         setupVAOs();
 
-        glViewport(0, 0, settings.APP_WIDTH, settings.APP_HEIGHT);
+        glViewport(0, 0, settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
 
-        projection.setToIdentity();
-        projection.perspective(fov, float(settings.APP_WIDTH) / float(settings.APP_HEIGHT), 0.01f, 100.0f);
+        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
        
-        Texture matcap(":/assets/images/matcap.jpg", false);
-        Texture light(":/assets/images/light.jpg", false);
+        Texture matcap(":/assets/images/matcap.jpg");
+        Texture light(":/assets/images/light.jpg");
         textures.push_back(matcap);
         textures.push_back(light);
 
@@ -135,13 +128,14 @@ protected:
         renderCamera.init();
         renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
         renderCamera.selected = true;
-        
-        world.add(std::make_shared<Cube>("cube"));
-        world.get("cube")->location = QVector3D(-3.0f, 1, 0.0f);
+
+        addCube();
         
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        updateSelection();
     };
     
     void paintGL() override {
@@ -172,33 +166,36 @@ protected:
         shaders[3].setMat4("projection", projection);
         shaders[3].setMat4("view", view);
 
-        if (click) {
+        if (click && selecting) {
             for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-                world.get(mdx)->draw(shaders.at(2), ID, settings);
+                world.get(mdx)->draw(shaders.at(2), ID);
             }
 
-            renderCamera.draw(shaders.at(2), ID, settings);
+            renderCamera.draw(shaders.at(2), ID);
 
             glFlush();
             glFinish();
 
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             unsigned char data[3];
-            glReadPixels(lastX, settings.APP_HEIGHT - lastY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glReadPixels(lastX, settings.value("app/height").toFloat() - lastY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, data);
 
             int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 
             if (pickedID != 0) {
-                for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-                    if (world.get(mdx)->id) {
+                if (pickedID == renderCamera.id) {
+                    selectCamera(renderCamera);
+                }
+                else {
+                    for (int mdx = 0; mdx < world.scene.size(); mdx++) {
+                        if (world.get(mdx)->id == pickedID) {
+                            if (!world.get(mdx)->selected) {
                                 Model* m = world.get(mdx);
                                 selectObject(m);
                                 renderCamera.selected = false;
+                            }
+                        }
                     }
-                }
-
-                if (pickedID == renderCamera.id) {
-                    selectCamera(renderCamera);
                 }
             }
 
@@ -212,26 +209,25 @@ protected:
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        renderCamera.draw(shaders.at(1), WIRE, settings);
-
+        renderCamera.draw(shaders.at(1), WIRE);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textures[0].TXO);
         shaders[0].setInt("matcap", 0);
 
         for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            world.get(mdx)->draw(shaders.at(0), DEFAULT, settings);
+            world.get(mdx)->draw(shaders.at(0), DEFAULT);
 
             if (world.scene[mdx]->type == SOLID) {
-                world.get(mdx)->draw(shaders.at(0), DEFAULT, settings);
+                world.get(mdx)->draw(shaders.at(0), DEFAULT);
 
             }
             else if (world.scene[mdx]->type == WIREFRAME) {
-                world.get(mdx)->draw(shaders.at(1), WIRE, settings);
+                world.get(mdx)->draw(shaders.at(1), WIRE);
             }
 
             if (world.get(mdx)->selected) {
-                world.get(mdx)->draw(shaders.at(1), WIRE, settings);
+                world.get(mdx)->draw(shaders.at(1), WIRE);
             }
         }
 
@@ -240,7 +236,7 @@ protected:
         shaders[3].setInt("light", 0);
 
         for (int ldx = 0; ldx < world.lights.size(); ldx++) {
-            world.getLight(ldx)->draw(shaders.at(3), DEFAULT, settings);
+            world.getLight(ldx)->draw(shaders.at(3), DEFAULT);
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -249,8 +245,7 @@ protected:
 
     void resizeGL(int width, int height) override {
         glViewport(0, 0, width, height);
-        projection.setToIdentity();
-        projection.perspective(fov, float(width) / float(height), 0.01f, 100.0f);
+        reproject(float(width), float(height));
     };
 
     void mousePressEvent(QMouseEvent* ev) override {
@@ -296,6 +291,7 @@ protected:
     }
 
     void selectObject(Model* &m) {
+
         for (int mdx = 0; mdx < world.scene.size(); mdx++) {
             world.get(mdx)->selected = false;
         }
@@ -303,6 +299,7 @@ protected:
         m->selected = true;
         selectedObject = m;
 
+        objectSelected = true;
         cameraSelected = false;
         emit updateSelection();
     }
@@ -315,6 +312,7 @@ protected:
         c.selected = true;
 
         cameraSelected = true;
+        objectSelected = false;
 
         emit updateSelection();
     }
@@ -324,14 +322,16 @@ signals:
     void updateSelection();
 
 private:
-    ApplicationSettings settings;
+    void reproject(float w, float h) {
+        projection.setToIdentity();
+        projection.perspective(fov, w / h, clipNear, clipFar);
+    }
 
+    QSettings settings;
     QMatrix4x4 projection = QMatrix4x4();
 
-    float lastX = settings.APP_WIDTH / 2.0f;
-    float lastY = settings.APP_HEIGHT / 2.0f;
-
-    float pixelScreenHeight = settings.APP_HEIGHT;
+    float lastX = settings.value("app/width").toFloat() / 2.0f;
+    float lastY = settings.value("app/height").toFloat() / 2.0f;
 
     bool firstMouse = true;
     bool click = false;
@@ -343,17 +343,20 @@ private:
     DrawType sceneDrawType;
 
     float fov = 35.0f;
+    float clipNear = 0.01f;
+    float clipFar = 100.0f;
 
 public:
     ViewportCamera viewCamera = ViewportCamera();
     RenderCamera renderCamera = RenderCamera();
     World world = World();
     Canvas cvs = Canvas();
-    bool selecting;
+
+    bool selecting = true;
+    bool objectSelected = false;
 
     Model* selectedObject;
     bool cameraSelected = true;
-
 };
 
 #endif // !GLWIDGET_H

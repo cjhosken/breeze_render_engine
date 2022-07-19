@@ -28,5 +28,6 @@
         <file>assets/shaders/flat.frag</file>
         <file>assets/shaders/id.frag</file>
         <file>assets/shaders/light.frag</file>
+        <file>assets/styles/styles.css</file>
     </qresource>
 </RCC>

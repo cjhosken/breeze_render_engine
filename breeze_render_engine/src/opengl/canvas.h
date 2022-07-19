@@ -7,11 +7,13 @@
 
 class Canvas : public Model {
 public:
-	QVector3D innerColor = QVector3D(0, 0, 0);
-	QVector3D outerColor = QVector3D(0, 0, 0);
+	QColor innerColor = QColor(0, 0, 0);
+	QColor outerColor = QColor(0, 0, 0);
 
 	Canvas() : Model() {
-		
+		QSettings settings;
+		innerColor = settings.value("color/viewportGradientInner").value<QColor>();
+		outerColor = settings.value("color/viewportGradientOuter").value<QColor>();
 	}
 
 	void init() {
@@ -27,18 +29,19 @@ public:
 		mesh = canvasMesh;
 	}
 
-	void setInnerColor(QVector3D col) {
+	void setInnerColor(QColor &col) {
 		innerColor = col;
 	}
 
-	void setOuterColor(QVector3D col) {
+	void setOuterColor(QColor &col) {
 		outerColor = col;
 	}
 
 	void draw(Shader &shader) {
 		shader.use();
-		shader.setVec3("inner", innerColor);
-		shader.setVec3("outer", outerColor);
+		qDebug() << innerColor;
+		shader.setColor("inner", innerColor);
+		shader.setColor("outer", outerColor);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 

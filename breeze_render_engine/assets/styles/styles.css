@@ -1,0 +1,107 @@
+/*
+    STYLES
+*/
+
+.group {
+    color: white;
+}
+
+.subheader {
+    color: rgb(200, 200, 200);
+}
+
+.label {
+    color: rgb(100, 100, 100);
+}
+
+.wireButton {
+    background-color: transparent;
+    padding: 5px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.hiddenTextInput {
+    background-color: transparent;
+    border: none;
+    color: white;
+}
+
+.iconButton {
+    color: white;
+    background-color: transparent;
+}
+
+.greyIconButton {
+    color: white;
+    background-color: rgba(15, 15, 15, 200);
+}
+
+.iconButton::menu-indicator {
+    width: 0px;
+}
+
+.largeIconButton {
+    border-radius: 20px;
+}
+
+.largeIconButton::menu-indicator {
+    width: 0px;
+}
+
+.smallIconButton {
+    border-radius: 17px;
+}
+
+.smallIconButton::menu-indicator {
+    width: 0px;
+}
+
+.topRoundedIconButton {
+    border-radius: 20px 0px 00px 20px;
+}
+
+.bottomRoundedIconButton {
+    border-radius: 0px 20px 20px 0px;
+}
+
+.toggleIconButton {
+    color: white;
+    background-color: transparent;
+}
+
+.toggleIconButton:checked {
+    color: red;
+    background-color: red;
+}
+
+/*
+    FIELDS
+*/
+
+.colorButton {
+    background-color: black;
+    border: 1px outset rgb(50, 50, 50);
+    border-radius: 2px;
+}
+
+
+/*
+    POPUP
+*/
+
+.confirmationBox {
+    background-color: rgba(15, 15, 15, 200);
+    border-radius: 8px;
+}
+
+.confirmationBox QLabel {
+    color: rgb(200, 200, 200);
+
+}
+
+.confirmationBox QPushButton {
+    background-color: transparent;
+    color: white;
+}

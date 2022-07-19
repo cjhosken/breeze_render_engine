@@ -4,7 +4,7 @@
 #include "../common.h"
 
 struct Material {
-	QVector3D color;
+	QColor color;
 	float roughness;
 	float specular;
 };

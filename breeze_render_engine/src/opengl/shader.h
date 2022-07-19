@@ -124,11 +124,14 @@ public:
     void setVec3(const std::string& name, QVector3D value) {
         glUniform3f(glGetUniformLocation(id, name.c_str()), value.x(), value.y(), value.z());
     };
+    void setColor(const std::string& name, QColor value) {
+        glUniform3f(glGetUniformLocation(id, name.c_str()), value.red() / 255.0f, value.green() / 255.0f, value.blue() / 255.0f);
+    };
     void setMat4(const std::string& name, QMatrix4x4 value) {
         glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, value.constData());
     };
     void setMaterial(Material material) {
-        setVec3("material.color", material.color);
+        setColor("material.color", material.color);
         setFloat("material.roughness", material.roughness);
         setFloat("material.specular", material.specular);
     }

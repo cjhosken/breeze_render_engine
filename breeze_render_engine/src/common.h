@@ -40,6 +40,9 @@
 #include <QRegularExpression>
 #include <QIntValidator>
 #include <QDoubleValidator>
+#include <QDesktopServices>
+#include <QSettings>
+#include <QPainterPath>
 
 #include <QKeyEvent>
 #include <QMouseEvent>

@@ -7,11 +7,9 @@ class Texture : protected QOpenGLExtraFunctions {
 public:
 	QFileInfo path;
 	unsigned int TXO;
-	bool alpha;
 
-	Texture(const char* p, bool a) {
+	Texture(const char* p) {
 		path = QFileInfo(p);
-		alpha = a;
 		load();
 	}
 
@@ -19,13 +17,11 @@ public:
 
 	Texture(const Texture& s) {
 		path = s.path;
-		alpha = s.alpha;
 		load();
 	}
 
 	Texture& operator=(Texture const& t) {
 		path = t.path;
-		alpha = t.alpha;
 		load();
 
 		return *this;

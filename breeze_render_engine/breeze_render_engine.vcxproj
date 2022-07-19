@@ -107,11 +107,11 @@
     <None Include="assets\shaders\id.frag" />
     <None Include="assets\shaders\flat.frag" />
     <None Include="assets\shaders\light.frag" />
+    <None Include="assets\styles\styles.css" />
     <None Include="CONTIBUTION.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h" />
-    <ClInclude Include="src\interface\applicationsettings.h" />
     <ClInclude Include="src\interface\dragbar.h" />
     <ClInclude Include="src\interface\fields.h" />
     <ClInclude Include="src\interface\fields\boolfield.h" />
@@ -124,9 +124,10 @@
     <ClInclude Include="src\interface\rendersettings.h" />
     <QtMoc Include="src\interface\mainwindow.h" />
     <QtMoc Include="src\interface\glwidget.h" />
-    <ClInclude Include="src\interface\root.h" />
     <ClInclude Include="src\interface\tabs.h" />
     <ClInclude Include="src\interface\ui_mainwindow.h" />
+    <ClInclude Include="src\interface\widgets\qiconbutton.h" />
+    <ClInclude Include="src\interface\widgets\qtoggleiconbutton.h" />
     <ClInclude Include="src\opengl\canvas.h" />
     <ClInclude Include="src\opengl\light.h" />
     <ClInclude Include="src\opengl\material.h" />

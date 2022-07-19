@@ -24,7 +24,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     const uint offsetsAndSize[90];
-    char stringdata0[814];
+    char stringdata0[793];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_MainWindow_t, stringdata0) + ofs), len 
@@ -49,32 +49,32 @@ QT_MOC_LITERAL(211, 5), // "num_s"
 QT_MOC_LITERAL(217, 15), // "setRenderHeight"
 QT_MOC_LITERAL(233, 16), // "setRenderSamples"
 QT_MOC_LITERAL(250, 16), // "setRenderBounces"
-QT_MOC_LITERAL(267, 21), // "updatePropertiesPanel"
-QT_MOC_LITERAL(289, 29), // "updateInnerBackgroundGradient"
-QT_MOC_LITERAL(319, 10), // "innerColor"
-QT_MOC_LITERAL(330, 29), // "updateOuterBackgroundGradient"
-QT_MOC_LITERAL(360, 10), // "outerColor"
-QT_MOC_LITERAL(371, 20), // "onViewportFOVChanged"
-QT_MOC_LITERAL(392, 5), // "value"
-QT_MOC_LITERAL(398, 25), // "onToggleSelectButtonClick"
-QT_MOC_LITERAL(424, 20), // "onAddCubeButtonClick"
-QT_MOC_LITERAL(445, 21), // "onAddPlaneButtonClick"
-QT_MOC_LITERAL(467, 22), // "onAddSphereButtonClick"
-QT_MOC_LITERAL(490, 22), // "onAddCircleButtonClick"
-QT_MOC_LITERAL(513, 24), // "onAddCylinderButtonClick"
-QT_MOC_LITERAL(538, 24), // "onAddTriangleButtonClick"
-QT_MOC_LITERAL(563, 22), // "onAddMonkeyButtonClick"
-QT_MOC_LITERAL(586, 22), // "onAddTeapotButtonClick"
-QT_MOC_LITERAL(609, 19), // "onAddOBJButtonClick"
-QT_MOC_LITERAL(629, 21), // "onAddLightButtonClick"
-QT_MOC_LITERAL(651, 22), // "onSolidViewButtonClick"
-QT_MOC_LITERAL(674, 21), // "onWireViewButtonClick"
-QT_MOC_LITERAL(696, 22), // "onLightViewButtonClick"
-QT_MOC_LITERAL(719, 17), // "onExitButtonClick"
-QT_MOC_LITERAL(737, 16), // "onBugButtonClick"
-QT_MOC_LITERAL(754, 17), // "onCodeButtonClick"
-QT_MOC_LITERAL(772, 26), // "onDocumentationButtonClick"
-QT_MOC_LITERAL(799, 14) // "onRenderButton"
+QT_MOC_LITERAL(267, 17), // "updateObjectPanel"
+QT_MOC_LITERAL(285, 29), // "updateInnerBackgroundGradient"
+QT_MOC_LITERAL(315, 5), // "inner"
+QT_MOC_LITERAL(321, 29), // "updateOuterBackgroundGradient"
+QT_MOC_LITERAL(351, 5), // "outer"
+QT_MOC_LITERAL(357, 20), // "onViewportFOVChanged"
+QT_MOC_LITERAL(378, 5), // "value"
+QT_MOC_LITERAL(384, 18), // "toggleSelectButton"
+QT_MOC_LITERAL(403, 20), // "onAddCubeButtonClick"
+QT_MOC_LITERAL(424, 21), // "onAddPlaneButtonClick"
+QT_MOC_LITERAL(446, 22), // "onAddSphereButtonClick"
+QT_MOC_LITERAL(469, 22), // "onAddCircleButtonClick"
+QT_MOC_LITERAL(492, 24), // "onAddCylinderButtonClick"
+QT_MOC_LITERAL(517, 24), // "onAddTriangleButtonClick"
+QT_MOC_LITERAL(542, 22), // "onAddMonkeyButtonClick"
+QT_MOC_LITERAL(565, 22), // "onAddTeapotButtonClick"
+QT_MOC_LITERAL(588, 19), // "onAddOBJButtonClick"
+QT_MOC_LITERAL(608, 21), // "onAddLightButtonClick"
+QT_MOC_LITERAL(630, 22), // "onSolidViewButtonClick"
+QT_MOC_LITERAL(653, 21), // "onWireViewButtonClick"
+QT_MOC_LITERAL(675, 22), // "onLightViewButtonClick"
+QT_MOC_LITERAL(698, 17), // "onExitButtonClick"
+QT_MOC_LITERAL(716, 16), // "onBugButtonClick"
+QT_MOC_LITERAL(733, 17), // "onCodeButtonClick"
+QT_MOC_LITERAL(751, 26), // "onDocumentationButtonClick"
+QT_MOC_LITERAL(778, 14) // "onRenderButton"
 
     },
     "MainWindow\0setSelectedObjectLocation\0"
@@ -84,14 +84,13 @@ QT_MOC_LITERAL(799, 14) // "onRenderButton"
     "setSelectedObjectRoughness\0"
     "setSelectedObjectSpecular\0setRenderWidth\0"
     "num_s\0setRenderHeight\0setRenderSamples\0"
-    "setRenderBounces\0updatePropertiesPanel\0"
-    "updateInnerBackgroundGradient\0innerColor\0"
-    "updateOuterBackgroundGradient\0outerColor\0"
+    "setRenderBounces\0updateObjectPanel\0"
+    "updateInnerBackgroundGradient\0inner\0"
+    "updateOuterBackgroundGradient\0outer\0"
     "onViewportFOVChanged\0value\0"
-    "onToggleSelectButtonClick\0"
-    "onAddCubeButtonClick\0onAddPlaneButtonClick\0"
-    "onAddSphereButtonClick\0onAddCircleButtonClick\0"
-    "onAddCylinderButtonClick\0"
+    "toggleSelectButton\0onAddCubeButtonClick\0"
+    "onAddPlaneButtonClick\0onAddSphereButtonClick\0"
+    "onAddCircleButtonClick\0onAddCylinderButtonClick\0"
     "onAddTriangleButtonClick\0"
     "onAddMonkeyButtonClick\0onAddTeapotButtonClick\0"
     "onAddOBJButtonClick\0onAddLightButtonClick\0"
@@ -207,11 +206,11 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->setRenderHeight((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 9: _t->setRenderSamples((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 10: _t->setRenderBounces((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 11: _t->updatePropertiesPanel(); break;
+        case 11: _t->updateObjectPanel(); break;
         case 12: _t->updateInnerBackgroundGradient((*reinterpret_cast< std::add_pointer_t<QColor>>(_a[1]))); break;
         case 13: _t->updateOuterBackgroundGradient((*reinterpret_cast< std::add_pointer_t<QColor>>(_a[1]))); break;
         case 14: _t->onViewportFOVChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 15: _t->onToggleSelectButtonClick(); break;
+        case 15: _t->toggleSelectButton(); break;
         case 16: _t->onAddCubeButtonClick(); break;
         case 17: _t->onAddPlaneButtonClick(); break;
         case 18: _t->onAddSphereButtonClick(); break;
