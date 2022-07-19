@@ -15,9 +15,11 @@ public:
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: white;}");
+		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
 		edit = new QPushButton();
 		connect(edit, &QPushButton::clicked, this, &ColorField::openDialog);
+		connect(popup, &QColorDialog::currentColorChanged, this, &ColorField::changeColor);
+		connect(popup, &QColorDialog::colorSelected, this, &ColorField::changeColor);
 
 		root->addWidget(label);
 		root->addWidget(edit);
@@ -28,9 +30,21 @@ public:
 		popup->setCurrentColor(color);
 	}
 
+	QString colorToString() {
+		QColor color = popup->currentColor();
+
+		QString out = "rgb(" + QString::number(color.red()) + ", " + QString::number(color.green()) + ", " + QString::number(color.blue()) + ")";
+		return out;
+	}
+
 public slots:
 	void openDialog() {
 		popup->show();
+	}
+
+	void changeColor() {
+		edit->setStyleSheet("QPushButton{background-color: " + colorToString() + "; border: 1px outset rgb(50, 50, 50); border-radius: 2px;}");
+		repaint();
 	}
 };
 

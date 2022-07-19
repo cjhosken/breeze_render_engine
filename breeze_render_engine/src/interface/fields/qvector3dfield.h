@@ -9,22 +9,33 @@ class QVector3DField : public QWidget {
 public:
 	QHBoxLayout* root;
 	QLabel* label;
-	FloatField* xEdit;
-	FloatField* yEdit;
-	FloatField* zEdit;
+	QLineEdit* xEdit;
+	QLineEdit* yEdit;
+	QLineEdit* zEdit;
+	QValidator* validator;
 
-	QVector3DField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
+	QVector3DField(QString n, float min, float max, float mid, QWidget* parent = nullptr) : QWidget(parent) {
+		validator = new QDoubleValidator(double(min), double(max), 3, this);
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: white;}");
-		xEdit = new FloatField(-INFINITY, INFINITY, 0);
-		yEdit = new FloatField(-INFINITY, INFINITY, 0);
-		zEdit = new FloatField(-INFINITY, INFINITY, 0);
+		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
 
-		connect(xEdit->edit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
-		connect(yEdit->edit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
-		connect(zEdit->edit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
+		xEdit = new QLineEdit();
+		xEdit->setValidator(validator);
+		xEdit->setText(QString::number(mid));
+
+		yEdit = new QLineEdit();
+		yEdit->setValidator(validator);
+		yEdit->setText(QString::number(mid));
+
+		zEdit = new QLineEdit();
+		zEdit->setValidator(validator);
+		zEdit->setText(QString::number(mid));
+
+		connect(xEdit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
+		connect(yEdit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
+		connect(zEdit, &QLineEdit::textEdited, this, &QVector3DField::fieldChanged);
 
 		root->addWidget(label);
 		root->addWidget(xEdit);
@@ -33,9 +44,9 @@ public:
 	}
 
 	void fromQVector3D(QVector3D vec) {
-		xEdit->set(vec.x());
-		yEdit->set(vec.y());
-		zEdit->set(vec.z());
+		xEdit->setText(QString::number(vec.x()));
+		yEdit->setText(QString::number(vec.y()));
+		zEdit->setText(QString::number(vec.z()));
 	}
 
 signals:
@@ -43,7 +54,7 @@ signals:
 
 public slots:
 	void fieldChanged() {
-		QVector3D out(xEdit->get(), yEdit->get(), zEdit->get());
+		QVector3D out(xEdit->text().toFloat(), yEdit->text().toFloat(), zEdit->text().toFloat());
 
 		emit edited(out);
 	}

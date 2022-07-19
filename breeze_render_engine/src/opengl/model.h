@@ -71,7 +71,7 @@ public:
 	QMatrix4x4 getModelMatrix() {
 		QMatrix4x4 scaleMatrix = QMatrix4x4();
 		scaleMatrix.setToIdentity();
-		scaleMatrix.scale(scale);
+		scaleMatrix.scale(scale - QVector3D(1.0f, 1.0f, 1.0f));
 
 		QMatrix4x4 rotMatrix = QMatrix4x4();
 		rotMatrix.setToIdentity();
@@ -94,7 +94,7 @@ public:
 	Mesh mesh;
 	Material material = {
 		QVector3D(1.0f, 1.0f, 1.0f),
-		1.0f,
+		0.5f,
 		0.5f
 	};
 };

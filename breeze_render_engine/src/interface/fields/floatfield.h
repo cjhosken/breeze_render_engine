@@ -20,6 +20,7 @@ public:
 		edit->setText(QString::number(mid));
 
 		root->addWidget(edit);
+		root->setAlignment(Qt::AlignCenter);
 	}
 
 	FloatField(QString n, float min, float max, float mid, QWidget* parent = nullptr) : QWidget(parent) {
@@ -27,7 +28,7 @@ public:
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: white;}");
+		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
 		edit = new QLineEdit();
 		edit->setValidator(validator);
 

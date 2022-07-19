@@ -16,7 +16,7 @@ public:
 	RenderCamera() : Model() {
 		settings = RenderSettings();
 
-		rescale();
+		rescale(settings.width, settings.height);
 	}
 
 	void init() {
@@ -44,8 +44,12 @@ public:
 		mesh = cameraMesh;
 	}
 
-	void rescale() {
-		scale = QVector3D(float(settings.width) / float(settings.height), 1.0f, settings.fov / 180.0f);
+	void rescale(int w, int h) {
+		float ratio = float(w) / float(h);
+
+		qDebug() << ratio;
+
+		scale = QVector3D(ratio, 1.0f, fov / 180.0f);
 	}
 
 	void setupForRender() {

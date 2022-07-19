@@ -75,6 +75,11 @@ public:
 		connect(ui->propertiesPanel->worldTab->gradIn->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateInnerBackgroundGradient(QColor)));
 		connect(ui->propertiesPanel->worldTab->gradOut->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(updateOuterBackgroundGradient(QColor)));
 
+		ui->propertiesPanel->worldTab->gradIn->popup->setCurrentColor(settings.innerGradientColor);
+		ui->propertiesPanel->worldTab->gradIn->changeColor();
+		ui->propertiesPanel->worldTab->gradOut->popup->setCurrentColor(settings.outerGradientColor);
+		ui->propertiesPanel->worldTab->gradOut->changeColor();
+
 
 		// OBJECT
 
@@ -157,11 +162,15 @@ private slots:
 
 	void setRenderWidth(QString num_s) {
 		ui->glCanvas->renderCamera.settings.width = num_s.toInt();
+		ui->glCanvas->renderCamera.rescale(ui->glCanvas->renderCamera.settings.width, ui->glCanvas->renderCamera.settings.height);
+		ui->glCanvas->repaint();
 	}
 
 
 	void setRenderHeight(QString num_s) {
 		ui->glCanvas->renderCamera.settings.height = num_s.toInt();
+		ui->glCanvas->renderCamera.rescale(ui->glCanvas->renderCamera.settings.width, ui->glCanvas->renderCamera.settings.height);
+		ui->glCanvas->repaint();
 	}
 
 

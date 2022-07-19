@@ -49,6 +49,7 @@ public:
         rays->setLayout(raysVBox);
 
         renderButton = new QPushButton("Render");
+        renderButton->setStyleSheet("QPushButton{background-color: transparent; padding: 5px; color: white; border: 1px solid white; border-radius: 10px;}");
 
         QVBoxLayout* vbox = new QVBoxLayout();
         vbox->addWidget(dims);
@@ -79,7 +80,7 @@ public:
         */
         QGroupBox* view = new QGroupBox("Viewport Controls");
         view->setStyleSheet(".QGroupBox {color: white;}");
-        fov = new SliderField("Viewport FOV:", 0, 180, 35);
+        fov = new SliderField("FOV:", 1, 180, 35);
 
         QVBoxLayout* viewVBox = new QVBoxLayout;
         viewVBox->addWidget(fov);
@@ -144,12 +145,13 @@ public:
 
     void drawPanels() {
         name = new QLineEdit();
+        name->setStyleSheet("QLineEdit {background-color: transparent; border: none; color: white;}");
 
         QGroupBox* transform = new QGroupBox("Transforms");
         transform->setStyleSheet(".QGroupBox {color: white;}");
-        loc = new QVector3DField("Location:");
-        rot = new QVector3DField("Rotation:");
-        sca = new QVector3DField("Scale:");
+        loc = new QVector3DField("Loc:", -INFINITY, INFINITY, 0);
+        rot = new QVector3DField("Rot:", -INFINITY, INFINITY, 0);
+        sca = new QVector3DField("Scale:", -INFINITY, INFINITY, 0);
 
         QVBoxLayout* transVBox = new QVBoxLayout;
         transVBox->addWidget(loc);
@@ -161,7 +163,6 @@ public:
         vbox = new QVBoxLayout();
 
         vbox->addWidget(name);
-
 
         vbox->addWidget(transform);
 
@@ -189,11 +190,11 @@ public:
         sca->fromQVector3D(m->scale);
 
         color->fromQVector3D(m->material.color);
+        color->changeColor();
 
         rough->set(m->material.roughness * 100);
         spec->set(m->material.specular * 100);
     }
-
 };
 
 #endif

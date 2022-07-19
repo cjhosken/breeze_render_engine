@@ -15,11 +15,17 @@ public:
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: white;}");
+		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
 		edit = new QLineEdit();
+
+
 
 		edit->setValidator(validator);
 		edit->setText(QString::number(mid));
+		edit->setAlignment(Qt::AlignCenter);
+
+
+		edit->setStyleSheet("QLineEdit{background-color: transparent; color: white; border: none; border-radius: 5px; text-align:center;}");
 
 		root->addWidget(label);
 		root->addWidget(edit);

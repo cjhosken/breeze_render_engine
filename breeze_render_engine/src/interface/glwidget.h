@@ -173,7 +173,6 @@ protected:
         shaders[3].setMat4("view", view);
 
         if (click) {
-            click = false;
             for (int mdx = 0; mdx < world.scene.size(); mdx++) {
                 world.get(mdx)->draw(shaders.at(2), ID, settings);
             }
@@ -205,6 +204,8 @@ protected:
 
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            click = false;
         }
 
         cvs.draw(shaders.at(4));
@@ -256,6 +257,9 @@ protected:
         if (ev->buttons() == Qt::LeftButton) {
             click = true;
         }
+        else {
+            click = false;
+        }
         repaint();
     };
 
@@ -280,6 +284,8 @@ protected:
             click = false;
                 viewCamera.processMouseMovement(xOffset, yOffset);
         }
+
+        click = false;
 
         repaint();
     };

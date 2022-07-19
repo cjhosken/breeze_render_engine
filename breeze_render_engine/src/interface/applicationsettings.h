@@ -13,6 +13,9 @@ public:
 	float appRadius;
 	float dragHeight;
 
+	QColor innerGradientColor;
+	QColor outerGradientColor;
+
 	QVector3D COLOR_SELECTED;
 
 	ApplicationSettings() {
@@ -26,8 +29,10 @@ public:
 		appRadius = 50.0f;
 
 		dragHeight = 50.0f;
-	}
 
+		innerGradientColor = (0.10f * 255, 0.1f * 255, 0.1f * 255);
+		outerGradientColor = (0.05f * 255, 0.05f * 255, 0.075f * 255);
+	}
 };
 
 #endif // !APPLICATIONSETTINGS_H
