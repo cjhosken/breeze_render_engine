@@ -209,7 +209,7 @@ public:
     }
 
     void setModel(Model* &m) {
-        clear();
+        //clear();
         name->setText(QString::fromStdString(m->name));
         loc->fromQVector3D(m->location);
         rot->fromQVector3D(m->rotation);
@@ -230,7 +230,7 @@ public:
     }
 
     void setCamera(RenderCamera c) {
-        clear();
+        //clear();
         loc->fromQVector3D(c.location);
         rot->fromQVector3D(c.rotation);
         sca->fromQVector3D(c.scale);

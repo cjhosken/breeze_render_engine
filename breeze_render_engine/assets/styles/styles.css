@@ -22,6 +22,10 @@
     border-radius: 10px;
 }
 
+.wireButton::hover {
+        background-color: rgba(255, 255, 255, 0.1);
+}
+
 .hiddenTextInput {
     background-color: transparent;
     border: none;
@@ -30,51 +34,56 @@
 
 .iconButton {
     color: white;
+    border-radius: 20px;
     background-color: transparent;
-}
-
-.greyIconButton {
-    color: white;
-    background-color: rgba(15, 15, 15, 200);
 }
 
 .iconButton::menu-indicator {
     width: 0px;
 }
 
-.largeIconButton {
-    border-radius: 20px;
+.iconButton::hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.largeIconButton::menu-indicator {
-    width: 0px;
-}
-
-.smallIconButton {
-    border-radius: 17px;
-}
-
-.smallIconButton::menu-indicator {
-    width: 0px;
-}
-
-.topRoundedIconButton {
-    border-radius: 20px 0px 00px 20px;
-}
-
-.bottomRoundedIconButton {
-    border-radius: 0px 20px 20px 0px;
-}
-
-.toggleIconButton {
-    color: white;
+.appButton {
     background-color: transparent;
+    border-radius: 25px;
 }
 
-.toggleIconButton:checked {
-    color: red;
-    background-color: red;
+.appButton::menu-indicator {
+    width: 0px;
 }
+
+/*
+    TABS
+*/
+
+.QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabWidget::pane {
+    border: none;
+}
+
+QTabBar::tab {
+    height: 25px;
+    width: 60px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    margin: 0px 5px;
+}
+
+QTabBar::tab::selected {
+    color: rgb(168, 74, 214) ;
+}
+
+    QTabBar::tab::hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
 
 /*
     FIELDS
@@ -84,6 +93,10 @@
     background-color: black;
     border: 1px outset rgb(50, 50, 50);
     border-radius: 2px;
+}
+
+.colorButton::hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
@@ -98,10 +111,16 @@
 
 .confirmationBox QLabel {
     color: rgb(200, 200, 200);
-
 }
 
 .confirmationBox QPushButton {
     background-color: transparent;
+    width: 75px;
+    height: 20px;
+    border-radius: 7px;
     color: white;
+}
+
+.confirmationBox QPushButton::hover {
+        background-color: rgba(255, 255, 255, 0.1);
 }

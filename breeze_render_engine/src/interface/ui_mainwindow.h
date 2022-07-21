@@ -37,9 +37,9 @@ public:
     QIconButton* docsButton;
     QIconButton* codeButton;
 
-    QIconButton* wireViewButton;
-    QIconButton* solidViewButton;
-    QIconButton* shadedViewButton;
+    QToggleIconButton* wireViewButton;
+    QToggleIconButton* solidViewButton;
+    QToggleIconButton* shadedViewButton;
 
     QIconButton* reportBugButton;
     QIconButton* closeButton;
@@ -70,8 +70,8 @@ public:
         propertiesPanel->root->setGeometry(QRect(10, 10, 215, 735));
 
         appButtons = new QIconButton(QIcon(":/assets/images/logo.png"), 45, centralWidget);
-        appButtons->setGeometry(QRect(23, 21, 50, 50));
-        appButtons->setStyleSheet(settings.value("styles/root").toString());
+        appButtons->setGeometry(QRect(23, 30, 50, 50));
+        appButtons->setProperty("class", "appButton");
 
         appButtonsMenu = new QMenu();
         appButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
@@ -85,38 +85,26 @@ public:
 
         toggleObjectSelectionButton = new QToggleIconButton(QIcon(":/assets/images/icons/cursor.png"), 28, toolBar);
         toggleObjectSelectionButton->setGeometry(QRect(0, 0, 50, 50));
-        toggleObjectSelectionButton->setProperty("class", "largeIconButton toggleIconButton");
-        toggleObjectSelectionButton->setStyleSheet(settings.value("styles/root").toString());
+        toggleObjectSelectionButton->setChecked(true);
+        toggleObjectSelectionButton->setColor();
 
         addCubeButton = new QIconButton(QIcon(":/assets/images/icons/cube.png"), 28, toolBar);
         addCubeButton->setGeometry(QRect(0, 50, 50, 50));
-        addCubeButton->setProperty("class", "largeIconButton");
-        addCubeButton->setStyleSheet(settings.value("styles/root").toString());
 
         addPlaneButton = new QIconButton(QIcon(":/assets/images/icons/plane.png"), 28, toolBar);
         addPlaneButton->setGeometry(QRect(0, 100, 50, 50));
-        addPlaneButton->setProperty("class", "largeIconButton");
-        addPlaneButton->setStyleSheet(settings.value("styles/root").toString());
 
         addSphereButton = new QIconButton(QIcon(":/assets/images/icons/sphere.png"), 28, toolBar);
         addSphereButton->setGeometry(QRect(0, 150, 50, 50));
-        addSphereButton->setProperty("class", "largeIconButton");
-        addSphereButton->setStyleSheet(settings.value("styles/root").toString());
 
         addOBJButton = new QIconButton(QIcon(":/assets/images/icons/add.png"), 28, toolBar);
         addOBJButton->setGeometry(QRect(0, 200, 50, 50));
-        addOBJButton->setProperty("class", "largeIconButton");
-        addOBJButton->setStyleSheet(settings.value("styles/root").toString());
 
         addLightButton = new QIconButton(QIcon(":/assets/images/icons/light.png"), 28, toolBar);
         addLightButton->setGeometry(QRect(0, 250, 50, 50));
-        addLightButton->setProperty("class", "largeIconButton");
-        addLightButton->setStyleSheet(settings.value("styles/root").toString());
 
         addExtrasButton = new QIconButton(QIcon(":/assets/images/icons/more.png"), 28, toolBar);
         addExtrasButton->setGeometry(QRect(0, 300, 50, 50));
-        addExtrasButton->setProperty("class", "largeIconButton");
-        addExtrasButton->setStyleSheet(settings.value("styles/root").toString());
 
         extraButtonsMenu = new QMenu();
         extraButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
@@ -141,38 +129,30 @@ public:
 
         docsButton = new QIconButton(QIcon(":/assets/images/icons/info.png"), 28, debugBar);
         docsButton->setGeometry(QRect(0, 0, 50, 50));
-        docsButton->setProperty("class", " topRoundedIconButton");
-        docsButton->setStyleSheet(settings.value("styles/root").toString());
 
         codeButton = new QIconButton(QIcon(":/assets/images/icons/code.png"), 28, debugBar);
         codeButton->setGeometry(QRect(0, 50, 50, 50));
-        codeButton->setProperty("class", "bottomRoundedIconButton");
-        codeButton->setStyleSheet(settings.value("styles/root").toString());
 
-        wireViewButton = new QIconButton(QIcon(":/assets/images/icons/wire.png"), 26, centralWidget);
-        wireViewButton->setGeometry(QRect(738, 30, 35, 35));
-        wireViewButton->setProperty("class", "smallIconButton");
-        wireViewButton->setStyleSheet(settings.value("styles/root").toString());
+        wireViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/wire.png"), 28, centralWidget);
+        wireViewButton->setGeometry(QRect(725, 30, 50, 50));
+        wireViewButton->setChecked(false);
+        wireViewButton->setColor();
 
-        solidViewButton = new QIconButton(QIcon(":/assets/images/icons/solid.png"), 26, centralWidget);
-        solidViewButton->setGeometry(QRect(783, 30, 35, 35));
-        solidViewButton->setProperty("class", "smallIconButton");
-        solidViewButton->setStyleSheet(settings.value("styles/root").toString());
+        solidViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/solid.png"), 28, centralWidget);
+        solidViewButton->setGeometry(QRect(775, 30, 50, 50));
+        solidViewButton->setChecked(true);
+        solidViewButton->setColor();
 
-        shadedViewButton = new QIconButton(QIcon(":/assets/images/icons/shaded.png"), 26, centralWidget);
-        shadedViewButton->setGeometry(QRect(828, 30, 35, 35));
-        shadedViewButton->setProperty("class", "smallIconButton");
-        shadedViewButton->setStyleSheet(settings.value("styles/root").toString());
+        shadedViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/shaded.png"), 28, centralWidget);
+        shadedViewButton->setGeometry(QRect(825, 30, 50, 50));
+        shadedViewButton->setChecked(false);
+        shadedViewButton->setColor();
 
-        reportBugButton = new QIconButton(QIcon(":/assets/images/icons/bug.png"), 26, centralWidget);
-        reportBugButton->setGeometry(QRect(1480, 30, 35, 35));
-        reportBugButton->setProperty("class", "greyIconButton smallIconButton");
-        reportBugButton->setStyleSheet(settings.value("styles/root").toString());
+        reportBugButton = new QIconButton(QIcon(":/assets/images/icons/bug.png"), 28, centralWidget);
+        reportBugButton->setGeometry(QRect(1470, 30, 50, 50));
 
-        closeButton = new QIconButton(QIcon(":/assets/images/icons/close.png"), 26, centralWidget);
-        closeButton->setGeometry(QRect(1520, 30, 35, 35));
-        closeButton->setProperty("class", "greyIconButton smallIconButton");
-        closeButton->setStyleSheet(settings.value("styles/root").toString());
+        closeButton = new QIconButton(QIcon(":/assets/images/icons/close.png"), 28, centralWidget);
+        closeButton->setGeometry(QRect(1520, 30, 50, 50));
      
 
         Window->setCentralWidget(centralWidget);

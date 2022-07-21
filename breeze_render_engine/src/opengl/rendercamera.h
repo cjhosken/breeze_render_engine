@@ -79,6 +79,21 @@ public:
 		return Ray(location, lower_left_corner + s * horizontal + t * vertical - location);
 	}
 
+	QMatrix4x4 getModelMatrix() {
+		QMatrix4x4 scaleMatrix = QMatrix4x4();
+		scaleMatrix.setToIdentity();
+		scaleMatrix.scale(scale);
+
+		QMatrix4x4 rotMatrix = QMatrix4x4();
+		rotMatrix.setToIdentity();
+
+		QMatrix4x4 locMatrix = QMatrix4x4();
+		locMatrix.setToIdentity();
+		locMatrix.translate(location);
+
+		return scaleMatrix * rotMatrix + locMatrix;
+	}
+
 private:
 	QVector3D lower_left_corner;
 	QVector3D horizontal;

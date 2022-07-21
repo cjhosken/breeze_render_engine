@@ -134,8 +134,6 @@ protected:
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        updateSelection();
     };
     
     void paintGL() override {
@@ -201,8 +199,6 @@ protected:
 
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            click = false;
         }
 
         cvs.draw(shaders.at(4));
@@ -216,10 +212,8 @@ protected:
         shaders[0].setInt("matcap", 0);
 
         for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            world.get(mdx)->draw(shaders.at(0), DEFAULT);
-
             if (world.scene[mdx]->type == SOLID) {
-                world.get(mdx)->draw(shaders.at(0), DEFAULT);
+                world.get(mdx)->draw(shaders.at(0), sceneDrawType);
 
             }
             else if (world.scene[mdx]->type == WIREFRAME) {
@@ -241,6 +235,10 @@ protected:
 
         glBindTexture(GL_TEXTURE_2D, 0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+        if (click && selecting) {
+            click = false;
+        }
     };
 
     void resizeGL(int width, int height) override {
@@ -340,7 +338,7 @@ private:
     std::vector<Shader> shaders;
     std::vector<Texture> textures;
 
-    DrawType sceneDrawType;
+    DrawType sceneDrawType = DEFAULT;
 
     float fov = 35.0f;
     float clipNear = 0.01f;

@@ -39,7 +39,6 @@ public:
 
 	void draw(Shader &shader) {
 		shader.use();
-		qDebug() << innerColor;
 		shader.setColor("inner", innerColor);
 		shader.setColor("outer", outerColor);
 

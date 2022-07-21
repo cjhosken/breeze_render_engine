@@ -79,7 +79,7 @@ public:
 
 		// OBJECT
 
-		connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updateObjectPanel()));
+		//connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updateObjectPanel()));
 
 		connect(ui->propertiesPanel->objectTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
 
@@ -109,8 +109,11 @@ public:
 			}
 
 			else if (keyEvent->key() == Qt::Key_Delete) {
-				ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
-				ui->glCanvas->selectedObject = NULL;
+				if (ui->glCanvas->objectSelected) {
+					ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
+					ui->glCanvas->selectedObject = NULL;
+					ui->glCanvas->objectSelected = false;
+				}
 			}
 		}
 		return QMainWindow::eventFilter(target, ev);
@@ -254,15 +257,36 @@ private slots:
 	}
 
 	void onSolidViewButtonClick() {
+		ui->solidViewButton->setChecked(true);
+		ui->solidViewButton->setColor();
+		ui->wireViewButton->setChecked(false);
+		ui->wireViewButton->setColor();
+		ui->shadedViewButton->setChecked(false);
+		ui->shadedViewButton->setColor();
 		ui->glCanvas->setSceneDrawType(DEFAULT);
+		ui->glCanvas->repaint();
 	}
 
 	void onWireViewButtonClick() {
+		ui->wireViewButton->setChecked(true);
+		ui->wireViewButton->setColor();
+		ui->solidViewButton->setChecked(false);
+		ui->solidViewButton->setColor();
+		ui->shadedViewButton->setChecked(false);
+		ui->shadedViewButton->setColor();
 		ui->glCanvas->setSceneDrawType(WIRE);
+		ui->glCanvas->repaint();
 	}
 
 	void onLightViewButtonClick() {
-		ui->glCanvas->setSceneDrawType(LIGHT);
+		ui->shadedViewButton->setChecked(true);
+		ui->shadedViewButton->setColor();
+		ui->wireViewButton->setChecked(false);
+		ui->wireViewButton->setColor();
+		ui->solidViewButton->setChecked(false);
+		ui->solidViewButton->setColor();
+		ui->glCanvas->setSceneDrawType(SHADED);
+		ui->glCanvas->repaint();
 	}
 
 	void onExitButtonClick() {

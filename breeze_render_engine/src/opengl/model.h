@@ -34,6 +34,15 @@ public:
 
 		shader.use();
 		shader.setMat4("model", getModelMatrix());
+		if (draw == ID) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+			float rID = (id & 0x000000FF) >> 0;
+			float gID = (id & 0x0000FF00) >> 8;
+			float bID = (id & 0x00FF0000) >> 16;
+
+			shader.setColor("color", QColor(rID, gID, bID));
+		}
 		if (draw == DEFAULT) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			shader.setMaterial(material);
@@ -57,14 +66,10 @@ public:
 			}
 			glLineWidth(1.0f);
 		}
-		else if (draw == ID) {
+		else if (draw == SHADED) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-			float rID = (id & 0x000000FF) >> 0;
-			float gID = (id & 0x0000FF00) >> 8;
-			float bID = (id & 0x00FF0000) >> 16;
 
-			shader.setColor("color", QColor(rID, gID, bID));
 		}
 
 
@@ -99,7 +104,7 @@ public:
 	ObjectType type = SOLID;
 	Mesh mesh;
 	Material material = {
-		QColor(0, 255, 255),
+		QColor(255, 255, 255),
 		0.5f,
 		0.5f
 	};

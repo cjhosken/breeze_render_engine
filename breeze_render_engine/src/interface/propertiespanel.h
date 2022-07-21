@@ -12,15 +12,20 @@ public:
     ObjectTab* objectTab;
     
     PropertiesPanel(QWidget* parent = nullptr) : QWidget(parent) {
-        setProperty("class", "PropertiesPanel");
-        setStyleSheet(".QWidget {background-color: transparent;} .PropertiesPanel{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
+        QSettings settings;
+        setProperty("class", "propertiesPanel");
+        setStyleSheet(".QWidget {background-color: transparent;} .propertiesPanel{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
 
         root = new QTabWidget(this);
-        root->setStyleSheet(".QTabWidget::tab-bar {alignment: center;} QTabWidget::pane{ border: none; } QTabBar::tab { background-color: transparent; color: white;} ");
+        root->setStyleSheet(settings.value("styles/root").toString());
+
         renderTab = new RenderTab();
+
         worldTab = new WorldTab();
+
         objectTab = new ObjectTab();
-        root->addTab(renderTab, "Rendering");
+
+        root->addTab(renderTab, "Render");
         root->addTab(worldTab, "World");
         root->addTab(objectTab, "Object");
     }

@@ -56,6 +56,8 @@
 
 #include <cmath>
 
+#include "../includes/fa/IconsFontAwesome6.h"
+
 enum ObjectType {
     SOLID,
     WIREFRAME,
@@ -65,7 +67,7 @@ enum DrawType {
     DEFAULT,
     WIRE,
     ID,
-    LIGHT
+    SHADED
 };
 
 inline float random_float() {

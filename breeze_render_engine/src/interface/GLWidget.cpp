@@ -6,6 +6,7 @@
 #include "rendersettings.h"
 
 #include <QProgressBar>
+#include "widgets/qrenderpopup.h"
 
 QVector3D ray_color(Ray r, World world, int depth) {
     if (depth < 1) {
@@ -37,23 +38,10 @@ void GLWidget::render() {
 
         unsigned char* data = new unsigned char[width * height * channels];
 
-        QMessageBox* renderBox = new QMessageBox(this);
-        renderBox->setWindowTitle("Rendering");
-        renderBox->setStyleSheet(".QMessageBox {background-color: rgba(15, 15, 15, 200); border-radius: 8px;} .QMessageBox QLabel{ color: rgb(200, 200, 200);} .QMessageBox QPushButton {background-color:transparent; alignment: center; color: white; border: solid white 1px;}");
-        renderBox->grab();
-        renderBox->show();
+        int max = width * height;
 
-        QVBoxLayout* vbox = new QVBoxLayout();
-
-        QProgressBar* progressBar = new QProgressBar();
-        progressBar->setMinimum(0);
-        progressBar->setMaximum(height);
-
-        vbox->addWidget(progressBar);
-
-        renderBox->setLayout(vbox);
-
-        
+        QRenderPopup popup(max);
+        popup.show();
        
         rendering = true;
         renderCamera.setupForRender();
@@ -65,7 +53,7 @@ void GLWidget::render() {
 
                 int pct = x + ((height - y) * width);
 
-                progressBar->setValue(pct);
+                popup.update(pct);
 
                 QVector3D pixel_color(0.0f, 0.0f, 0.0f);
 
@@ -88,6 +76,5 @@ void GLWidget::render() {
         stbi_write_png("render.png", width, height, channels, data, width * channels);
 
         rendering = false;
-        renderBox->setText("Rendered.");
     }
 }
