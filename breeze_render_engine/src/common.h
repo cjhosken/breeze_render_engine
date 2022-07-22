@@ -56,7 +56,6 @@
 
 #include <cmath>
 
-#include "../includes/fa/IconsFontAwesome6.h"
 
 enum ObjectType {
     SOLID,

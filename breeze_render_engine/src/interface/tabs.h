@@ -4,6 +4,7 @@
 #include "../common.h"
 #include "fields.h"
 
+
 class RenderTab : public QWidget {
 public:
     IntegerField* widthInput;

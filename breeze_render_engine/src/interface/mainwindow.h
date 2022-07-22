@@ -317,15 +317,11 @@ private:
 	void exit() {
 		if (!quitting) {
 			QSettings settings;
-			quitting = true;
-			QMessageBox* confirmBox = new QMessageBox(this);
-			confirmBox->setWindowTitle("Quit?");
-			confirmBox->setText("Are you sure you want to quit? Your progress will not be saved.");
-			confirmBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-			confirmBox->setProperty("class", "confirmationBox");
-			confirmBox->setStyleSheet(settings.value("styles/root").toString());
+			quitting = true;	
 
-			if (confirmBox->exec() == QMessageBox::Yes) {
+			QConfirmBox* confirm = new QConfirmBox("Quit?", "Are you sure you want to quit? Your progress wil not be saved. (for now)");
+
+			if (confirm->exec() == QMessageBox::Yes) {
 				this->close();
 			}
 			else {

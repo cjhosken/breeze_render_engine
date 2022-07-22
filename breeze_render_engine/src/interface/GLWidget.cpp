@@ -37,23 +37,21 @@ void GLWidget::render() {
         const int depth = renderSettings.bounces;
 
         unsigned char* data = new unsigned char[width * height * channels];
-
-        int max = width * height;
-
-        QRenderPopup popup(max);
-        popup.show();
        
         rendering = true;
         renderCamera.setupForRender();
+
+        int max = width * (height - 1);
+
+        QRenderPopup* progressPopup = new QRenderPopup(max);
 
         int index = 0;
 
         for (int y = height - 1; y >= 0; y--) {
             for (int x = 0; x < width; x++) {
-
-                int pct = x + ((height - y) * width);
-
-                popup.update(pct);
+                QCoreApplication::processEvents();
+                int pct = x + ((height - 1) - y) * width;
+                progressPopup->setValue(pct);
 
                 QVector3D pixel_color(0.0f, 0.0f, 0.0f);
 
@@ -73,8 +71,13 @@ void GLWidget::render() {
             }
         }
 
+        progressPopup->end();
+
         stbi_write_png("render.png", width, height, channels, data, width * channels);
 
+
         rendering = false;
+
+        progressPopup->close();
     }
 }

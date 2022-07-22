@@ -153,6 +153,9 @@
     <ClInclude Include="src\interface\widgets\qrenderpopup.h">
       <Filter>Source Files\interface\widgets</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\widgets\qconfirmbox.h">
+      <Filter>Source Files\interface\widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\interface\glwidget.h">

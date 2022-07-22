@@ -12,7 +12,12 @@ public:
 
 	ColorField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
 		QSettings settings;
-		popup = new QColorDialog();
+		
+		
+		popup = new QColorDialog(QColorDialog::DontUseNativeDialog);
+		popup->setProperty("class", "colorPopup");
+		popup->setStyleSheet(settings.value("styles/root").toString());
+
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
@@ -22,6 +27,7 @@ public:
 		edit = new QPushButton();
 		edit->setProperty("class", "colorButton");
 		edit->setStyleSheet(settings.value("styles/root").toString());
+
 
 		connect(edit, &QPushButton::clicked, this, &ColorField::openDialog);
 		connect(popup, &QColorDialog::currentColorChanged, this, &ColorField::changeColor);

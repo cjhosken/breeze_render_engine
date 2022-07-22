@@ -29,6 +29,6 @@
         <file>assets/shaders/id.frag</file>
         <file>assets/shaders/light.frag</file>
         <file>assets/styles/styles.css</file>
-        <file>assets/fonts/materialdesignicons-webfont.ttf</file>
+        <file>render.png</file>
     </qresource>
 </RCC>

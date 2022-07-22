@@ -9,6 +9,7 @@
 
 #include "widgets/qiconbutton.h"
 #include "widgets/qtoggleiconbutton.h"
+#include "widgets/qconfirmbox.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -52,7 +53,6 @@ public:
     QAction* addMonkey;
     QAction* addTeapot;
 
-
     void setupUi(QMainWindow* Window)
     {
         QSettings settings;
@@ -74,14 +74,16 @@ public:
         appButtons->setProperty("class", "appButton");
 
         appButtonsMenu = new QMenu();
-        appButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
+        appButtonsMenu->setProperty("class", "menu");
+        appButtonsMenu->setStyleSheet(settings.value("styles/root").toString());
         appQuitButton = new QAction("Quit");
         appButtonsMenu->addAction(appQuitButton);
         appButtons->setMenu(appButtonsMenu);
 
         toolBar = new QWidget(centralWidget);
         toolBar->setGeometry(QRect(23, 105, 50, 350));
-        toolBar->setStyleSheet(".QWidget{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
+        toolBar->setProperty("class", "panel");
+        toolBar->setStyleSheet(settings.value("styles/root").toString());
 
         toggleObjectSelectionButton = new QToggleIconButton(QIcon(":/assets/images/icons/cursor.png"), 28, toolBar);
         toggleObjectSelectionButton->setGeometry(QRect(0, 0, 50, 50));
@@ -107,7 +109,8 @@ public:
         addExtrasButton->setGeometry(QRect(0, 300, 50, 50));
 
         extraButtonsMenu = new QMenu();
-        extraButtonsMenu->setStyleSheet(".QMenu{background-color: rgba(15, 15, 15, 200); border-radius: 15px; color: white;}");
+        extraButtonsMenu->setProperty("class", "menu");
+        extraButtonsMenu->setStyleSheet(settings.value("styles/root").toString());
         addCircle = new QAction("Circle");
         extraButtonsMenu->addAction(addCircle);
         addTriangle = new QAction("Triangle");
@@ -124,7 +127,8 @@ public:
 
         debugBar = new QWidget(centralWidget);
         debugBar->setGeometry(QRect(23, 765, 50, 100));
-        debugBar->setStyleSheet(".QWidget{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
+        debugBar->setProperty("class", "panel");
+        debugBar->setStyleSheet(settings.value("styles/root").toString());
 
 
         docsButton = new QIconButton(QIcon(":/assets/images/icons/info.png"), 28, debugBar);
@@ -154,7 +158,6 @@ public:
         closeButton = new QIconButton(QIcon(":/assets/images/icons/close.png"), 28, centralWidget);
         closeButton->setGeometry(QRect(1520, 30, 50, 50));
      
-
         Window->setCentralWidget(centralWidget);
         retranslateUi(Window);
 
@@ -164,8 +167,6 @@ public:
     void retranslateUi(QMainWindow* Window)
     {
         Window->setWindowFlags(Qt::FramelessWindowHint);
-
-
     } // retranslateUi
 };
 

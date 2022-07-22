@@ -80,10 +80,21 @@ QTabBar::tab::selected {
     color: rgb(168, 74, 214) ;
 }
 
-    QTabBar::tab::hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
+QTabBar::tab::hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
 
+.menu {
+    background-color: rgba(15, 15, 15, 200);
+    border-radius: 15px;
+    color: white;
+}
+
+
+.panel {
+    background-color: rgba(15, 15, 15, 200);
+    border-radius: 20px;
+}
 
 /*
     FIELDS
@@ -98,6 +109,12 @@ QTabBar::tab::selected {
 .colorButton::hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+
+.colorPopup {
+    background-color: rgba(15, 15, 15, 200);
+}
+
 
 
 /*
@@ -123,4 +140,8 @@ QTabBar::tab::selected {
 
 .confirmationBox QPushButton::hover {
         background-color: rgba(255, 255, 255, 0.1);
+}
+
+.progressBox {
+    backgorund-color: rgba(15, 15, 15, 200);
 }

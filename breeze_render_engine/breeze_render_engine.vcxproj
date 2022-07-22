@@ -126,6 +126,7 @@
     <QtMoc Include="src\interface\glwidget.h" />
     <ClInclude Include="src\interface\tabs.h" />
     <ClInclude Include="src\interface\ui_mainwindow.h" />
+    <ClInclude Include="src\interface\widgets\qconfirmbox.h" />
     <ClInclude Include="src\interface\widgets\qiconbutton.h" />
     <ClInclude Include="src\interface\widgets\qrenderpopup.h" />
     <ClInclude Include="src\interface\widgets\qtoggleiconbutton.h" />

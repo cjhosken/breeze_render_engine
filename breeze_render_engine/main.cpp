@@ -57,16 +57,4 @@ void loadSettings() {
 	QFile File(":/assets/styles/styles.css");
 	File.open(QFile::ReadOnly);
 	settings.setValue("styles/root", QLatin1String(File.readAll()));
-
-	QFontDatabase::addApplicationFont(":/materialdesignicons-webfont.ttf");
-
-	QFont font;
-	font.setFamily("MaterialDesignIcons");
-	font.setPixelSize(32);
-
-	settings.setValue("styles/icons", font);
-
-
-
-
 }
