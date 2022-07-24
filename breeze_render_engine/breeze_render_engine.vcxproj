@@ -132,6 +132,7 @@
     <ClInclude Include="src\interface\widgets\qtoggleiconbutton.h" />
     <ClInclude Include="src\opengl\canvas.h" />
     <ClInclude Include="src\opengl\light.h" />
+    <ClInclude Include="src\opengl\lightmaterial.h" />
     <ClInclude Include="src\opengl\material.h" />
     <ClInclude Include="src\opengl\mesh.h" />
     <ClInclude Include="src\opengl\model.h" />

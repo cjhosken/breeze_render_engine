@@ -4,7 +4,6 @@
         <file>assets/images/logo.png</file>
         <file>assets/images/matcap.jpg</file>
         <file>assets/images/splash.png</file>
-        <file>assets/images/icons/add.png</file>
         <file>assets/images/icons/bug.png</file>
         <file>assets/images/icons/close.png</file>
         <file>assets/images/icons/code.png</file>
@@ -30,5 +29,6 @@
         <file>assets/shaders/light.frag</file>
         <file>assets/styles/styles.css</file>
         <file>render.png</file>
+        <file>assets/images/icons/camera.png</file>
     </qresource>
 </RCC>

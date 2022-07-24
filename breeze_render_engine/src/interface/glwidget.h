@@ -10,6 +10,7 @@
 #include "../opengl/canvas.h"
 #include "../opengl/rendercamera.h"
 #include "../opengl/texture.h"
+#include "../opengl/light.h"
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions {
 	Q_OBJECT
@@ -44,40 +45,11 @@ public:
         sceneDrawType = t;
     }
 
-    void addCube() {
-        world.add(std::make_shared<Cube>("cube"));
-    }
+    void deselect() {
+        world.deselectAll();
 
-    void addPlane() {
-        world.add(std::make_shared<Plane>("plane"));
-    }
-
-    void addSphere() {
-        world.add(std::make_shared<Sphere>("sphere"));
-    }
-
-    void addOBJ(std::string path) {
-        world.add(std::make_shared<OBJModel>(path, "obj"));
-    }
-
-    void addTriangle() {
-        world.add(std::make_shared<Triangle>("triangle"));
-    }
-
-    void addCircle() {
-        world.add(std::make_shared<Circle>("circle"));
-    }
-
-    void addCylinder() {
-        world.add(std::make_shared<Cylinder>("cylinder"));
-    }
-
-    void addMonkey() {
-        world.add(std::make_shared<OBJModel>(":/assets/models/suzanne.obj", "monkey"));
-    }
-
-    void addTeapot() {
-        world.add(std::make_shared<OBJModel>(":/assets/models/teapot.obj", "teapot"));
+        selectID = 0;
+        selectType = NONE;
     }
 
 protected:
@@ -125,15 +97,18 @@ protected:
 
         cvs.init();
 
-        renderCamera.init();
-        renderCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
-        renderCamera.selected = true;
+        RenderCamera defaultCamera = RenderCamera("Camera");
+        defaultCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
 
-        addCube();
+        world.add(std::make_shared<RenderCamera>(defaultCamera));
+        world.add(std::make_shared<Cube>("Cube"));
         
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        RenderCamera* cam = world.getCamera(0);
+        setSelected(cam);
     };
     
     void paintGL() override {
@@ -165,11 +140,17 @@ protected:
         shaders[3].setMat4("view", view);
 
         if (click && selecting) {
-            for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-                world.get(mdx)->draw(shaders.at(2), ID);
+            for (int idx = 0; idx < world.size(); idx++) {
+                if (idx < world.models.size()) {
+                    world.getModel(idx)->draw(shaders.at(2), ID);
+                }
+                else if (idx < world.lights.size()) {
+                    world.getLight(idx - world.models.size())->draw(shaders.at(2), ID);
+                }
+                else {
+                    world.getCamera(idx - (world.models.size() + world.lights.size()))->draw(shaders.at(2), ID);
+                }
             }
-
-            renderCamera.draw(shaders.at(2), ID);
 
             glFlush();
             glFinish();
@@ -181,56 +162,73 @@ protected:
             int pickedID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 
             if (pickedID != 0) {
-                if (pickedID == renderCamera.id) {
-                    selectCamera(renderCamera);
-                }
-                else {
-                    for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-                        if (world.get(mdx)->id == pickedID) {
-                            if (!world.get(mdx)->selected) {
-                                Model* m = world.get(mdx);
-                                selectObject(m);
-                                renderCamera.selected = false;
-                            }
+                deselect();
+                for (int idx = 0; idx < world.size(); idx++) {
+                    if (idx < world.models.size()) {
+                        if (world.getModel(idx)->id == pickedID) {
+                            Model* model = world.getModel(idx);
+                            setSelected(model);
+                            break;
+                        }
+                    }
+                    else if (idx < world.lights.size()) {
+                        if (world.getLight(idx - world.models.size())->id == pickedID) {
+                            Light* light = world.getLight(idx - world.models.size());
+                            setSelected(light);
+                            break;
+                        }
+                    }
+                    else {
+                        if (world.getCamera(idx - (world.models.size() + world.lights.size()))->id == pickedID) {
+                            RenderCamera* camera = world.getCamera(idx - (world.models.size() + world.lights.size()));
+                            setSelected(camera);
+                            break;
                         }
                     }
                 }
             }
 
             glClearColor(0, 0, 0, 1);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);            
         }
 
         cvs.draw(shaders.at(4));
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        renderCamera.draw(shaders.at(1), WIRE);
+        for (int idx = 0; idx < world.size(); idx++) {
+            if (idx < world.models.size()) {
+                if (world.models.size() > 0) {
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, textures[0].TXO);
+                    shaders[0].setInt("matcap", 0);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[0].TXO);
-        shaders[0].setInt("matcap", 0);
+                    Model* model = world.getModel(idx);
 
-        for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            if (world.scene[mdx]->type == SOLID) {
-                world.get(mdx)->draw(shaders.at(0), sceneDrawType);
+                    model->draw(shaders.at(0), sceneDrawType);
 
+                    if (model->selected) {
+                        model->draw(shaders.at(1), WIRE);
+                    }
+                }
             }
-            else if (world.scene[mdx]->type == WIREFRAME) {
-                world.get(mdx)->draw(shaders.at(1), WIRE);
+            else if (idx < world.lights.size()) {
+                if (world.lights.size() > 0) {
+                    shaders[3].use();
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, textures[1].TXO);
+                    shaders[3].setInt("light", 0);
+
+                    Light* light = world.getLight(idx - world.models.size());
+                    light->draw(shaders.at(3), DEFAULT);
+                }
             }
-
-            if (world.get(mdx)->selected) {
-                world.get(mdx)->draw(shaders.at(1), WIRE);
+            else {
+                if (world.cameras.size() > 0) {
+                    RenderCamera* camera = world.getCamera(idx - (world.models.size() + world.lights.size()));
+                    camera->draw(shaders.at(1), WIRE);
+                }
             }
-        }
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[1].TXO);
-        shaders[3].setInt("light", 0);
-
-        for (int ldx = 0; ldx < world.lights.size(); ldx++) {
-            world.getLight(ldx)->draw(shaders.at(3), DEFAULT);
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -288,33 +286,29 @@ protected:
         repaint();
     }
 
-    void selectObject(Model* &m) {
-
-        for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            world.get(mdx)->selected = false;
-        }
-
+    void setSelected(Model* &m) {
         m->selected = true;
-        selectedObject = m;
-
-        objectSelected = true;
-        cameraSelected = false;
-        emit updateSelection();
-    }
-
-    void selectCamera(RenderCamera& c) {
-        for (int mdx = 0; mdx < world.scene.size(); mdx++) {
-            world.get(mdx)->selected = false;
-        }
-
-        c.selected = true;
-
-        cameraSelected = true;
-        objectSelected = false;
+        selectID = m->id;
+        selectType = MODEL;
 
         emit updateSelection();
     }
 
+    void setSelected(Light* &l) {
+        l->selected = true;
+        selectID = l->id;
+        selectType = LIGHT;
+        
+        emit updateSelection();
+    }
+
+    void setSelected(RenderCamera* &c) {
+        c->selected = true;
+        selectID = c->id;
+        selectType = CAMERA;
+
+        emit updateSelection();
+    }
 
 signals:
     void updateSelection();
@@ -345,16 +339,13 @@ private:
 
 public:
     ViewportCamera viewCamera = ViewportCamera();
-    RenderCamera renderCamera = RenderCamera();
     World world = World();
     Canvas cvs = Canvas();
 
+    unsigned selectID;
+    ObjectType selectType;
+
     bool selecting = true;
-    bool objectSelected = false;
-
-    Model* selectedObject;
-    bool cameraSelected = true;
-
     bool rendering = false;
 };
 

@@ -58,8 +58,10 @@
 
 
 enum ObjectType {
-    SOLID,
-    WIREFRAME,
+    MODEL,
+    CAMERA,
+    LIGHT,
+    NONE,
 };
 
 enum DrawType {

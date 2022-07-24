@@ -156,6 +156,9 @@
     <ClInclude Include="src\interface\widgets\qconfirmbox.h">
       <Filter>Source Files\interface\widgets</Filter>
     </ClInclude>
+    <ClInclude Include="src\opengl\lightmaterial.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\interface\glwidget.h">

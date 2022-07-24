@@ -8,7 +8,7 @@
 
 class Model : protected QOpenGLExtraFunctions {
 public:
-	std::string name;
+	QString name;
 	QVector3D location = QVector3D(0.0f, 0.0f, 0.0f);
 	QVector3D rotation = QVector3D(0.0f, 0.0f, 0.0f);
 	QVector3D scale = QVector3D(1.0f, 1.0f, 1.0f);
@@ -17,7 +17,7 @@ public:
 		genID();
 	}
 
-	Model(std::string n) {
+	Model(QString n) {
 		initializeOpenGLFunctions();
 		name = n;
 		genID();
@@ -68,10 +68,17 @@ public:
 		}
 		else if (draw == SHADED) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			
+			shader.setMaterial(material);
 
-
+			if (selected) {
+				float r = (material.color.red() + selectedColor.red()) / 2.0f;
+				float g = (material.color.green() + selectedColor.green()) / 2.0f;
+				float b = (material.color.blue() + selectedColor.blue()) / 2.0f;
+				QColor newColor = QColor(r, g, b);
+				shader.setColor("material.color", newColor);
+			}
 		}
-
 
 		glBindVertexBuffer(0, mesh.getVBO(), 0, sizeof(Vertex));
 		glBindVertexBuffer(1, mesh.getVBO(), offsetof(Vertex, normal), sizeof(Vertex));
@@ -101,7 +108,7 @@ public:
 	unsigned int id = 1;
 	bool selected = false;
 
-	ObjectType type = SOLID;
+	ObjectType type = MODEL;
 	Mesh mesh;
 	Material material = {
 		QColor(255, 255, 255),

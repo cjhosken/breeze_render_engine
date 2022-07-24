@@ -5,6 +5,7 @@
 #include "model.h"
 #include "ray.h"
 #include "light.h"
+#include "rendercamera.h"
 
 struct HitData {
 	float t;
@@ -14,45 +15,116 @@ struct HitData {
 
 class World {
 public:
-    std::vector<std::shared_ptr<Model>> scene;
+    std::vector<std::shared_ptr<RenderCamera>> cameras;
     std::vector<std::shared_ptr<Light>> lights;
+    std::vector<std::shared_ptr<Model>> models;
 
     void add(std::shared_ptr<Model> m) {
-        scene.push_back(m);
+        models.push_back(m);
     }
 
     void add(std::shared_ptr<Light> l) {
         lights.push_back(l);
     }
 
-    Model* getID(int id) {
-        for (int mdx = 0; mdx < scene.size(); mdx++) {
-            if (scene.at(mdx).get()->id == id) {
-                return scene.at(mdx).get();
+    void add(std::shared_ptr<RenderCamera> c) {
+        cameras.push_back(c);
+    }
+
+    unsigned int idAt(unsigned int id) {
+        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+            if (idx < models.size()) {
+                if (models.at(idx).get()->id == id) {
+                    return idx;
+                }
+            }
+            else if (idx < lights.size()) {
+                if (lights.at(idx - models.size()).get()->id == id) {
+                    return idx;
+                }
+            }
+            else {
+                if (cameras.at(idx - (models.size() + lights.size())).get()->id == id) {
+                    return idx;
+                }
+            }
+        }
+        return -1;
+    }
+
+    void removeWithID(unsigned int id) {
+        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+            if (idx < models.size()) {
+                if (models.at(idx).get()->id == id) {
+                    models.erase(models.begin() + idx);
+                }
+            }
+            else if (idx < lights.size()) {
+                if (lights.at(idx - models.size()).get()->id == id) {
+                    lights.erase(lights.begin() + (idx - models.size()));
+                }
+            }
+            else {
+                if (cameras.at(idx - (models.size() + lights.size())).get()->id == id) {
+                    cameras.erase(cameras.begin() + (idx - (models.size() + lights.size())));
+                }
             }
         }
     }
 
-    void removeID(int id) {
-        for (int mdx = 0; mdx < scene.size(); mdx++) {
-            if (scene.at(mdx).get()->id == id) {
-                scene.erase(scene.begin() + mdx);
+    int size() {
+        return models.size() + lights.size() + cameras.size();
+    }
+
+    void deselectAll() {
+        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+            if (idx < models.size()) {
+                models.at(idx).get()->selected = false;
+            }
+            else if (idx < lights.size()) {
+                lights.at(idx - models.size()).get()->selected = false;
+            }
+            else {
+                cameras.at(idx - (models.size() + lights.size())).get()->selected = false;
             }
         }
     }
 
-    Model* get(int idx) {
-        return scene.at(idx).get();
+    Model* getModel(unsigned int idx) {
+        return models.at(idx).get();
     }
 
-    Light* getLight(int idx) {
+    Model* getModelFromID(unsigned int id) {
+        for (unsigned int idx = 0; idx < models.size(); idx++) {
+            if (models.at(idx).get()->id == id) {
+                Model* model = models.at(idx).get();
+                return model;
+            }
+        }
+    }
+
+    RenderCamera* getCamera(unsigned int idx) {
+        return cameras.at(idx).get();
+    }
+
+    RenderCamera* getCameraFromID(unsigned int id) {
+        for (unsigned int idx = 0; idx < cameras.size(); idx++) {
+            if (cameras.at(idx).get()->id == id) {
+                RenderCamera* camera = cameras.at(idx).get();
+                return camera;
+            }
+        }
+    }
+
+    Light* getLight(unsigned int idx) {
         return lights.at(idx).get();
     }
 
-    Model* get(std::string n) {
-        for (int mdx = 0; mdx < scene.size(); mdx++) {
-            if (scene.at(mdx).get()->name == n) {
-                return scene.at(mdx).get();
+    Light* getLightFromID(unsigned int id) {
+        for (unsigned int idx = 0; idx < lights.size(); idx++) {
+            if (lights.at(idx).get()->id == id) {
+                Light* light = lights.at(idx).get();
+                return light;
             }
         }
     }
@@ -61,8 +133,9 @@ public:
         bool isHit = false;
         HitData out = { INFINITY, QVector3D(0.0f, 0.0f, 0.0f), nullptr };
 
-        for (int mdx = 0; mdx < scene.size(); mdx++) {
-            Mesh mesh = scene.at(mdx).get()->mesh;
+        for (unsigned int mdx = 0; mdx < models.size(); mdx++) {
+            Model* model = models.at(mdx).get();
+            Mesh mesh = model->mesh;
 
             std::vector<Vertex> data = mesh.data;
 
@@ -71,9 +144,9 @@ public:
                 Vertex b = data[vdx + 1];
                 Vertex c = data[vdx + 2];
 
-                QVector3D A = QVector3D(QVector4D(a.position, 1.0f) * scene.at(mdx)->getModelMatrix());
-                QVector3D B = QVector3D(QVector4D(b.position, 1.0f) * scene.at(mdx)->getModelMatrix());
-                QVector3D C = QVector3D(QVector4D(c.position, 1.0f) * scene.at(mdx)->getModelMatrix());
+                QVector3D A = QVector3D(QVector4D(a.position, 1.0f) * model->getModelMatrix());
+                QVector3D B = QVector3D(QVector4D(b.position, 1.0f) * model->getModelMatrix());
+                QVector3D C = QVector3D(QVector4D(c.position, 1.0f) * model->getModelMatrix());
 
                 QVector3D AB = B - A;
                 QVector3D BC = B - C;
@@ -102,9 +175,7 @@ public:
                         normal = (normal * -1.0f).normalized();
                     }
 
-                    Model* m = scene.at(mdx).get();
-
-                    HitData out = { t, normal, m };
+                    HitData out = { t, normal, model };
                     isHit = true;
                 }
             };

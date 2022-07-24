@@ -27,8 +27,10 @@ QVector3D ray_color(Ray r, World world, int depth) {
 
 void GLWidget::render() {
     
-    if (!rendering) {
-        RenderSettings renderSettings = renderCamera.settings;
+    if (!rendering && world.cameras.size() > 0) {
+        RenderCamera* camera = world.getCamera(0);
+
+        RenderSettings renderSettings = camera->settings;
 
         const int width = renderSettings.width;
         const int height = renderSettings.height;
@@ -41,7 +43,7 @@ void GLWidget::render() {
         World tmpWorld = world;
        
         rendering = true;
-        renderCamera.setupForRender();
+        camera->setupForRender();
 
         int max = width * height;
 
@@ -61,7 +63,7 @@ void GLWidget::render() {
                     float i = (float(x) + random_float()) / float(width - 1);
                     float j = (float(y) + random_float()) / float(height - 1);
 
-                    Ray r = renderCamera.get_ray(i, j);
+                    Ray r = camera->get_ray(i, j);
                     pixel_color += ray_color(r, tmpWorld, depth);
                 }
 

@@ -32,7 +32,7 @@ public:
 		connect(ui->addCubeButton, SIGNAL(clicked()), this, SLOT(onAddCubeButtonClick()));
 		connect(ui->addPlaneButton, SIGNAL(clicked()), this, SLOT(onAddPlaneButtonClick()));
 		connect(ui->addSphereButton, SIGNAL(clicked()), this, SLOT(onAddSphereButtonClick()));
-		connect(ui->addOBJButton, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
+		connect(ui->addCameraButton, SIGNAL(clicked()), this, SLOT(onAddCameraButtonClick()));
 		connect(ui->addLightButton, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
 		// Extra Buttons
 		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButtonClick()));
@@ -40,6 +40,7 @@ public:
 		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButtonClick()));
 		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButtonClick()));
 		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButtonClick()));
+		connect(ui->addOBJ, SIGNAL(triggered()), this, SLOT(onAddOBJButtonClick()));
 
 		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
 		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
@@ -79,18 +80,8 @@ public:
 
 		// OBJECT
 
-		//connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updateObjectPanel()));
-
-		connect(ui->propertiesPanel->objectTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
-
-		connect(ui->propertiesPanel->objectTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
-		connect(ui->propertiesPanel->objectTab->rot, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectRotation(QVector3D)));
-		connect(ui->propertiesPanel->objectTab->sca, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectScale(QVector3D)));
-
-		connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
-		connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
-		connect(ui->propertiesPanel->objectTab->rough->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectRoughness(int)));
-		connect(ui->propertiesPanel->objectTab->spec->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectSpecular(int)));
+		connect(ui->glCanvas, SIGNAL(updateSelection()), this, SLOT(updateObjectPanel()));	
+		updateObjectPanel();
 	}
 
 	~MainWindow() {
@@ -109,11 +100,11 @@ public:
 			}
 
 			else if (keyEvent->key() == Qt::Key_Delete) {
-					if (ui->glCanvas->objectSelected) {
-						ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
-						ui->glCanvas->selectedObject = NULL;
-						ui->glCanvas->objectSelected = false;
-					}
+				if (ui->glCanvas->selectType != NONE) {
+					ui->glCanvas->world.removeWithID(ui->glCanvas->selectID);
+					ui->glCanvas->deselect();
+					updateObjectPanel();
+				}
 			}
 		}
 		return QMainWindow::eventFilter(target, ev);
@@ -122,75 +113,199 @@ public:
 private slots:
 
 	void setSelectedObjectLocation(QVector3D l) {
-		ui->glCanvas->selectedObject->location = l;
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->location = l;
+		}
+		else if (ui->glCanvas->selectType == LIGHT) {
+			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->location = l;
+		}
+		else {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->location = l;
+		}
 		ui->glCanvas->repaint();
 	}
 
 	void setSelectedObjectRotation(QVector3D r) {
-		ui->glCanvas->selectedObject->rotation = r;
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->rotation = r;
+		}
+		else if (ui->glCanvas->selectType == LIGHT) {
+			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->rotation = r;
+		}
+		else {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->location = r;
+		}
 		ui->glCanvas->repaint();
 	}
 
 	void setSelectedObjectScale(QVector3D s) {
-		ui->glCanvas->selectedObject->scale = s;
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->scale = s;
+		}
+		else if (ui->glCanvas->selectType == LIGHT) {
+			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->scale = s;
+		}
+		else {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->scale = s;
+		}
 		ui->glCanvas->repaint();
 	}
 
 	void renameSelectedObject(QString n) {
-		ui->glCanvas->selectedObject->name = n.toStdString();
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->name = n;
+		}
+		else if (ui->glCanvas->selectType == LIGHT) {
+			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->name = n;
+		}
+		else {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->name = n;
+		}
+
 		ui->glCanvas->repaint();
 	}
 
 	void setSelectedObjectColor(QColor col) {
-		ui->glCanvas->selectedObject->material.color = col;
-		ui->glCanvas->repaint();
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->material.color = col;
+			ui->glCanvas->repaint();
+		}
 	}
 
 	void setSelectedObjectRoughness(int r) {
-		ui->glCanvas->selectedObject->material.roughness = r / 100.0f;
-		ui->glCanvas->repaint();
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->material.roughness = r / 100.0f;
+			ui->glCanvas->repaint();
+		}
 	}
 
 	void setSelectedObjectSpecular(int s) {
-		ui->glCanvas->selectedObject->material.specular = s / 100.0f;
-		ui->glCanvas->repaint();
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->material.specular = s / 100.0f;
+			ui->glCanvas->repaint();
+		}
+	}
+
+	void setSelectedObjectStrength(QString num_f) {
+		if (ui->glCanvas->selectType == LIGHT) {
+			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->light.strength = num_f.toFloat();
+		}
+	}
+
+	void setSelectedObjectFOV(int f) {
+		if (ui->glCanvas->selectType == CAMERA) {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->fov = float(f);
+		}
+	}
+
+	void setSelectedObjectDOF(bool b) {
+		if (ui->glCanvas->selectType == CAMERA) {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.dof = b;
+		}
+
+		ui->propertiesPanel->cameraTab->distance->edit->setEnabled(b);
+		ui->propertiesPanel->cameraTab->aperture->edit->setEnabled(b);
+	}
+
+	void setSelectedObjectDistance(QString num_f) {
+		if (ui->glCanvas->selectType == CAMERA) {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.distance = num_f.toFloat();
+		}
+	}
+
+	void setSelectedObjectAperture(QString num_f) {
+		if (ui->glCanvas->selectType == CAMERA) {
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.aperture = num_f.toFloat();
+		}
 	}
 
 	void setRenderWidth(QString num_s) {
-		ui->glCanvas->renderCamera.settings.width = num_s.toInt();
-		ui->glCanvas->renderCamera.rescale(ui->glCanvas->renderCamera.settings.width, ui->glCanvas->renderCamera.settings.height);
+
+		ui->glCanvas->world.getCamera(0)->settings.width = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->rescale(ui->glCanvas->world.getCamera(0)->settings.width, ui->glCanvas->world.getCamera(0)->settings.height);
 		ui->glCanvas->repaint();
 	}
 
 	void setRenderHeight(QString num_s) {
-		ui->glCanvas->renderCamera.settings.height = num_s.toInt();
-		ui->glCanvas->renderCamera.rescale(ui->glCanvas->renderCamera.settings.width, ui->glCanvas->renderCamera.settings.height);
+		ui->glCanvas->world.getCamera(0)->settings.height = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->rescale(ui->glCanvas->world.getCamera(0)->settings.width, ui->glCanvas->world.getCamera(0)->settings.height);
 		ui->glCanvas->repaint();
 	}
 
 	void setRenderSamples(QString num_s) {
-		ui->glCanvas->renderCamera.settings.samples = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->settings.samples = num_s.toInt();
 	}
 
 	void setRenderBounces(QString num_s) {
-		ui->glCanvas->renderCamera.settings.bounces = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->settings.bounces = num_s.toInt();
 	}
 
 	void updateObjectPanel() {
-		if (ui->glCanvas->selecting) {
-			ui->propertiesPanel->objectTab->show();
+		int idx = ui->propertiesPanel->root->currentIndex();
 
-			if (ui->glCanvas->objectSelected) {
-				ui->propertiesPanel->objectTab->setModel(ui->glCanvas->selectedObject);
-			} 
+		ui->propertiesPanel->root->removeTab(2);
+		if (ui->glCanvas->selectType == MODEL) {
+			ui->propertiesPanel->objectTab = new ObjectTab();
+			ui->propertiesPanel->objectTab->setModel(ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID));
 
-			if (ui->glCanvas->cameraSelected) {
-				ui->propertiesPanel->objectTab->setCamera(ui->glCanvas->renderCamera);
+			// RECONNECT OBJECT SLOTS
+			connect(ui->propertiesPanel->objectTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
+
+			connect(ui->propertiesPanel->objectTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
+			connect(ui->propertiesPanel->objectTab->rot, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectRotation(QVector3D)));
+			connect(ui->propertiesPanel->objectTab->sca, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectScale(QVector3D)));
+
+			connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+			connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+			connect(ui->propertiesPanel->objectTab->rough->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectRoughness(int)));
+			connect(ui->propertiesPanel->objectTab->spec->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectSpecular(int)));
+
+			ui->propertiesPanel->root->addTab(ui->propertiesPanel->objectTab, "Object");
+
+		} else if (ui->glCanvas->selectType == LIGHT) {
+			ui->propertiesPanel->lightTab = new LightTab();
+			ui->propertiesPanel->lightTab->setLight(ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID));
+
+			// RECONNECT LIGHT SLOTS
+			connect(ui->propertiesPanel->lightTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
+
+			connect(ui->propertiesPanel->lightTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
+
+			connect(ui->propertiesPanel->lightTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+			connect(ui->propertiesPanel->lightTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
+			connect(ui->propertiesPanel->lightTab->strength->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectStrength(QString)));
+
+			ui->propertiesPanel->root->addTab(ui->propertiesPanel->lightTab, "Light");
+
+		} else if (ui->glCanvas->selectType == CAMERA) {
+			ui->propertiesPanel->cameraTab = new CameraTab();
+			ui->propertiesPanel->cameraTab->setCamera(ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID));
+
+			// RECONNECT CAMERA SLOTS
+			connect(ui->propertiesPanel->cameraTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
+			connect(ui->propertiesPanel->cameraTab->rot, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectRotation(QVector3D)));
+
+			connect(ui->propertiesPanel->cameraTab->fov->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectFOV(int)));
+
+			connect(ui->propertiesPanel->cameraTab->dof->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectDOF(int)));
+
+			connect(ui->propertiesPanel->cameraTab->distance->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectDistance(QString)));
+			connect(ui->propertiesPanel->cameraTab->aperture->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectAperture(QString)));
+
+			ui->propertiesPanel->cameraTab->distance->edit->setEnabled(ui->propertiesPanel->cameraTab->dof->edit->isChecked());
+			ui->propertiesPanel->cameraTab->aperture->edit->setEnabled(ui->propertiesPanel->cameraTab->dof->edit->isChecked());
+
+
+			ui->propertiesPanel->root->addTab(ui->propertiesPanel->cameraTab, "Camera");
+		}
+
+		if (ui->glCanvas->selectType == NONE) {
+			if (idx > 1) {
+				idx = 1;
 			}
 		}
-		else {
-			ui->propertiesPanel->objectTab->hide();
-		}
+
+		ui->propertiesPanel->root->setCurrentIndex(idx);
 	}
 
 	void updateInnerBackgroundGradient(QColor inner) {
@@ -215,45 +330,49 @@ private slots:
 	}
 
 	void onAddCubeButtonClick() {
-		ui->glCanvas->addCube();
+		ui->glCanvas->world.add(std::make_shared<Cube>("Cube"));
 	}
 
 	void onAddPlaneButtonClick() {
-		ui->glCanvas->addPlane();
+		ui->glCanvas->world.add(std::make_shared<Plane>("Plane"));
 	}
 
 	void onAddSphereButtonClick() {
-		ui->glCanvas->addSphere();
+		ui->glCanvas->world.add(std::make_shared<Sphere>("Sphere"));
 	}
 
 	void onAddCircleButtonClick() {
-		ui->glCanvas->addCircle();
+		ui->glCanvas->world.add(std::make_shared<Circle>("Circle"));
 	}
 
 	void onAddCylinderButtonClick() {
-		ui->glCanvas->addCylinder();
+		ui->glCanvas->world.add(std::make_shared<Cylinder>("Cylinder"));
 	}
 
 	void onAddTriangleButtonClick() {
-		ui->glCanvas->addTriangle();
+		ui->glCanvas->world.add(std::make_shared<Triangle>("Triangle"));
 	}
 
 	void onAddMonkeyButtonClick() {
-		ui->glCanvas->addOBJ(":/assets/models/suzanne.obj");
+		ui->glCanvas->world.add(std::make_shared <OBJModel> (":/assets/models/monkey.obj","Monkey"));
 	}
 
 	void onAddTeapotButtonClick() {
-		ui->glCanvas->addOBJ(":/assets/models/teapot.obj");
+		ui->glCanvas->world.add(std::make_shared <OBJModel>(":/assets/models/teapot.obj", "Utah Teapot"));
 	}
 
 	void onAddOBJButtonClick() {
 		std::string path = QFileDialog::getOpenFileName(this, tr("Open File"), ":/assets/models", tr(".OBJ Files (*.obj)")).toStdString();
 
-		ui->glCanvas->addOBJ(path);
+		ui->glCanvas->world.add(std::make_shared <OBJModel>(path, "Custom OBJ"));
 	}
 
 	void onAddLightButtonClick() {
 		ui->glCanvas->world.add(std::make_shared<Light>("Light"));
+	}
+
+	void onAddCameraButtonClick() {
+		ui->glCanvas->world.add(std::make_shared<RenderCamera>("Camera"));
 	}
 
 	void onSolidViewButtonClick() {

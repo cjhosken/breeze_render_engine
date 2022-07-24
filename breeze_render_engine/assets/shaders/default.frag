@@ -16,7 +16,7 @@ uniform sampler2D matcap;
 uniform mat4 view;
 
 void main() {
-	vec2 muv = vec2(view * vec4(normalize(outNormal), 0))*0.5+vec2(0.5,0.5);
+		vec2 muv = vec2(view * vec4(normalize(outNormal), 0))*0.5+vec2(0.5,0.5);
 
-	FragColor = texture(matcap, vec2(muv.x, 1.0-muv.y)) * vec4(material.color, 1.0f) + (0.001 * vec4(outUV, 0.0, 0.0));
+		FragColor = texture(matcap, vec2(muv.x, 1.0-muv.y)) * vec4(material.color, 1.0f) + (0.001 * vec4(outUV, 0.0, 0.0));
 }

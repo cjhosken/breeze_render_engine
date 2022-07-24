@@ -6,7 +6,7 @@
 
 class Cube : public Model {
 public:
-	Cube(std::string n) : Model(n) {
+	Cube(QString n) : Model(n) {
 		std::vector<Vertex> vertices = {
             {QVector3D(-0.5f, -0.5f, -0.5f), QVector3D(0.0f, 0.0f, -1.0f), QVector2D(0.0f, 0.0f)}, 
             {QVector3D(0.5f, -0.5f, -0.5f), QVector3D(0.0f, 0.0f, -1.0f), QVector2D(1.0f, 0.0f)}, 
@@ -65,7 +65,7 @@ public:
 
 class Plane : public Model {
 public:
-	Plane(std::string n) : Model(n) {
+	Plane(QString n) : Model(n) {
 		std::vector<Vertex> vertices = {
 			{QVector3D(0.5f, 0.0f, 0.5f), QVector3D(0.0f, 1.0f, 0.0f), QVector2D(1.0f, 1.0f)},
 			{QVector3D(0.5f, 0.0f, -0.5f), QVector3D(0.0f, 1.0f, 0.0f), QVector2D(1.0f, 0.0f)},
@@ -84,7 +84,7 @@ public:
 
 class Triangle : public Model {
 public:
-	Triangle(std::string n) : Model(n) {
+	Triangle(QString n) : Model(n) {
 		std::vector<Vertex> vertices = {
 			{QVector3D(-0.5f, -0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(0.0f, 0.0f)},
 			{QVector3D(0.5f, -0.5f, 0.0f), QVector3D(0.0f, 0.0f, 1.0f), QVector2D(1.0f, 0.0f)},
@@ -99,7 +99,7 @@ public:
 
 class Circle : public Model {
 public:
-	Circle(std::string n) : Model(n) {
+	Circle(QString n) : Model(n) {
 		std::vector<Vertex> vertices;
 
 		int o = 32;
@@ -130,7 +130,7 @@ public:
 
 class Cylinder : public Model {
 public:
-	Cylinder(std::string n) : Model(n) {
+	Cylinder(QString n) : Model(n) {
 		std::vector<Vertex> vertices;
 
 		int h = 1.0;
@@ -181,7 +181,7 @@ public:
 
 class Sphere : public Model {
 public:
-	Sphere(std::string n) : Model(n) {
+	Sphere(QString n) : Model(n) {
 		std::vector<Vertex> vertices;
 
 		float stacks = 32;
@@ -267,7 +267,7 @@ public:
 
 class OBJModel : public Model {
 public:
-	OBJModel(std::string path, std::string n) : Model(n) {
+	OBJModel(std::string path, QString n) : Model(n) {
 		std::vector<Vertex> vertices;
 		
 		std::string line;

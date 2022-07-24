@@ -10,24 +10,22 @@ public:
     RenderTab* renderTab;
     WorldTab* worldTab;
     ObjectTab* objectTab;
+    LightTab* lightTab;
+    CameraTab* cameraTab;
     
     PropertiesPanel(QWidget* parent = nullptr) : QWidget(parent) {
         QSettings settings;
         setProperty("class", "propertiesPanel");
-        setStyleSheet(".QWidget {background-color: transparent;} .propertiesPanel{background-color: rgba(15, 15, 15, 200); border-radius: 20px;}");
+        setStyleSheet(settings.value("styles/root").toString());
 
         root = new QTabWidget(this);
         root->setStyleSheet(settings.value("styles/root").toString());
 
         renderTab = new RenderTab();
-
         worldTab = new WorldTab();
-
-        objectTab = new ObjectTab();
 
         root->addTab(renderTab, "Render");
         root->addTab(worldTab, "World");
-        root->addTab(objectTab, "Object");
     }
 };
 

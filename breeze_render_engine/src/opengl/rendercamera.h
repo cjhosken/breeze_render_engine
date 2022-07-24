@@ -13,13 +13,7 @@ public:
 	RenderSettings settings;
 	float fov = 35.0f;
 
-	RenderCamera() : Model() {
-		settings = RenderSettings();
-
-		rescale(settings.width, settings.height);
-	}
-
-	void init() {
+	RenderCamera(QString n) : Model(n) {
 		initializeOpenGLFunctions();
 		std::vector<Vertex> vertices = {
 			{QVector3D(0.0f,0.0f,0.0f), QVector3D(0.0f,0.0f,0.0f), QVector2D(0.0f,0.0f)},
@@ -42,6 +36,10 @@ public:
 		Mesh cameraMesh = Mesh(vertices);
 
 		mesh = cameraMesh;
+
+		settings = RenderSettings();
+
+		rescale(settings.width, settings.height);
 	}
 
 	void rescale(int w, int h) {

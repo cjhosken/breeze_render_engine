@@ -1,5 +1,15 @@
 ﻿  Reading Qt configuration (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
   rcc resource.qrc
+  main.cpp
+  GLWidget.cpp
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(104): warning C4715: 'World::getModelFromID': not all control paths return a value
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(130): warning C4715: 'World::getLightFromID': not all control paths return a value
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(117): warning C4715: 'World::getCameraFromID': not all control paths return a value
+  moc_glwidget.cpp
+  moc_mainwindow.cpp
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(130): warning C4715: 'World::getLightFromID': not all control paths return a value
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(104): warning C4715: 'World::getModelFromID': not all control paths return a value
+C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\src\opengl\world.h(117): warning C4715: 'World::getCameraFromID': not all control paths return a value
   qrc_resource.cpp
   breeze_render_engine.vcxproj -> C:\Users\user\source\repos\breeze_render_engine\x64\Debug\breeze_render_engine.exe
   windeployqt: "C:/Qt/6.2.4/msvc2019_64/bin\windeployqt.exe" --list target --dir C:\Users\user\source\repos\breeze_render_engine\x64\Debug\ C:\Users\user\source\repos\breeze_render_engine\x64\Debug\breeze_render_engine.exe

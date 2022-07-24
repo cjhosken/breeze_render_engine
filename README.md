@@ -3,10 +3,15 @@
 //TODOs
 
 - Custom Color Dialog
-- Shading view (with lights)
+- Remove shading view option (not enough time).
 - Complete rendering
-- Object panel
 
+
+//BUGs
+
+- Crashes when rendering large images
+- runs in background after quitting when cancelling render
+- Out of bounds exception for camera when (remove cube, add light, add cube)
 
 // Extra TODOs
 - HDRI world?

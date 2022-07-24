@@ -31,7 +31,7 @@ public:
     QIconButton* addCubeButton;
     QIconButton* addPlaneButton;
     QIconButton* addSphereButton;
-    QIconButton* addOBJButton;
+    QIconButton* addCameraButton;
     QIconButton* addLightButton;
     QIconButton* addExtrasButton;
 
@@ -52,6 +52,7 @@ public:
     QAction* addCylinder;
     QAction* addMonkey;
     QAction* addTeapot;
+    QAction* addOBJ;
 
     void setupUi(QMainWindow* Window)
     {
@@ -99,8 +100,8 @@ public:
         addSphereButton = new QIconButton(QIcon(":/assets/images/icons/sphere.png"), 28, toolBar);
         addSphereButton->setGeometry(QRect(0, 150, 50, 50));
 
-        addOBJButton = new QIconButton(QIcon(":/assets/images/icons/add.png"), 28, toolBar);
-        addOBJButton->setGeometry(QRect(0, 200, 50, 50));
+        addCameraButton = new QIconButton(QIcon(":/assets/images/icons/camera.png"), 28, toolBar);
+        addCameraButton->setGeometry(QRect(0, 200, 50, 50));
 
         addLightButton = new QIconButton(QIcon(":/assets/images/icons/light.png"), 28, toolBar);
         addLightButton->setGeometry(QRect(0, 250, 50, 50));
@@ -121,9 +122,10 @@ public:
         extraButtonsMenu->addAction(addMonkey);
         addTeapot = new QAction("Teapot");
         extraButtonsMenu->addAction(addTeapot);
+        addOBJ = new QAction("OBJ");
+        extraButtonsMenu->addAction(addOBJ);
 
         addExtrasButton->setMenu(extraButtonsMenu);
-
 
         debugBar = new QWidget(centralWidget);
         debugBar->setGeometry(QRect(23, 765, 50, 100));
