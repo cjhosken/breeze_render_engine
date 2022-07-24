@@ -10,16 +10,19 @@ public:
 	QSlider* edit;
 
 	SliderField(QString n, int min, int max, int set, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
+		label->setProperty("class", "label");
+		label->setStyleSheet(settings.value("styles/root").toString());
 		edit = new QSlider();
 		edit->setMaximum(max);
 		edit->setMinimum(min);
 		edit->setValue(set);
 		edit->setOrientation(Qt::Horizontal);
-		edit->setStyleSheet("QSlider::groove::horizontal {background-color: rgb(25, 25, 25); height: 4px; border-radius: 2px;} QSlider::handle::horizontal {background-color: white; border: 2px solid white; width: 10px; height: 10px; line-height: 10px;margin-top: -5px; margin-bottom: -5px;border-radius: 6px;}");
+		edit->setProperty("class", "slider");
+		edit->setStyleSheet(settings.value("styles/root").toString());
 
 		root->addWidget(label);
 		root->addWidget(edit);

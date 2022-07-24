@@ -54,7 +54,8 @@ public:
         rays->setLayout(raysVBox);
 
         renderButton = new QPushButton("Render");
-        renderButton->setStyleSheet("QPushButton{background-color: transparent; padding: 5px; color: white; border: 1px solid white; border-radius: 10px;}");
+        renderButton->setProperty("class", "wireButton");
+        renderButton->setStyleSheet(settings.value("styles/root").toString());
 
         QVBoxLayout* vbox = new QVBoxLayout();
         vbox->addWidget(dims);

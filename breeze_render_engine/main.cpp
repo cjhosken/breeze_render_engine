@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 
 	QApplication app(argc, argv);
 
-	QCoreApplication::setApplicationVersion("2022.19.7");
+	QCoreApplication::setApplicationVersion("2022.24.7");
 	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 	app.setWindowIcon(QIcon(":/assets/images/logo.png"));
 

@@ -109,11 +109,11 @@ public:
 			}
 
 			else if (keyEvent->key() == Qt::Key_Delete) {
-				if (ui->glCanvas->objectSelected) {
-					ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
-					ui->glCanvas->selectedObject = NULL;
-					ui->glCanvas->objectSelected = false;
-				}
+					if (ui->glCanvas->objectSelected) {
+						ui->glCanvas->world.removeID(ui->glCanvas->selectedObject->id);
+						ui->glCanvas->selectedObject = NULL;
+						ui->glCanvas->objectSelected = false;
+					}
 			}
 		}
 		return QMainWindow::eventFilter(target, ev);

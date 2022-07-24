@@ -333,7 +333,6 @@ private:
 
     bool firstMouse = true;
     bool click = false;
-    bool rendering = false;
 
     std::vector<Shader> shaders;
     std::vector<Texture> textures;
@@ -355,6 +354,8 @@ public:
 
     Model* selectedObject;
     bool cameraSelected = true;
+
+    bool rendering = false;
 };
 
 #endif // !GLWIDGET_H

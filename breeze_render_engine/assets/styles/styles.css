@@ -100,6 +100,24 @@ QTabBar::tab::hover {
     FIELDS
 */
 
+QSlider::groove::horizontal {
+    background-color: rgba(255, 255, 255, 0.1); 
+    height: 4px; 
+    border-radius: 2px;
+
+}
+
+QSlider::handle::horizontal {
+    background-color: white;
+    border: 2px solid white;
+    width: 10px;
+    height: 10px;
+    line-height: 5px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    border-radius: 6px;
+}
+
 .colorButton {
     background-color: black;
     border: 1px outset rgb(50, 50, 50);
@@ -110,11 +128,29 @@ QTabBar::tab::hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-
 .colorPopup {
     background-color: rgba(15, 15, 15, 200);
 }
 
+.colorPopup QPushButton {
+    border-radius: 7px;
+    background-color: transparent;
+    color: white;
+}
+
+.colorPopup QPushButton::hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.colorPopup QLineEdit {
+        background: rgba(15, 15, 15, 200);
+        color: white;
+}
+
+.colorPopup QSpinBox {
+    color: white;
+    background: rgba(15, 15, 15, 200);
+}
 
 
 /*
@@ -139,9 +175,21 @@ QTabBar::tab::hover {
 }
 
 .confirmationBox QPushButton::hover {
-        background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .progressBox {
-    backgorund-color: rgba(15, 15, 15, 200);
+    background-color: rgba(15, 15, 15, 200);
+}
+
+.progressBox QProgressBar {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 7px;
+    text-align:center;
+}
+
+.progressBox QProgressBar::chunk {
+    background-color: rgb(168, 74, 214);
+    border-radius: 7px;
 }

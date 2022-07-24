@@ -1,9 +1,5 @@
 ﻿  Reading Qt configuration (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
   rcc resource.qrc
-  moc src\interface\mainwindow.h
-  main.cpp
-  GLWidget.cpp
-  moc_mainwindow.cpp
   qrc_resource.cpp
   breeze_render_engine.vcxproj -> C:\Users\user\source\repos\breeze_render_engine\x64\Debug\breeze_render_engine.exe
   windeployqt: "C:/Qt/6.2.4/msvc2019_64/bin\windeployqt.exe" --list target --dir C:\Users\user\source\repos\breeze_render_engine\x64\Debug\ C:\Users\user\source\repos\breeze_render_engine\x64\Debug\breeze_render_engine.exe

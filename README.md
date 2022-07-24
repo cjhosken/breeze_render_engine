@@ -1,4 +1,17 @@
 # Breeze Render Engine
+
+//TODOs
+
+- Custom Color Dialog
+- Shading view (with lights)
+- Complete rendering
+- Object panel
+
+
+// Extra TODOs
+- HDRI world?
+
+
 ## Introductions
 
 *Breeze Render Engine* is a c++ program that can create and render 3-dimensional scenes. Users have the ability to add, edit, and move objects to create their own pieces of art.

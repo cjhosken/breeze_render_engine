@@ -37,11 +37,13 @@ void GLWidget::render() {
         const int depth = renderSettings.bounces;
 
         unsigned char* data = new unsigned char[width * height * channels];
+
+        World tmpWorld = world;
        
         rendering = true;
         renderCamera.setupForRender();
 
-        int max = width * (height - 1);
+        int max = width * height;
 
         QRenderPopup* progressPopup = new QRenderPopup(max);
 
@@ -60,7 +62,7 @@ void GLWidget::render() {
                     float j = (float(y) + random_float()) / float(height - 1);
 
                     Ray r = renderCamera.get_ray(i, j);
-                    pixel_color += ray_color(r, world, depth);
+                    pixel_color += ray_color(r, tmpWorld, depth);
                 }
 
                 pixel_color /= samples;
@@ -71,10 +73,7 @@ void GLWidget::render() {
             }
         }
 
-        progressPopup->end();
-
         stbi_write_png("render.png", width, height, channels, data, width * channels);
-
 
         rendering = false;
 
