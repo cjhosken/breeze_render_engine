@@ -57,8 +57,8 @@ public:
 		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderWidth(QString)));
 		connect(ui->propertiesPanel->renderTab->heightInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderHeight(QString)));
 
-		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderSamples(QString)));
-		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderBounces(QString)));
+		connect(ui->propertiesPanel->renderTab->samplesInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderSamples(QString)));
+		connect(ui->propertiesPanel->renderTab->bouncesInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderBounces(QString)));
 
 		connect(ui->propertiesPanel->renderTab->renderButton, SIGNAL(clicked()), this, SLOT(onRenderButton()));
 
@@ -125,7 +125,7 @@ private slots:
 			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->rotation = r;
 		}
 		else {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->location = r;
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->rotation = r;
 		}
 		ui->glCanvas->repaint();
 	}

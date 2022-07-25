@@ -22,10 +22,6 @@ If you would prefer to watch a tutorial than read the documentation, you can fin
 
 ## Known Bugs
 
-- Messy Color Dialog.
-
-- Object transformations aren't accurate.
-
 - Rendering not fully implemented.
 - Crashes when rendering large images.
 - Runs in background after quitting when cancelling render.

@@ -77,16 +77,27 @@ public:
 	QMatrix4x4 getModelMatrix() {
 		QMatrix4x4 scaleMatrix = QMatrix4x4();
 		scaleMatrix.setToIdentity();
-		scaleMatrix.scale(scale - QVector3D(1.0f, 1.0f, 1.0f));
+		scaleMatrix.scale(scale);
 
-		QMatrix4x4 rotMatrix = QMatrix4x4();
-		rotMatrix.setToIdentity();
+		QMatrix4x4 rotXMatrix = QMatrix4x4();
+		rotXMatrix.setToIdentity();
+		rotXMatrix.rotate(rotation.x(), QVector3D(1, 0, 0));
+
+		QMatrix4x4 rotYMatrix = QMatrix4x4();
+		rotYMatrix.setToIdentity();
+		rotYMatrix.rotate(rotation.y(), QVector3D(0, 1, 0));
+
+		QMatrix4x4 rotZMatrix = QMatrix4x4();
+		rotZMatrix.setToIdentity();
+		rotZMatrix.rotate(rotation.z(), QVector3D(0, 0, 1));
 		
+		QMatrix4x4 rotMatrix = rotXMatrix * rotYMatrix * rotZMatrix;
+
 		QMatrix4x4 locMatrix = QMatrix4x4();
 		locMatrix.setToIdentity();
 		locMatrix.translate(location);
 
-		return scaleMatrix * rotMatrix + locMatrix;
+		return locMatrix * rotMatrix * scaleMatrix;
 	}
 
 	void dispose() {

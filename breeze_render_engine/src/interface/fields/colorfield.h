@@ -13,9 +13,7 @@ public:
 	ColorField(QString n, QWidget* parent = nullptr) : QWidget(parent) {
 		QSettings settings;
 		
-		popup = new QColorDialog(QColorDialog::DontUseNativeDialog);
-		popup->setProperty("class", "colorPopup");
-		popup->setStyleSheet(settings.value("styles/root").toString());
+		popup = new QColorDialog();
 
 		root = new QHBoxLayout(this);
 
