@@ -30,5 +30,6 @@
         <file>assets/styles/styles.css</file>
         <file>render.png</file>
         <file>assets/images/icons/camera.png</file>
+        <file>assets/images/icons/add.png</file>
     </qresource>
 </RCC>

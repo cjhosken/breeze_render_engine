@@ -4,7 +4,6 @@
 #include "../common.h"
 #include "model.h"
 #include "ray.h"
-#include "light.h"
 #include "rendercamera.h"
 
 struct HitData {
@@ -16,15 +15,10 @@ struct HitData {
 class World {
 public:
     std::vector<std::shared_ptr<RenderCamera>> cameras;
-    std::vector<std::shared_ptr<Light>> lights;
     std::vector<std::shared_ptr<Model>> models;
 
     void add(std::shared_ptr<Model> m) {
         models.push_back(m);
-    }
-
-    void add(std::shared_ptr<Light> l) {
-        lights.push_back(l);
     }
 
     void add(std::shared_ptr<RenderCamera> c) {
@@ -32,19 +26,14 @@ public:
     }
 
     unsigned int idAt(unsigned int id) {
-        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+        for (unsigned int idx = 0; idx < models.size() + cameras.size(); idx++) {
             if (idx < models.size()) {
                 if (models.at(idx).get()->id == id) {
                     return idx;
                 }
             }
-            else if (idx < lights.size()) {
-                if (lights.at(idx - models.size()).get()->id == id) {
-                    return idx;
-                }
-            }
             else {
-                if (cameras.at(idx - (models.size() + lights.size())).get()->id == id) {
+                if (cameras.at(idx - models.size()).get()->id == id) {
                     return idx;
                 }
             }
@@ -53,39 +42,31 @@ public:
     }
 
     void removeWithID(unsigned int id) {
-        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+        for (unsigned int idx = 0; idx < models.size() + cameras.size(); idx++) {
             if (idx < models.size()) {
                 if (models.at(idx).get()->id == id) {
                     models.erase(models.begin() + idx);
                 }
             }
-            else if (idx < lights.size()) {
-                if (lights.at(idx - models.size()).get()->id == id) {
-                    lights.erase(lights.begin() + (idx - models.size()));
-                }
-            }
             else {
-                if (cameras.at(idx - (models.size() + lights.size())).get()->id == id) {
-                    cameras.erase(cameras.begin() + (idx - (models.size() + lights.size())));
+                if (cameras.at(idx - models.size()).get()->id == id) {
+                    cameras.erase(cameras.begin() + (idx - models.size()));
                 }
             }
         }
     }
 
     int size() {
-        return models.size() + lights.size() + cameras.size();
+        return models.size() + cameras.size();
     }
 
     void deselectAll() {
-        for (unsigned int idx = 0; idx < models.size() + lights.size() + cameras.size(); idx++) {
+        for (unsigned int idx = 0; idx < models.size() + cameras.size(); idx++) {
             if (idx < models.size()) {
                 models.at(idx).get()->selected = false;
             }
-            else if (idx < lights.size()) {
-                lights.at(idx - models.size()).get()->selected = false;
-            }
             else {
-                cameras.at(idx - (models.size() + lights.size())).get()->selected = false;
+                cameras.at(idx - models.size()).get()->selected = false;
             }
         }
     }
@@ -112,19 +93,6 @@ public:
             if (cameras.at(idx).get()->id == id) {
                 RenderCamera* camera = cameras.at(idx).get();
                 return camera;
-            }
-        }
-    }
-
-    Light* getLight(unsigned int idx) {
-        return lights.at(idx).get();
-    }
-
-    Light* getLightFromID(unsigned int id) {
-        for (unsigned int idx = 0; idx < lights.size(); idx++) {
-            if (lights.at(idx).get()->id == id) {
-                Light* light = lights.at(idx).get();
-                return light;
             }
         }
     }

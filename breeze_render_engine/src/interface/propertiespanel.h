@@ -10,7 +10,6 @@ public:
     RenderTab* renderTab;
     WorldTab* worldTab;
     ObjectTab* objectTab;
-    LightTab* lightTab;
     CameraTab* cameraTab;
     
     PropertiesPanel(QWidget* parent = nullptr) : QWidget(parent) {
@@ -19,7 +18,6 @@ public:
         setStyleSheet(settings.value("styles/root").toString());
 
         root = new QTabWidget(this);
-        root->setStyleSheet(settings.value("styles/root").toString());
 
         renderTab = new RenderTab();
         worldTab = new WorldTab();

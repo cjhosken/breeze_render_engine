@@ -10,7 +10,6 @@
 #include "../opengl/canvas.h"
 #include "../opengl/rendercamera.h"
 #include "../opengl/texture.h"
-#include "../opengl/light.h"
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions {
 	Q_OBJECT
@@ -86,13 +85,11 @@ protected:
         Shader defaultShader(":/assets/shaders/default.vert", ":/assets/shaders/default.frag");
         Shader wireShader(":/assets/shaders/default.vert", ":/assets/shaders/flat.frag");
         Shader IDShader(":/assets/shaders/default.vert", ":/assets/shaders/flat.frag");
-        Shader lightShader(":/assets/shaders/default.vert", ":/assets/shaders/light.frag");
         Shader canvasShader(":/assets/shaders/canvas.vert", ":/assets/shaders/canvas.frag");
 
         shaders.push_back(defaultShader);
         shaders.push_back(wireShader);
         shaders.push_back(IDShader);
-        shaders.push_back(lightShader);
         shaders.push_back(canvasShader);
 
         cvs.init();
@@ -134,21 +131,13 @@ protected:
         shaders[2].setMat4("projection", projection);
         shaders[2].setMat4("view", view);
 
-        // Light Shader
-        shaders[3].use();
-        shaders[3].setMat4("projection", projection);
-        shaders[3].setMat4("view", view);
-
         if (click && selecting) {
             for (int idx = 0; idx < world.size(); idx++) {
                 if (idx < world.models.size()) {
                     world.getModel(idx)->draw(shaders.at(2), ID);
                 }
-                else if (idx < world.lights.size()) {
-                    world.getLight(idx - world.models.size())->draw(shaders.at(2), ID);
-                }
                 else {
-                    world.getCamera(idx - (world.models.size() + world.lights.size()))->draw(shaders.at(2), ID);
+                    world.getCamera(idx - world.models.size())->draw(shaders.at(2), ID);
                 }
             }
 
@@ -171,16 +160,9 @@ protected:
                             break;
                         }
                     }
-                    else if (idx < world.lights.size()) {
-                        if (world.getLight(idx - world.models.size())->id == pickedID) {
-                            Light* light = world.getLight(idx - world.models.size());
-                            setSelected(light);
-                            break;
-                        }
-                    }
                     else {
-                        if (world.getCamera(idx - (world.models.size() + world.lights.size()))->id == pickedID) {
-                            RenderCamera* camera = world.getCamera(idx - (world.models.size() + world.lights.size()));
+                        if (world.getCamera(idx - world.models.size())->id == pickedID) {
+                            RenderCamera* camera = world.getCamera(idx - world.models.size());
                             setSelected(camera);
                             break;
                         }
@@ -192,7 +174,7 @@ protected:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);            
         }
 
-        cvs.draw(shaders.at(4));
+        cvs.draw(shaders.at(3));
 
         glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -205,27 +187,20 @@ protected:
 
                     Model* model = world.getModel(idx);
 
-                    model->draw(shaders.at(0), sceneDrawType);
-
-                    if (model->selected) {
+                    if (sceneDrawType == DEFAULT) {
+                        model->draw(shaders.at(0), DEFAULT);
+                        if (model->selected) {
+                            model->draw(shaders.at(1), WIRE);
+                        }
+                    }
+                    else if (sceneDrawType == WIRE) {
                         model->draw(shaders.at(1), WIRE);
                     }
                 }
             }
-            else if (idx < world.lights.size()) {
-                if (world.lights.size() > 0) {
-                    shaders[3].use();
-                    glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, textures[1].TXO);
-                    shaders[3].setInt("light", 0);
-
-                    Light* light = world.getLight(idx - world.models.size());
-                    light->draw(shaders.at(3), DEFAULT);
-                }
-            }
             else {
                 if (world.cameras.size() > 0) {
-                    RenderCamera* camera = world.getCamera(idx - (world.models.size() + world.lights.size()));
+                    RenderCamera* camera = world.getCamera(idx - world.models.size());
                     camera->draw(shaders.at(1), WIRE);
                 }
             }
@@ -291,14 +266,6 @@ protected:
         selectID = m->id;
         selectType = MODEL;
 
-        emit updateSelection();
-    }
-
-    void setSelected(Light* &l) {
-        l->selected = true;
-        selectID = l->id;
-        selectType = LIGHT;
-        
         emit updateSelection();
     }
 

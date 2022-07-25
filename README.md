@@ -1,27 +1,8 @@
 # Breeze Render Engine
 
-//TODOs
-
-- Custom Color Dialog
-- Remove shading view option (not enough time).
-- Complete rendering
-
-
-//BUGs
-
-- Crashes when rendering large images
-- runs in background after quitting when cancelling render
-- Out of bounds exception for camera when (remove cube, add light, add cube)
-
-// Extra TODOs
-- HDRI world?
-
-
 ## Introductions
 
-*Breeze Render Engine* is a c++ program that can create and render 3-dimensional scenes. Users have the ability to add, edit, and move objects to create their own pieces of art.
-
-*Breeze Render Engine* is my first c++ project, and has taken me around 8 months part time to complete.
+*Breeze Render Engine* is a c++ program that can create and render 3-dimensional scenes. Users have the ability to add, edit, and move objects to create their own pieces of art. *Breeze Render Engine* is my first c++ project, and has taken me around 8 months part time to complete.
 
 ## Supported OS
 
@@ -35,16 +16,26 @@ To run *Breeze Render Engine,* you will need to go to the version releases of th
 
 ## Documentation
 
-If you would prefer to watch a tutorial than read the documentation, you can find the tutorial video [here]().
+If you would prefer to watch a tutorial than read the documentation, you can find the tutorial video [here](http://youtube.com).
 
 *// TODO*
+
+## Known Bugs
+
+- Messy Color Dialog.
+
+- Object transformations aren't accurate.
+
+- Rendering not fully implemented.
+- Crashes when rendering large images.
+- Runs in background after quitting when cancelling render.
 
 
 ## Tested Systems
 
- - *Windows 10*, *8GB RAM*, *Intel I7-7500U*, *NVIDIA GeForce 940MX*
+- *Windows 10*, *8GB RAM*, *Intel I7-7500U*, *NVIDIA GeForce 940MX*
 
- If you come across any bugs don't report them because they're features.
+If you come across any bugs don't report them because they're *features*.
 
 ## Resources
 I can't count how many stack overflow posts I've read trying to complete this project. So here are some more generalized resources that I used.
@@ -57,14 +48,9 @@ I can't count how many stack overflow posts I've read trying to complete this pr
 
 - [*Qt Documentation*](https://doc.qt.io/)
 
-## Special Thanks
-
-A very special thanks to `deccer#1371` and those on the Graphics Programming Discord. They really saved the day.
-
-If you would like help with your own graphics programs, join their Discord server. https://discord.gg/6mgNGk7
-
 ## Contact
 
 *Breeze Render Engine* was written by me, Christopher Hosken. You can get in contact with me here.
 
 - hoskenchristopher@gmail.com
+- @cjhosken

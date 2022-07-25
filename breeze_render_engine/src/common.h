@@ -68,7 +68,6 @@ enum DrawType {
     DEFAULT,
     WIRE,
     ID,
-    SHADED
 };
 
 inline float random_float() {

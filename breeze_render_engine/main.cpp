@@ -10,10 +10,9 @@ int main(int argc, char** argv) {
 	QCoreApplication::setOrganizationDomain("cjhosken.io");
 	QSettings settings;
 
-
 	QApplication app(argc, argv);
 
-	QCoreApplication::setApplicationVersion("2022.24.7");
+	QCoreApplication::setApplicationVersion("2022.25.7");
 	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 	app.setWindowIcon(QIcon(":/assets/images/logo.png"));
 

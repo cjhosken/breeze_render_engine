@@ -33,18 +33,16 @@ public:
 		connect(ui->addPlaneButton, SIGNAL(clicked()), this, SLOT(onAddPlaneButtonClick()));
 		connect(ui->addSphereButton, SIGNAL(clicked()), this, SLOT(onAddSphereButtonClick()));
 		connect(ui->addCameraButton, SIGNAL(clicked()), this, SLOT(onAddCameraButtonClick()));
-		connect(ui->addLightButton, SIGNAL(clicked()), this, SLOT(onAddLightButtonClick()));
+		connect(ui->addOBJButton, SIGNAL(clicked()), this, SLOT(onAddOBJButtonClick()));
 		// Extra Buttons
 		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButtonClick()));
 		connect(ui->addTriangle, SIGNAL(triggered()), this, SLOT(onAddTriangleButtonClick()));
 		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButtonClick()));
 		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButtonClick()));
 		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButtonClick()));
-		connect(ui->addOBJ, SIGNAL(triggered()), this, SLOT(onAddOBJButtonClick()));
 
 		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
 		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
-		connect(ui->shadedViewButton, SIGNAL(clicked()), this, SLOT(onLightViewButtonClick()));
 
 		connect(ui->docsButton, SIGNAL(clicked()), this, SLOT(onDocumentationButtonClick()));
 		connect(ui->codeButton, SIGNAL(clicked()), this, SLOT(onCodeButtonClick()));
@@ -57,7 +55,7 @@ public:
 		// RENDERING
 
 		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderWidth(QString)));
-		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderHeight(QString)));
+		connect(ui->propertiesPanel->renderTab->heightInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderHeight(QString)));
 
 		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderSamples(QString)));
 		connect(ui->propertiesPanel->renderTab->widthInput->edit, SIGNAL(textEdited(QString)), this, SLOT(setRenderBounces(QString)));
@@ -116,9 +114,6 @@ private slots:
 		if (ui->glCanvas->selectType == MODEL) {
 			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->location = l;
 		}
-		else if (ui->glCanvas->selectType == LIGHT) {
-			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->location = l;
-		}
 		else {
 			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->location = l;
 		}
@@ -128,9 +123,6 @@ private slots:
 	void setSelectedObjectRotation(QVector3D r) {
 		if (ui->glCanvas->selectType == MODEL) {
 			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->rotation = r;
-		}
-		else if (ui->glCanvas->selectType == LIGHT) {
-			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->rotation = r;
 		}
 		else {
 			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->location = r;
@@ -142,9 +134,6 @@ private slots:
 		if (ui->glCanvas->selectType == MODEL) {
 			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->scale = s;
 		}
-		else if (ui->glCanvas->selectType == LIGHT) {
-			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->scale = s;
-		}
 		else {
 			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->scale = s;
 		}
@@ -154,9 +143,6 @@ private slots:
 	void renameSelectedObject(QString n) {
 		if (ui->glCanvas->selectType == MODEL) {
 			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->name = n;
-		}
-		else if (ui->glCanvas->selectType == LIGHT) {
-			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->name = n;
 		}
 		else {
 			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->name = n;
@@ -186,58 +172,48 @@ private slots:
 		}
 	}
 
-	void setSelectedObjectStrength(QString num_f) {
-		if (ui->glCanvas->selectType == LIGHT) {
-			ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID)->light.strength = num_f.toFloat();
-		}
-	}
-
 	void setSelectedObjectFOV(int f) {
 		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->fov = float(f);
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->setFov(f);
 		}
+		ui->glCanvas->repaint();
 	}
 
 	void setSelectedObjectDOF(bool b) {
 		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.dof = b;
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->dof = b;
 		}
-
-		ui->propertiesPanel->cameraTab->distance->edit->setEnabled(b);
-		ui->propertiesPanel->cameraTab->aperture->edit->setEnabled(b);
 	}
 
 	void setSelectedObjectDistance(QString num_f) {
 		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.distance = num_f.toFloat();
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->distance = num_f.toFloat();
 		}
 	}
 
 	void setSelectedObjectAperture(QString num_f) {
 		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->settings.aperture = num_f.toFloat();
+			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->aperture = num_f.toFloat();
 		}
 	}
 
 	void setRenderWidth(QString num_s) {
 
-		ui->glCanvas->world.getCamera(0)->settings.width = num_s.toInt();
-		ui->glCanvas->world.getCamera(0)->rescale(ui->glCanvas->world.getCamera(0)->settings.width, ui->glCanvas->world.getCamera(0)->settings.height);
+		ui->glCanvas->world.getCamera(0)->setWidth(num_s.toInt());
 		ui->glCanvas->repaint();
 	}
 
 	void setRenderHeight(QString num_s) {
-		ui->glCanvas->world.getCamera(0)->settings.height = num_s.toInt();
-		ui->glCanvas->world.getCamera(0)->rescale(ui->glCanvas->world.getCamera(0)->settings.width, ui->glCanvas->world.getCamera(0)->settings.height);
+		ui->glCanvas->world.getCamera(0)->setHeight(num_s.toInt());
 		ui->glCanvas->repaint();
 	}
 
 	void setRenderSamples(QString num_s) {
-		ui->glCanvas->world.getCamera(0)->settings.samples = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->samples = num_s.toInt();
 	}
 
 	void setRenderBounces(QString num_s) {
-		ui->glCanvas->world.getCamera(0)->settings.bounces = num_s.toInt();
+		ui->glCanvas->world.getCamera(0)->bounces = num_s.toInt();
 	}
 
 	void updateObjectPanel() {
@@ -262,21 +238,6 @@ private slots:
 
 			ui->propertiesPanel->root->addTab(ui->propertiesPanel->objectTab, "Object");
 
-		} else if (ui->glCanvas->selectType == LIGHT) {
-			ui->propertiesPanel->lightTab = new LightTab();
-			ui->propertiesPanel->lightTab->setLight(ui->glCanvas->world.getLightFromID(ui->glCanvas->selectID));
-
-			// RECONNECT LIGHT SLOTS
-			connect(ui->propertiesPanel->lightTab->name, SIGNAL(textEdited(QString)), this, SLOT(renameSelectedObject(QString)));
-
-			connect(ui->propertiesPanel->lightTab->loc, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectLocation(QVector3D)));
-
-			connect(ui->propertiesPanel->lightTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
-			connect(ui->propertiesPanel->lightTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
-			connect(ui->propertiesPanel->lightTab->strength->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectStrength(QString)));
-
-			ui->propertiesPanel->root->addTab(ui->propertiesPanel->lightTab, "Light");
-
 		} else if (ui->glCanvas->selectType == CAMERA) {
 			ui->propertiesPanel->cameraTab = new CameraTab();
 			ui->propertiesPanel->cameraTab->setCamera(ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID));
@@ -291,10 +252,6 @@ private slots:
 
 			connect(ui->propertiesPanel->cameraTab->distance->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectDistance(QString)));
 			connect(ui->propertiesPanel->cameraTab->aperture->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectAperture(QString)));
-
-			ui->propertiesPanel->cameraTab->distance->edit->setEnabled(ui->propertiesPanel->cameraTab->dof->edit->isChecked());
-			ui->propertiesPanel->cameraTab->aperture->edit->setEnabled(ui->propertiesPanel->cameraTab->dof->edit->isChecked());
-
 
 			ui->propertiesPanel->root->addTab(ui->propertiesPanel->cameraTab, "Camera");
 		}
@@ -367,10 +324,6 @@ private slots:
 		ui->glCanvas->world.add(std::make_shared <OBJModel>(path, "Custom OBJ"));
 	}
 
-	void onAddLightButtonClick() {
-		ui->glCanvas->world.add(std::make_shared<Light>("Light"));
-	}
-
 	void onAddCameraButtonClick() {
 		ui->glCanvas->world.add(std::make_shared<RenderCamera>("Camera"));
 	}
@@ -380,8 +333,6 @@ private slots:
 		ui->solidViewButton->setColor();
 		ui->wireViewButton->setChecked(false);
 		ui->wireViewButton->setColor();
-		ui->shadedViewButton->setChecked(false);
-		ui->shadedViewButton->setColor();
 		ui->glCanvas->setSceneDrawType(DEFAULT);
 		ui->glCanvas->repaint();
 	}
@@ -391,20 +342,7 @@ private slots:
 		ui->wireViewButton->setColor();
 		ui->solidViewButton->setChecked(false);
 		ui->solidViewButton->setColor();
-		ui->shadedViewButton->setChecked(false);
-		ui->shadedViewButton->setColor();
 		ui->glCanvas->setSceneDrawType(WIRE);
-		ui->glCanvas->repaint();
-	}
-
-	void onLightViewButtonClick() {
-		ui->shadedViewButton->setChecked(true);
-		ui->shadedViewButton->setColor();
-		ui->wireViewButton->setChecked(false);
-		ui->wireViewButton->setColor();
-		ui->solidViewButton->setChecked(false);
-		ui->solidViewButton->setColor();
-		ui->glCanvas->setSceneDrawType(SHADED);
 		ui->glCanvas->repaint();
 	}
 

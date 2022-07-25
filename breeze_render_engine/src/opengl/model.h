@@ -63,20 +63,7 @@ public:
 			}
 			else {
 				shader.setColor("color", wireDefaultColor);
-			}
-			glLineWidth(1.0f);
-		}
-		else if (draw == SHADED) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			
-			shader.setMaterial(material);
-
-			if (selected) {
-				float r = (material.color.red() + selectedColor.red()) / 2.0f;
-				float g = (material.color.green() + selectedColor.green()) / 2.0f;
-				float b = (material.color.blue() + selectedColor.blue()) / 2.0f;
-				QColor newColor = QColor(r, g, b);
-				shader.setColor("material.color", newColor);
+				glLineWidth(1.0f);
 			}
 		}
 
@@ -84,6 +71,7 @@ public:
 		glBindVertexBuffer(1, mesh.getVBO(), offsetof(Vertex, normal), sizeof(Vertex));
 		glBindVertexBuffer(2, mesh.getVBO(), offsetof(Vertex, uv), sizeof(Vertex));
 		glDrawArrays(GL_TRIANGLES, 0, mesh.data.size());
+		glLineWidth(1.0f);
 	}
 
 	QMatrix4x4 getModelMatrix() {

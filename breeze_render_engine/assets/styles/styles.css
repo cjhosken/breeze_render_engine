@@ -90,6 +90,16 @@ QTabBar::tab::hover {
     color: white;
 }
 
+.menu::item {
+    border-radius: 7px;
+    height: 20px;
+    width: 75px;
+}
+
+.menu::item:selected {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .panel {
     background-color: rgba(15, 15, 15, 200);
     border-radius: 20px;
@@ -166,6 +176,13 @@ QSlider::handle::horizontal {
     color: white;
 }
 
+.lineEdit {
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
 /*
     POPUP
 */
@@ -199,7 +216,7 @@ QSlider::handle::horizontal {
     color: white;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 7px;
-    text-align:center;
+    text-align: center;
 }
 
 .progressBox QProgressBar::chunk {

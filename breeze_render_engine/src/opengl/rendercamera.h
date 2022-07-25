@@ -6,11 +6,18 @@
 #include "model.h"
 #include "ray.h"
 
-#include "../interface/rendersettings.h"
-
 class RenderCamera : public Model {
 public:
-	RenderSettings settings;
+	int width = 640;
+	int height = 480;
+
+	int channels = 3;
+	int samples = 4;
+	int bounces = 2;
+
+	bool dof = false;
+	float distance = 1.0f;
+	float aperture = 2.0f;
 	float fov = 35.0f;
 
 	RenderCamera(QString n) : Model(n) {
@@ -37,15 +44,34 @@ public:
 
 		mesh = cameraMesh;
 
-		settings = RenderSettings();
-
-		rescale(settings.width, settings.height);
+		rescale();
 	}
 
-	void rescale(int w, int h) {
-		float ratio = float(w) / float(h);
+	void setFov(float f) {
+		fov = f;
+		rescale();
+	}
 
-		scale = QVector3D(ratio, 1.0f, fov / 180.0f);
+	void setWidth(int w) {
+		width = w;
+		rescale();
+	}
+
+	void setHeight(int h) {
+		height = h;
+		rescale();
+	}
+
+	void rescale() {
+		float ratio = float(width) / float(height);
+
+		qDebug() << "FOV: " << fov;
+		qDebug() << "RATIO: " << ratio;
+		qDebug() << "WIDTH: " << float(width);
+		qDebug() << "HEIGHT: " << float(height);
+
+
+		scale = QVector3D(ratio, 1.0f, (fov / 180.0f));
 	}
 
 	void setupForRender() {
@@ -57,7 +83,7 @@ public:
 		QVector3D vup = QVector3D(0.0, -1.0f, 0.0);
 
 
-		float aspect_ratio = float(settings.width) / float(settings.height);
+		float aspect_ratio = float(width) / float(height);
 
 		float theta = qDegreesToRadians(fov);
 		float h = tan(theta / 2);

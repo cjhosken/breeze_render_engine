@@ -3,8 +3,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
-#include "rendersettings.h"
-
 #include <QProgressBar>
 #include "widgets/qrenderpopup.h"
 
@@ -30,13 +28,11 @@ void GLWidget::render() {
     if (!rendering && world.cameras.size() > 0) {
         RenderCamera* camera = world.getCamera(0);
 
-        RenderSettings renderSettings = camera->settings;
-
-        const int width = renderSettings.width;
-        const int height = renderSettings.height;
-        const int channels = renderSettings.channels;
-        const int samples = renderSettings.samples;
-        const int depth = renderSettings.bounces;
+        const int width = camera->width;
+        const int height = camera->height;
+        const int channels = camera->channels;
+        const int samples = camera->samples;
+        const int depth = camera->bounces;
 
         unsigned char* data = new unsigned char[width * height * channels];
 

@@ -11,28 +11,39 @@ public:
 	QValidator* validator;
 
 	FloatField(float min, float max, float mid, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		validator = new QDoubleValidator(double(min), double(max), 3, this);
 		root = new QHBoxLayout(this);
 
 		edit = new QLineEdit();
 		edit->setValidator(validator);
 
+		edit->setProperty("class", "textEdit");
+		edit->setStyleSheet(settings.value("styles/root").toString());
+
 		edit->setText(QString::number(mid));
+		edit->setAlignment(Qt::AlignCenter);
 
 		root->addWidget(edit);
-		root->setAlignment(Qt::AlignCenter);
 	}
 
 	FloatField(QString n, float min, float max, float mid, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		validator = new QDoubleValidator(double(min), double(max), 3, this);
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
+		label->setProperty("class", "label");
+		label->setStyleSheet(settings.value("styles/root").toString());
 		edit = new QLineEdit();
 		edit->setValidator(validator);
 
+		edit->setProperty("class", "lineEdit");
+		edit->setStyleSheet(settings.value("styles/root").toString());
+		edit->setPalette(QColor(255, 0, 0));
+
 		edit->setText(QString::number(mid));
+		edit->setAlignment(Qt::AlignCenter);
 
 		root->addWidget(label);
 		root->addWidget(edit);

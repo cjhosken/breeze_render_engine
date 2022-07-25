@@ -32,7 +32,7 @@ public:
     QIconButton* addPlaneButton;
     QIconButton* addSphereButton;
     QIconButton* addCameraButton;
-    QIconButton* addLightButton;
+    QIconButton* addOBJButton;
     QIconButton* addExtrasButton;
 
     QIconButton* docsButton;
@@ -40,7 +40,6 @@ public:
 
     QToggleIconButton* wireViewButton;
     QToggleIconButton* solidViewButton;
-    QToggleIconButton* shadedViewButton;
 
     QIconButton* reportBugButton;
     QIconButton* closeButton;
@@ -100,11 +99,11 @@ public:
         addSphereButton = new QIconButton(QIcon(":/assets/images/icons/sphere.png"), 28, toolBar);
         addSphereButton->setGeometry(QRect(0, 150, 50, 50));
 
-        addCameraButton = new QIconButton(QIcon(":/assets/images/icons/camera.png"), 28, toolBar);
-        addCameraButton->setGeometry(QRect(0, 200, 50, 50));
+        addOBJButton = new QIconButton(QIcon(":/assets/images/icons/add.png"), 28, toolBar);
+        addOBJButton->setGeometry(QRect(0, 200, 50, 50));
 
-        addLightButton = new QIconButton(QIcon(":/assets/images/icons/light.png"), 28, toolBar);
-        addLightButton->setGeometry(QRect(0, 250, 50, 50));
+        addCameraButton = new QIconButton(QIcon(":/assets/images/icons/camera.png"), 28, toolBar);
+        addCameraButton->setGeometry(QRect(0, 250, 50, 50));
 
         addExtrasButton = new QIconButton(QIcon(":/assets/images/icons/more.png"), 28, toolBar);
         addExtrasButton->setGeometry(QRect(0, 300, 50, 50));
@@ -122,8 +121,6 @@ public:
         extraButtonsMenu->addAction(addMonkey);
         addTeapot = new QAction("Teapot");
         extraButtonsMenu->addAction(addTeapot);
-        addOBJ = new QAction("OBJ");
-        extraButtonsMenu->addAction(addOBJ);
 
         addExtrasButton->setMenu(extraButtonsMenu);
 
@@ -132,7 +129,6 @@ public:
         debugBar->setProperty("class", "panel");
         debugBar->setStyleSheet(settings.value("styles/root").toString());
 
-
         docsButton = new QIconButton(QIcon(":/assets/images/icons/info.png"), 28, debugBar);
         docsButton->setGeometry(QRect(0, 0, 50, 50));
 
@@ -140,19 +136,14 @@ public:
         codeButton->setGeometry(QRect(0, 50, 50, 50));
 
         wireViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/wire.png"), 28, centralWidget);
-        wireViewButton->setGeometry(QRect(725, 30, 50, 50));
+        wireViewButton->setGeometry(QRect(750, 30, 50, 50));
         wireViewButton->setChecked(false);
         wireViewButton->setColor();
 
         solidViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/solid.png"), 28, centralWidget);
-        solidViewButton->setGeometry(QRect(775, 30, 50, 50));
+        solidViewButton->setGeometry(QRect(800, 30, 50, 50));
         solidViewButton->setChecked(true);
         solidViewButton->setColor();
-
-        shadedViewButton = new QToggleIconButton(QIcon(":/assets/images/icons/shaded.png"), 28, centralWidget);
-        shadedViewButton->setGeometry(QRect(825, 30, 50, 50));
-        shadedViewButton->setChecked(false);
-        shadedViewButton->setColor();
 
         reportBugButton = new QIconButton(QIcon(":/assets/images/icons/bug.png"), 28, centralWidget);
         reportBugButton->setGeometry(QRect(1470, 30, 50, 50));

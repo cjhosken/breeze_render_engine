@@ -11,21 +11,22 @@ public:
 	QValidator* validator;
 
 	IntegerField(QString n, int min, int max, int mid, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		validator = new QIntValidator(min, max, this);
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: rgb(100, 100, 100);}");
+		label->setProperty("class", "label");
+		label->setStyleSheet(settings.value("styles/root").toString());
 		edit = new QLineEdit();
-
-
+		edit->setAutoFillBackground(true);
 
 		edit->setValidator(validator);
 		edit->setText(QString::number(mid));
 		edit->setAlignment(Qt::AlignCenter);
 
-
-		edit->setStyleSheet("QLineEdit{background-color: transparent; color: white; border: none; border-radius: 5px; text-align:center;}");
+		edit->setProperty("class", "lineEdit");
+		edit->setStyleSheet(settings.value("styles/root").toString());
 
 		root->addWidget(label);
 		root->addWidget(edit);

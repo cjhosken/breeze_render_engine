@@ -102,12 +102,6 @@
     <ClInclude Include="src\opengl\viewportcamera.h">
       <Filter>Source Files\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="src\opengl\world.h">
-      <Filter>Source Files\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\interface\rendersettings.h">
-      <Filter>Source Files\interface</Filter>
-    </ClInclude>
     <ClInclude Include="src\interface\ui_mainwindow.h">
       <Filter>Source Files\interface</Filter>
     </ClInclude>
@@ -125,9 +119,6 @@
     </ClInclude>
     <ClInclude Include="src\interface\fields.h">
       <Filter>Source Files\interface</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opengl\light.h">
-      <Filter>Source Files\opengl</Filter>
     </ClInclude>
     <ClInclude Include="src\interface\fields\floatfield.h">
       <Filter>Source Files\interface\fields</Filter>
@@ -156,7 +147,7 @@
     <ClInclude Include="src\interface\widgets\qconfirmbox.h">
       <Filter>Source Files\interface\widgets</Filter>
     </ClInclude>
-    <ClInclude Include="src\opengl\lightmaterial.h">
+    <ClInclude Include="src\opengl\world.h">
       <Filter>Source Files\opengl</Filter>
     </ClInclude>
   </ItemGroup>

@@ -121,7 +121,6 @@
     <QtMoc Include="src\interface\fields\qvector3dfield.h" />
     <ClInclude Include="src\interface\fields\sliderfield.h" />
     <ClInclude Include="src\interface\propertiespanel.h" />
-    <ClInclude Include="src\interface\rendersettings.h" />
     <QtMoc Include="src\interface\mainwindow.h" />
     <QtMoc Include="src\interface\glwidget.h" />
     <ClInclude Include="src\interface\tabs.h" />
@@ -131,8 +130,6 @@
     <ClInclude Include="src\interface\widgets\qrenderpopup.h" />
     <ClInclude Include="src\interface\widgets\qtoggleiconbutton.h" />
     <ClInclude Include="src\opengl\canvas.h" />
-    <ClInclude Include="src\opengl\light.h" />
-    <ClInclude Include="src\opengl\lightmaterial.h" />
     <ClInclude Include="src\opengl\material.h" />
     <ClInclude Include="src\opengl\mesh.h" />
     <ClInclude Include="src\opengl\model.h" />

@@ -1,8 +1,10 @@
-# CONTRIBUTING
+# Contributing
 
-If you're reading this, it seems you have put upon yourself to contribute to *Breeze Render Engine*.
+If you're reading this, it seems you have put upon yourself to contribute to *Breeze Render Engine*. 
 
-## SETUP
+These instructions are for Windows users. If you're a Linux or macOS user, good luck.
+
+## Setup
 
 ### Qt
 
@@ -28,7 +30,7 @@ Most of the other external libraries should be included. If not, you'll need to 
 inside of the `src` folder you can put the other libraries.
 
 
-## BUILDING
 
-Boooobbb the builder!
+## Building
 
+yip

@@ -2,6 +2,8 @@
 #define TABS_H
 
 #include "../common.h"
+#include "../opengl/model.h"
+#include "../opengl/rendercamera.h"
 #include "fields.h"
 
 class RenderTab : public QTabWidget {
@@ -16,16 +18,7 @@ public:
 
     RenderTab(QWidget* parent = nullptr) : QTabWidget(parent) {
         QSettings settings;
-        setAutoFillBackground(true);
-        /*
-            width:  ( i )
-            height: ( i )
-            samples: ( i )
-            bounces: ( i )
-            
-            [ render ] 
 
-        */
         QGroupBox* dims = new QGroupBox("Dimensions");
         dims->setProperty("class", "group");
         dims->setStyleSheet(settings.value("styles/root").toString());
@@ -76,7 +69,6 @@ public:
     
     WorldTab(QWidget* parent = nullptr) : QTabWidget(parent) {
         QSettings settings;
-        setAutoFillBackground(true);
 
         QGroupBox* view = new QGroupBox("Viewport Controls");
         view->setProperty("class", "group");
@@ -200,71 +192,6 @@ public:
     }
 };
 
-class LightTab : public QTabWidget {
-public:
-    QLineEdit* name;
-
-    QGroupBox* transform;
-    QVector3DField* loc;
-
-    QGroupBox* light;
-    ColorField* color;
-    FloatField* strength;
-
-    QVBoxLayout* vbox;
-
-
-    LightTab(QWidget* parent = nullptr) : QTabWidget(parent) {
-        QSettings settings;
-
-        name = new QLineEdit();
-        name->setProperty("class", "transparentTextInput");
-        name->setStyleSheet(settings.value("styles/root").toString());
-
-        transform = new QGroupBox("Transforms");
-        transform->setProperty("class", "group");
-        transform->setStyleSheet(settings.value("styles/root").toString());
-
-        loc = new QVector3DField("Loc:", -INFINITY, INFINITY, 0);
-
-        QVBoxLayout* transVBox = new QVBoxLayout;
-        transVBox->addWidget(loc);
-
-        transform->setLayout(transVBox);
-
-
-        light = new QGroupBox("Light");
-        light->setProperty("class", "group");
-        light->setStyleSheet(settings.value("styles/root").toString());
-        color = new ColorField("Color:");
-        strength = new FloatField("Strength:", 0.0f, INFINITY, 1.0f);
-
-        QVBoxLayout* litVBox = new QVBoxLayout;
-        litVBox->addWidget(color);
-        litVBox->addWidget(strength);
-
-        light->setLayout(litVBox);
-
-        vbox = new QVBoxLayout();
-        vbox->addWidget(transform);
-        vbox->addWidget(light);
-        vbox->addStretch();
-        setLayout(vbox);
-    }
-
-    void setLight(Light* l) {
-        name->setText(l->name);
-        loc->fromQVector3D(l->location);
-
-        color->popup->setCurrentColor(l->light.color);
-        color->changeColor();
-
-        strength->set(l->light.strength);
-
-        repaint();
-    }
-};
-
 class CameraTab : public QTabWidget {
 public:
     QLineEdit* name;
@@ -280,7 +207,6 @@ public:
     FloatField* distance;
 
     QVBoxLayout* vbox;
-
 
     CameraTab(QWidget* parent = nullptr) : QTabWidget(parent) {
         QSettings settings;
@@ -332,9 +258,9 @@ public:
         rot->fromQVector3D(c->rotation);
 
         fov->set(c->fov);
-        dof->edit->setChecked(c->settings.dof);
-        distance->set(c->settings.distance);
-        aperture->set(c->settings.aperture);
+        dof->edit->setChecked(c->dof);
+        distance->set(c->distance);
+        aperture->set(c->aperture);
 
         repaint();
     }

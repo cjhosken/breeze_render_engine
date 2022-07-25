@@ -10,10 +10,12 @@ public:
 	QCheckBox* edit;
 
 	BoolField(QString n, bool set, QWidget* parent = nullptr) : QWidget(parent) {
+		QSettings settings;
 		root = new QHBoxLayout(this);
 
 		label = new QLabel(n);
-		label->setStyleSheet(".QLabel {color: white;}");
+		label->setProperty("class", "label");
+		label->setStyleSheet(settings.value("styles/root").toString());
 		edit = new QCheckBox();
 		edit->setChecked(set);
 
