@@ -22,10 +22,10 @@ If you would prefer to watch a tutorial than read the documentation, you can fin
 
 ## Known Bugs
 
+- Rendering transformations aren't correct.
 - Rendering not fully implemented.
 - Crashes when rendering large images.
 - Runs in background after quitting when cancelling render.
-
 
 ## Tested Systems
 
