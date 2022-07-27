@@ -99,7 +99,7 @@ The *3D Scene Viewer* is relatively simple.
 
 `Delete Key`: delete selected object.
 
-`Button Press`: match camera view.
+`0`: toggle between camera view and viewport view.
 
 <br>
 
@@ -118,8 +118,6 @@ The *Properties Panel* is where you control all aspects of the scene. There are 
 <br>
 
 ## Known TODOs
-
-- Camera view button
 
 - Rendering transformations aren't correct.
 - Rendering not fully implemented.

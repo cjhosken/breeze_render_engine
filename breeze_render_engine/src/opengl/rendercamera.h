@@ -76,7 +76,7 @@ public:
 
 	void setupForRender() {
 		QVector4D front(0.0f, 0.0f, -1.0f, 0.0);
-		front = front * getModelMatrix();
+		front = front * getViewMatrix();
 
 
 		QVector3D target = QVector3D(front.x(), front.y(), front.z());
@@ -103,19 +103,43 @@ public:
 		return Ray(location, lower_left_corner + s * horizontal + t * vertical - location);
 	}
 
-	QMatrix4x4 getModelMatrix() {
-		QMatrix4x4 scaleMatrix = QMatrix4x4();
-		scaleMatrix.setToIdentity();
-		scaleMatrix.scale(scale);
+	QMatrix4x4 getViewMatrix() {
+		QMatrix4x4 locRotMatrix = getLocRotMatrix();
 
-		QMatrix4x4 rotMatrix = QMatrix4x4();
-		rotMatrix.setToIdentity();
+		QMatrix4x4 viewMatrix;
+
+		QVector3D cameraPos = QVector3D(locRotMatrix * QVector3D(0, 0, 0));
+		QVector3D frontPos = QVector3D(locRotMatrix * QVector3D(0, 0, -1));
+
+
+		viewMatrix.lookAt(cameraPos, frontPos, QVector3D(0, 1, 0));
+		return viewMatrix;
+	}
+
+	QMatrix4x4 getLocRotMatrix() {
+		QMatrix4x4 rotXMatrix = QMatrix4x4();
+		rotXMatrix.setToIdentity();
+		rotXMatrix.rotate(rotation.x(), QVector3D(1, 0, 0));
+
+		QMatrix4x4 rotYMatrix = QMatrix4x4();
+		rotYMatrix.setToIdentity();
+		rotYMatrix.rotate(rotation.y(), QVector3D(0, 1, 0));
+
+		QMatrix4x4 rotZMatrix = QMatrix4x4();
+		rotZMatrix.setToIdentity();
+		rotZMatrix.rotate(rotation.z(), QVector3D(0, 0, 1));
+
+		QMatrix4x4 rotMatrix = rotXMatrix * rotYMatrix * rotZMatrix;
 
 		QMatrix4x4 locMatrix = QMatrix4x4();
 		locMatrix.setToIdentity();
 		locMatrix.translate(location);
 
-		return scaleMatrix * rotMatrix + locMatrix;
+		QVector4D point(0.0, 0.0, 1.0, 0.0);
+
+		QMatrix4x4 locRotMatrix = locMatrix * rotMatrix;
+
+		return locRotMatrix;
 	}
 
 private:

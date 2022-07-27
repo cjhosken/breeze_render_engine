@@ -35,7 +35,7 @@ public:
 
     void setFOV(float f) {
         fov = f;
-        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
+        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat(), fov);
     }
 
     void render();
@@ -75,7 +75,7 @@ protected:
 
         glViewport(0, 0, settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
 
-        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat());
+        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat(), fov);
        
         Texture matcap(":/assets/images/matcap.jpg");
         Texture light(":/assets/images/light.jpg");
@@ -114,7 +114,14 @@ protected:
 
         glBindVertexArray(VAO);
 
+        reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat(), fov);
+
         QMatrix4x4 view = viewCamera.getViewMatrix();
+
+        if (inCameraView) {
+            view = world.getCamera(0)->getViewMatrix();
+            reproject(settings.value("app/width").toFloat(), settings.value("app/height").toFloat(), world.getCamera(0)->fov);
+        }
 
         // Default Shader
         shaders[0].use();
@@ -216,7 +223,7 @@ protected:
 
     void resizeGL(int width, int height) override {
         glViewport(0, 0, width, height);
-        reproject(float(width), float(height));
+        reproject(float(width), float(height), fov);
     };
 
     void mousePressEvent(QMouseEvent* ev) override {
@@ -230,34 +237,38 @@ protected:
     };
 
     void mouseMoveEvent(QMouseEvent* ev) override {
-        float xPos = static_cast<float>(ev->pos().x());
-        float yPos = static_cast<float>(ev->pos().y());
+            float xPos = static_cast<float>(ev->pos().x());
+            float yPos = static_cast<float>(ev->pos().y());
 
-        if (firstMouse)
-        {
+            if (firstMouse)
+            {
+                lastX = xPos;
+                lastY = yPos;
+                firstMouse = false;
+            }
+
+            float xOffset = xPos - lastX;
+            float yOffset = lastY - yPos;
+
             lastX = xPos;
             lastY = yPos;
-            firstMouse = false;
-        }
 
-        float xOffset = xPos - lastX;
-        float yOffset = lastY - yPos;
-
-        lastX = xPos;
-        lastY = yPos;
-
-        if (ev->buttons() == Qt::LeftButton) {
-            click = false;
-                viewCamera.processMouseMovement(xOffset, yOffset);
-        }
-
+            if (ev->buttons() == Qt::LeftButton) {
+                if (!inCameraView) {
+                    click = false;
+                    viewCamera.processMouseMovement(xOffset, yOffset);
+                }
+            }
+        
         click = false;
 
         repaint();
     };
 
     void wheelEvent(QWheelEvent* ev) {
-        viewCamera.processMouseScroll(ev->angleDelta().y());
+        if (!inCameraView) {
+            viewCamera.processMouseScroll(ev->angleDelta().y());
+        }
         repaint();
     }
 
@@ -281,9 +292,9 @@ signals:
     void updateSelection();
 
 private:
-    void reproject(float w, float h) {
+    void reproject(float w, float h, float f) {
         projection.setToIdentity();
-        projection.perspective(fov, w / h, clipNear, clipFar);
+        projection.perspective(f, w / h, clipNear, clipFar);
     }
 
     QSettings settings;
@@ -314,6 +325,7 @@ public:
 
     bool selecting = true;
     bool rendering = false;
+    bool inCameraView = false;
 };
 
 #endif // !GLWIDGET_H

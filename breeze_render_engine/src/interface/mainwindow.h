@@ -104,6 +104,10 @@ public:
 					updateObjectPanel();
 				}
 			}
+			else if (keyEvent->key() == Qt::Key_0) {
+				ui->glCanvas->inCameraView = !ui->glCanvas->inCameraView;
+				ui->glCanvas->repaint();
+			}
 		}
 		return QMainWindow::eventFilter(target, ev);
 	}
