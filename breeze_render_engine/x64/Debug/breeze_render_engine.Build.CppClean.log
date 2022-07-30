@@ -55,26 +55,97 @@ c:\users\user\source\repos\breeze_render_engine\x64\debug\translations\qt_uk.qm
 c:\users\user\source\repos\breeze_render_engine\x64\debug\translations\qt_zh_cn.qm
 c:\users\user\source\repos\breeze_render_engine\x64\debug\translations\qt_zh_tw.qm
 c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\windeployqt.log
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\vc143.pdb
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\qrc_resource.obj
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\glwidget.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\moc\moc_qvector3dfield.cpp
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc\moc_qvector3dfield.cpp
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc\moc_mainwindow.cpp
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc\moc_glwidget.cpp
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\rcc\qrc_resource.cpp
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6cored.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6guid.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6opengld.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6openglwidgetsd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6svgd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\qt6widgetsd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\opengl32sw.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\d3dcompiler_47.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\concrt140d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\msvcp140_1d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\msvcp140_2d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\msvcp140d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\msvcp140d_atomic_wait.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\msvcp140d_codecvt_ids.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\vccorlib140d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\vcruntime140_1d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\vcruntime140d.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\iconengines\qsvgicond.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\imageformats\qgifd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\imageformats\qicod.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\imageformats\qjpegd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\imageformats\qsvgd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\platforms\qwindowsd.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\styles\qwindowsvistastyled.dll
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_ar.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_bg.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_ca.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_cs.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_da.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_de.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_en.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_es.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_fa.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_fi.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_fr.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_gd.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_he.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_hr.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_hu.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_it.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_ja.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_ko.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_lv.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_nl.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_nn.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_pl.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_pt_br.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_ru.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_sk.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_tr.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_uk.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_zh_cn.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\translations\qt_zh_tw.qm
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\windeployqt.log
 c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\main.obj
 c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\texture.obj
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\moc_mainwindow.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\glwidget.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\vc143.pdb
 c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\moc_glwidget.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\moc_mainwindow.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\moc_qvector3dfield.obj
+c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\qrc_resource.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\glwidget.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\texture.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\main.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\vc143.pdb
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc_mainwindow.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc_qvector3dfield.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\moc_glwidget.obj
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\qrc_resource.obj
 c:\users\user\source\repos\breeze_render_engine\x64\debug\breeze_render_engine.exe
 c:\users\user\source\repos\breeze_render_engine\x64\debug\breeze_render_engine.ilk
 c:\users\user\source\repos\breeze_render_engine\x64\debug\breeze_render_engine.pdb
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\breeze_render_engine.write.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.command.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.read.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.write.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.command.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.read.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.write.1.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\moc.read.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\moc.write.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\rcc.read.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\rcc.write.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\windeployqt.read.1u.tlog
-c:\users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\windeployqt.write.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\breeze_render_engine.ilk
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\breeze_render_engine.exe
+c:\users\hoske\documents\my code\github\breeze_render_engine\x64\debug\breeze_render_engine.pdb
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\breeze_render_engine.write.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.command.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.read.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\cl.write.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.command.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.read.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\link.write.1.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\moc.read.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\moc.write.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\rcc.read.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\rcc.write.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\windeployqt.read.1u.tlog
+c:\users\hoske\documents\my code\github\breeze_render_engine\breeze_render_engine\x64\debug\breeze_r.648d478d.tlog\windeployqt.write.1u.tlog

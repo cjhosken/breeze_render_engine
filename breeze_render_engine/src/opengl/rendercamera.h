@@ -78,7 +78,6 @@ public:
 		QVector4D front(0.0f, 0.0f, -1.0f, 0.0);
 		front = front * getViewMatrix();
 
-
 		QVector3D target = QVector3D(front.x(), front.y(), front.z());
 		QVector3D vup = QVector3D(0.0, -1.0f, 0.0);
 

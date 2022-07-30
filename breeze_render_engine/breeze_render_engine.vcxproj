@@ -38,8 +38,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;opengl;gui;openglextensions</QtModules>
-    <QtBuildConfig>release</QtBuildConfig>
+    <QtModules>core;gui;widgets;openglwidgets;opengl;</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -60,6 +61,8 @@
     <LibraryPath>lib/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <IncludePath>includes/;$(IncludePath)</IncludePath>
+    <LibraryPath>lib/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
@@ -99,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
+    <None Include="..\CONTIBUTION.md" />
     <None Include="..\README.md" />
     <None Include="assets\shaders\canvas.frag" />
     <None Include="assets\shaders\canvas.vert" />
@@ -108,7 +112,6 @@
     <None Include="assets\shaders\flat.frag" />
     <None Include="assets\shaders\light.frag" />
     <None Include="assets\styles\styles.css" />
-    <None Include="CONTIBUTION.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common.h" />

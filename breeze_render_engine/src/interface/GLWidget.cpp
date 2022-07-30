@@ -6,16 +6,16 @@
 #include <QProgressBar>
 #include "widgets/qrenderpopup.h"
 
-QVector3D ray_color(Ray r, World world, int depth) {
+QVector3D ray_color(Ray r, World world, QMatrix4x4 view, int depth) {
     if (depth < 1) {
         return QVector3D(0.0f, 0.0f, 0.0f);
     }
 
-    HitData ht = world.hit(r);
+    HitData ht = world.hit(r, view);
 
     if (ht.t > 0.00001f) {
         QVector3D target = ht.normal + randomInUnitSphere();
-        return 0.5f * ray_color(Ray(r.at(ht.t), target), world, depth - 1);
+        return 0.5f * ray_color(Ray(r.at(ht.t), target), world, view, depth - 1);
     }
 
     QVector3D unit_direction = r.direction().normalized();
@@ -60,7 +60,7 @@ void GLWidget::render() {
                     float j = (float(y) + random_float()) / float(height - 1);
 
                     Ray r = camera->get_ray(i, j);
-                    pixel_color += ray_color(r, tmpWorld, depth);
+                    pixel_color += ray_color(r, tmpWorld, camera->getViewMatrix(), depth);
                 }
 
                 pixel_color /= samples;

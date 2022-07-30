@@ -97,7 +97,7 @@ public:
         }
     }
 
-    HitData hit(Ray r) {
+    HitData hit(Ray r, QMatrix4x4 view) {
         bool isHit = false;
         HitData out = { INFINITY, QVector3D(0.0f, 0.0f, 0.0f), nullptr };
 
@@ -112,9 +112,9 @@ public:
                 Vertex b = data[vdx + 1];
                 Vertex c = data[vdx + 2];
 
-                QVector3D A = QVector3D(QVector4D(a.position, 1.0f) * model->getModelMatrix());
-                QVector3D B = QVector3D(QVector4D(b.position, 1.0f) * model->getModelMatrix());
-                QVector3D C = QVector3D(QVector4D(c.position, 1.0f) * model->getModelMatrix());
+                QVector3D A = QVector3D(QVector4D(a.position, 1.0f) * (model->getModelMatrix()));
+                QVector3D B = QVector3D(QVector4D(b.position, 1.0f) * (model->getModelMatrix()));
+                QVector3D C = QVector3D(QVector4D(c.position, 1.0f) * (model->getModelMatrix()));
 
                 QVector3D AB = B - A;
                 QVector3D BC = B - C;

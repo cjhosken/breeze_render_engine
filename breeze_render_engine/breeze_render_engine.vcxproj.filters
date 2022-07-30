@@ -61,11 +61,11 @@
     <None Include="..\.gitignore">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="CONTIBUTION.md">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="assets\styles\styles.css">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\CONTIBUTION.md">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
