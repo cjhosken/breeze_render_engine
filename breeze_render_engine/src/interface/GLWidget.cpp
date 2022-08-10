@@ -6,21 +6,47 @@
 #include <QProgressBar>
 #include "widgets/qrenderpopup.h"
 
-QVector3D ray_color(Ray r, World world, QMatrix4x4 view, int depth) {
-    if (depth < 1) {
-        return QVector3D(0.0f, 0.0f, 0.0f);
+QVector3D reflect(const QVector3D v, const QVector3D n) {
+    return v - 2 * QVector3D().dotProduct(v, n) * n;
+}
+
+QColor ray_color(Ray r, World world, QMatrix4x4 view, int depth) {
+
+    if (depth <= 0) {
+        return QColor(0.0f, 0.0f, 0.0f);
     }
 
     HitData ht = world.hit(r, view);
 
-    if (ht.t > 0.00001f) {
-        QVector3D target = ht.normal + randomInUnitSphere();
-        return 0.5f * ray_color(Ray(r.at(ht.t), target), world, view, depth - 1);
+    if (ht.model != nullptr) {
+            float ro = ht.model->material.roughness;
+
+            QVector3D reflected = reflect(r.direction().normalized(), ht.normal);
+            Ray scattered = Ray(r.at(ht.t), ht.normal + randomInUnitSphere());
+
+            QColor out = QColor(
+                ht.model->material.color.red() * ray_color(scattered, world, view, depth - 1).red(),
+                ht.model->material.color.green() * ray_color(scattered, world, view, depth - 1).green(),
+                ht.model->material.color.blue() * ray_color(scattered, world, view, depth - 1).blue()
+            );
+
+            return out;
     }
 
     QVector3D unit_direction = r.direction().normalized();
     float t = 0.5f * (unit_direction.y() + 1.0f);
-    return (1.0f - t) * QVector3D(1.0f, 1.0f, 1.0f) + t * QVector3D(0.5, 0.7, 1.0);
+
+    QColor b0(255.0f, 255.0f, 255.0f);
+
+    QColor b1(127.5f, 178.5f, 255.0f);
+
+    QColor out = QColor(
+        (1 - t) * b0.red() + t * b1.red(),
+        (1 - t) * b0.green() + t * b1.green(),
+        (1 - t) * b0.blue() + t * b1.blue()
+    );
+
+    return out;
 }
 
 void GLWidget::render() {
@@ -53,21 +79,26 @@ void GLWidget::render() {
                 int pct = x + ((height - 1) - y) * width;
                 progressPopup->setValue(pct);
 
-                QVector3D pixel_color(0.0f, 0.0f, 0.0f);
+                QColor pixel_color(0.0f, 0.0f, 0.0f);
 
                 for (int s = 0; s < samples; s++) {
                     float i = (float(x) + random_float()) / float(width - 1);
                     float j = (float(y) + random_float()) / float(height - 1);
 
                     Ray r = camera->get_ray(i, j);
-                    pixel_color += ray_color(r, tmpWorld, camera->getViewMatrix(), depth);
+                    pixel_color.setRedF(pixel_color.red() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).red());
+                    pixel_color.setGreenF(pixel_color.green() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).green());
+                    pixel_color.setBlueF(pixel_color.blue() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).blue());
                 }
 
-                pixel_color /= samples;
+                pixel_color.setRedF(pixel_color.red() / samples);
+                pixel_color.setGreenF(pixel_color.green() / samples);
+                pixel_color.setBlueF(pixel_color.blue() / samples);
 
-                data[index++] = (unsigned char)(255.0 * pixel_color.x());
-                data[index++] = (unsigned char)(255.0 * pixel_color.y());
-                data[index++] = (unsigned char)(255.0 * pixel_color.z());
+
+                data[index++] = (unsigned char)(pixel_color.red());
+                data[index++] = (unsigned char)(pixel_color.green());
+                data[index++] = (unsigned char)(pixel_color.blue());
             }
         }
 

@@ -140,20 +140,16 @@ public:
                     QVector3D normal = QVector3D().crossProduct(BC, AC).normalized();
 
                     if (QVector3D().dotProduct(normal, r.direction()) > 0) {
-                        normal = (normal * -1.0f).normalized();
+                        normal = (normal * -1.0f);
                     }
 
-                    HitData out = { t, normal, model };
+                    out = { t, normal, model };
                     isHit = true;
                 }
             };
         }
 
-        if (isHit) {
-            return out;
-        }
-
-        return { -1, QVector3D(0.0f, 0.0f, 0.0f), nullptr };
+        return out;
     };
 };
 
