@@ -22,12 +22,14 @@ QColor ray_color(Ray r, World world, QMatrix4x4 view, int depth) {
             float ro = ht.model->material.roughness;
 
             QVector3D reflected = reflect(r.direction().normalized(), ht.normal);
-            Ray scattered = Ray(r.at(ht.t), ht.normal + randomInUnitSphere());
+            Ray scattered = Ray(r.at(ht.t), r.at(ht.t) + reflected + ro * randomInUnitSphere());
 
-            QColor out = QColor(
-                ht.model->material.color.red() * ray_color(scattered, world, view, depth - 1).red(),
-                ht.model->material.color.green() * ray_color(scattered, world, view, depth - 1).green(),
-                ht.model->material.color.blue() * ray_color(scattered, world, view, depth - 1).blue()
+            QColor raycol = ray_color(scattered, world, view, depth - 1);
+
+            QColor out(
+                (ht.model->material.color.red() / 255.0f) * raycol.red(),
+                (ht.model->material.color.green() / 255.0f) * raycol.green(),
+                (ht.model->material.color.blue() / 255.0f) * raycol.blue()
             );
 
             return out;
@@ -73,7 +75,7 @@ void GLWidget::render() {
 
         int index = 0;
 
-        for (int y = height - 1; y >= 0; y--) {
+        for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 QCoreApplication::processEvents();
                 int pct = x + ((height - 1) - y) * width;
@@ -86,14 +88,17 @@ void GLWidget::render() {
                     float j = (float(y) + random_float()) / float(height - 1);
 
                     Ray r = camera->get_ray(i, j);
-                    pixel_color.setRedF(pixel_color.red() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).red());
-                    pixel_color.setGreenF(pixel_color.green() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).green());
-                    pixel_color.setBlueF(pixel_color.blue() + ray_color(r, tmpWorld, camera->getViewMatrix(), depth).blue());
+
+                    QColor rayCol = ray_color(r, tmpWorld, camera->getViewMatrix(), depth);
+
+                    pixel_color.setRed(pixel_color.red() + rayCol.red() / float(samples));
+                    pixel_color.setGreen(pixel_color.green() + rayCol.green() / float(samples));
+                    pixel_color.setBlue(pixel_color.blue() + rayCol.blue() / float(samples));
                 }
 
-                pixel_color.setRedF(pixel_color.red() / samples);
-                pixel_color.setGreenF(pixel_color.green() / samples);
-                pixel_color.setBlueF(pixel_color.blue() / samples);
+                pixel_color.setRed(sqrt(pixel_color.red() / 255.0f) * 255.0f);
+                pixel_color.setGreen(sqrt(pixel_color.green() / 255.0f) * 255.0f);
+                pixel_color.setBlue(sqrt(pixel_color.blue() / 255.0f) * 255.0f);
 
 
                 data[index++] = (unsigned char)(pixel_color.red());

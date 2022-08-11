@@ -3,17 +3,18 @@
 
 void loadSettings();
 
-int main(int argc, char** argv) {
-	QSettings::setDefaultFormat(QSettings::IniFormat);
+int main(int argc, char** argv) {;
 	QCoreApplication::setApplicationName("Breeze Render Engine");
+	QCoreApplication::setApplicationVersion("2022.11.8");
 	QCoreApplication::setOrganizationName("cjhosken");
 	QCoreApplication::setOrganizationDomain("cjhosken.io");
 	QSettings settings;
 
+	QSettings::setDefaultFormat(QSettings::IniFormat);
+	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+
 	QApplication app(argc, argv);
 
-	QCoreApplication::setApplicationVersion("2022.27.7");
-	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 	app.setWindowIcon(QIcon(":/assets/images/logo.png"));
 
 	QPixmap pixmap(":/assets/images/splash.png");

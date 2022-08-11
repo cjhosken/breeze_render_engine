@@ -98,7 +98,6 @@ public:
     }
 
     HitData hit(Ray r, QMatrix4x4 view) {
-        bool isHit = false;
         HitData out = { INFINITY, QVector3D(0.0f, 0.0f, 0.0f), nullptr };
 
         for (unsigned int mdx = 0; mdx < models.size(); mdx++) {
@@ -144,7 +143,6 @@ public:
                     }
 
                     out = { t, normal, model };
-                    isHit = true;
                 }
             };
         }

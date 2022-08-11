@@ -8,8 +8,8 @@
 
 class RenderCamera : public Model {
 public:
-	int width = 640;
-	int height = 480;
+	int width = 80;
+	int height = 60;
 
 	int channels = 3;
 	int samples = 4;
@@ -71,7 +71,7 @@ public:
 		qDebug() << "HEIGHT: " << float(height);
 
 
-		scale = QVector3D(ratio, 1.0f, (fov / 180.0f));
+		scale = QVector3D(ratio, 1.0f, (1.0f - (fov / 180.0f)));
 	}
 
 	void setupForRender() {

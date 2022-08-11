@@ -95,10 +95,11 @@ protected:
         cvs.init();
 
         RenderCamera defaultCamera = RenderCamera("Camera");
-        defaultCamera.location = QVector3D(0.0f, 0.0f, 3.0f);
+        defaultCamera.location = QVector3D(0.0f, 0.0f, 6.0f);
+        defaultCamera.setFov(50.0f);
 
         world.add(std::make_shared<RenderCamera>(defaultCamera));
-        world.add(std::make_shared<Cube>("Cube"));
+
         
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
