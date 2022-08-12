@@ -112,7 +112,6 @@ public:
     QGroupBox* material;
     ColorField* color;
     SliderField* rough;
-    SliderField* spec;
 
     QGroupBox* camera;
     SliderField* fov;
@@ -151,12 +150,10 @@ public:
         material->setStyleSheet(settings.value("styles/root").toString());
         color = new ColorField("Color:");
         rough = new SliderField("Roughness:", 0, 100, 50);
-        spec = new SliderField("Specular:", 0, 100, 50);
 
         QVBoxLayout* matVBox = new QVBoxLayout;
         matVBox->addWidget(color);
         matVBox->addWidget(rough);
-        matVBox->addWidget(spec);
 
         material->setLayout(matVBox);
 
@@ -186,7 +183,6 @@ public:
         color->changeColor();
 
         rough->set(m->material.roughness * 100);
-        spec->set(m->material.specular * 100);
 
         repaint();
     }

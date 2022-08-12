@@ -133,7 +133,6 @@ public:
     void setMaterial(Material material) {
         setColor("material.color", material.color);
         setFloat("material.roughness", material.roughness);
-        setFloat("material.specular", material.specular);
     }
 
 private:

@@ -107,6 +107,8 @@ protected:
 
         RenderCamera* cam = world.getCamera(0);
         setSelected(cam);
+
+        viewCamera.zoom = 12;
     };
     
     void paintGL() override {

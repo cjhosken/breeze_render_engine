@@ -111,9 +111,9 @@ public:
                 Vertex b = data[vdx + 1];
                 Vertex c = data[vdx + 2];
 
-                QVector3D A = QVector3D(QVector4D(a.position, 1.0f) * (model->getModelMatrix()));
-                QVector3D B = QVector3D(QVector4D(b.position, 1.0f) * (model->getModelMatrix()));
-                QVector3D C = QVector3D(QVector4D(c.position, 1.0f) * (model->getModelMatrix()));
+                QVector3D A = QVector3D((model->getModelMatrix() * QVector4D(a.position, 1.0f)));
+                QVector3D B = QVector3D((model->getModelMatrix() * QVector4D(b.position, 1.0f)));
+                QVector3D C = QVector3D((model->getModelMatrix() * QVector4D(c.position, 1.0f)));
 
                 QVector3D AB = B - A;
                 QVector3D BC = B - C;

@@ -6,7 +6,6 @@
 struct Material {
 	QColor color;
 	float roughness;
-	float specular;
 };
 
 #endif // !MATERIAL_H

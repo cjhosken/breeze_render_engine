@@ -111,8 +111,6 @@ public:
 	Mesh mesh;
 	Material material = {
 		QColor(255, 255, 255),
-		0.5f,
-		0.5f
 	};
 };
 

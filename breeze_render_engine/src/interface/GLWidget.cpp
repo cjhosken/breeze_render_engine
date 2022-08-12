@@ -18,18 +18,26 @@ QColor ray_color(Ray r, World world, QMatrix4x4 view, int depth) {
 
     HitData ht = world.hit(r, view);
 
-    if (ht.model != nullptr) {
+    if (ht.model != nullptr && ht.t > 0.000001f) {
             float ro = ht.model->material.roughness;
 
             QVector3D reflected = reflect(r.direction().normalized(), ht.normal);
+
             Ray scattered = Ray(r.at(ht.t), r.at(ht.t) + reflected + ro * randomInUnitSphere());
+
+            if (ro == 1.0f) {
+                Ray scattered = Ray(r.at(ht.t), r.at(ht.t) + ht.normal * randomInUnitSphere());
+            }
+            else if (ro == 0.0f) {
+                Ray scattered = Ray(r.at(ht.t), r.at(ht.t) + reflected);
+            }
 
             QColor raycol = ray_color(scattered, world, view, depth - 1);
 
             QColor out(
-                (ht.model->material.color.red() / 255.0f) * raycol.red(),
-                (ht.model->material.color.green() / 255.0f) * raycol.green(),
-                (ht.model->material.color.blue() / 255.0f) * raycol.blue()
+                (ht.model->material.color.red() / 255.0f) * (raycol.red()),
+                (ht.model->material.color.green() / 255.0f) * (raycol.green()),
+                (ht.model->material.color.blue() / 255.0f) * (raycol.blue())
             );
 
             return out;
@@ -78,7 +86,7 @@ void GLWidget::render() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 QCoreApplication::processEvents();
-                int pct = x + ((height - 1) - y) * width;
+                int pct = x + (y * width);
                 progressPopup->setValue(pct);
 
                 QColor pixel_color(0.0f, 0.0f, 0.0f);

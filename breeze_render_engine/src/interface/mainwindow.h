@@ -169,13 +169,6 @@ private slots:
 		}
 	}
 
-	void setSelectedObjectSpecular(int s) {
-		if (ui->glCanvas->selectType == MODEL) {
-			ui->glCanvas->world.getModelFromID(ui->glCanvas->selectID)->material.specular = s / 100.0f;
-			ui->glCanvas->repaint();
-		}
-	}
-
 	void setSelectedObjectFOV(int f) {
 		if (ui->glCanvas->selectType == CAMERA) {
 			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->setFov(f);
@@ -238,7 +231,6 @@ private slots:
 			connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(colorSelected(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
 			connect(ui->propertiesPanel->objectTab->color->popup, SIGNAL(currentColorChanged(QColor)), this, SLOT(setSelectedObjectColor(QColor)));
 			connect(ui->propertiesPanel->objectTab->rough->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectRoughness(int)));
-			connect(ui->propertiesPanel->objectTab->spec->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectSpecular(int)));
 
 			ui->propertiesPanel->root->addTab(ui->propertiesPanel->objectTab, "Object");
 
@@ -252,7 +244,7 @@ private slots:
 
 			connect(ui->propertiesPanel->cameraTab->fov->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectFOV(int)));
 
-			connect(ui->propertiesPanel->cameraTab->dof->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectDOF(int)));
+			//connect(ui->propertiesPanel->cameraTab->dof->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectDOF(int)));
 
 			connect(ui->propertiesPanel->cameraTab->distance->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectDistance(QString)));
 			connect(ui->propertiesPanel->cameraTab->aperture->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectAperture(QString)));
