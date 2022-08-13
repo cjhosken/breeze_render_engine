@@ -282,7 +282,7 @@ private slots:
 	}
 
 	void onAddOBJButtonClick() {
-		QString path = QFileDialog::getOpenFileName(this, tr("Open File"), ":/assets/models", tr(".OBJ Files (*.obj)"));
+		QString path = QFileDialog::getOpenFileName(this, tr("Open File"), "../assets/models", tr(".OBJ Files (*.obj)"));
 
 		ui->glCanvas->world.add(std::make_shared <OBJModel>(path, "Custom OBJ"));
 	}

@@ -268,14 +268,17 @@ public:
 class OBJModel : public Model {
 public:
 	OBJModel(QString path, QString n) : Model(n) {
+		QSettings settings;
 		std::vector<Vertex> vertices;
 		
 		std::string line;
 
 		std::ifstream input_file(path.toStdString());
 		if (!input_file.is_open()) {
-			std::cerr << "Could not open the file - '"
+			if (settings.value("app/log").toBool()) {
+				std::cerr << "Could not open the file - '"
 				<< path.toStdString() << "'" << std::endl;
+			}
 			return;
 		}
 
@@ -348,6 +351,5 @@ public:
 		mesh = objMesh;
 	}
 };
-
 
 #endif

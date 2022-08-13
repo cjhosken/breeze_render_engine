@@ -8,7 +8,6 @@ out vec4 FragColor;
 struct Material {
 	vec3 color;
 	float roughness;
-	float specular;
 };
 
 uniform Material material;

@@ -1,7 +1,18 @@
 ﻿  Reading Qt configuration (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
-breeze_render_engine.vcxproj : error : ERROR running qmake
-breeze_render_engine.vcxproj : error : qmake: (C:/Qt/6.2.4/msvc2019_64/bin/qmake)
-breeze_render_engine.vcxproj : error : qmake: $PWD=C:\Users\user\source\repos\breeze_render_engine\breeze_render_engine\x64\Release\qmake\temp
-breeze_render_engine.vcxproj : error : qmake: Project ERROR: Unknown module(s) in QT: openglextensions
-breeze_render_engine.vcxproj : error : qmake: Error creating .vcxproj file
-breeze_render_engine.vcxproj : error : 
+  rcc resource.qrc
+  moc src\interface\fields\qvector3dfield.h
+  moc src\interface\mainwindow.h
+  moc src\interface\glwidget.h
+  main.cpp
+  GLWidget.cpp
+  Texture.cpp
+C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\breeze_render_engine\src\opengl\world.h(85): warning C4715: 'World::getModelFromID': not all control paths return a value
+C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\breeze_render_engine\src\opengl\world.h(98): warning C4715: 'World::getCameraFromID': not all control paths return a value
+  qrc_resource.cpp
+  moc_qvector3dfield.cpp
+  moc_mainwindow.cpp
+  moc_glwidget.cpp
+C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\breeze_render_engine\src\opengl\world.h(85): warning C4715: 'World::getModelFromID': not all control paths return a value
+C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\breeze_render_engine\src\opengl\world.h(98): warning C4715: 'World::getCameraFromID': not all control paths return a value
+  breeze_render_engine.vcxproj -> C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\x64\Release\breeze_render_engine.exe
+  windeployqt: "C:/Qt/6.2.4/msvc2019_64/bin\windeployqt.exe" --list target --dir "C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\x64\Release\\" "C:\Users\hoske\Documents\My Code\GitHub\breeze_render_engine\x64\Release\breeze_render_engine.exe"

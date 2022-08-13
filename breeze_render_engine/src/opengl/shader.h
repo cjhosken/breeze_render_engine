@@ -34,10 +34,13 @@ public:
     };
 
     void load() {
+        QSettings settings;
         initializeOpenGLFunctions();
 
-        qDebug() << "SHADER::LOADING_VERTEX_PATH:: " << vertexPath.absoluteFilePath().toStdString().c_str();
-        qDebug() << "SHADER::LOADING_FRAGMENT_PATH:: " << fragmentPath.absoluteFilePath().toStdString().c_str();
+        if (settings.value("app/log").toBool()) {
+            qDebug() << "SHADER::LOADING_VERTEX_PATH:: " << vertexPath.absoluteFilePath().toStdString().c_str();
+            qDebug() << "SHADER::LOADING_FRAGMENT_PATH:: " << fragmentPath.absoluteFilePath().toStdString().c_str();
+        }
 
         std::string vertexCode;
         std::string fragmentCode;
@@ -63,7 +66,9 @@ public:
         }
         catch (std::ifstream::failure e)
         {
-            qDebug() << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ";
+            if (settings.value("app/log").toBool()) {
+                qDebug() << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ";
+            }
 
         }
         const char* vShaderCode = vertexCode.c_str();
@@ -80,7 +85,9 @@ public:
         glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-            qDebug() << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog;
+            if (settings.value("app/log").toBool()) {
+                qDebug() << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog;
+            }
         }
 
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -90,7 +97,9 @@ public:
         glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-            qDebug() << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog;
+            if (settings.value("app/log").toBool()) {
+                qDebug() << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog;
+            }
         }
 
         id = glCreateProgram();
@@ -101,7 +110,9 @@ public:
         glGetProgramiv(id, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(id, 512, NULL, infoLog);
-            qDebug() << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog;
+            if (settings.value("app/log").toBool()) {
+                qDebug() << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog;
+            }
         }
 
         glDeleteShader(vertex);

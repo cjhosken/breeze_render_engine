@@ -14,7 +14,6 @@ int main(int argc, char** argv) {;
 	QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
 	QApplication app(argc, argv);
-
 	app.setWindowIcon(QIcon(":/assets/images/logo.png"));
 
 	QPixmap pixmap(":/assets/images/splash.png");
@@ -37,6 +36,29 @@ int main(int argc, char** argv) {;
 	QTimer::singleShot(settings.value("app/splashTime").toInt(), splash, SLOT(close()));
 	QTimer::singleShot(settings.value("app/splashTime").toInt(), &mainWindow, SLOT(show()));
 
+	mainWindow.setWindowIcon(QIcon(":/assets/images/logo.png"));
+
+	qDebug() << "    ____   ____   ______ ______ _____    ______";
+	qDebug() << "   / __ ) / __ | / ____// ____//__  /   / ____/";
+	qDebug() << "  / __  |/ /_/ // __/  / __/     / /   / __/";
+	qDebug() << " / /_/ // _, _// /___ / /___    / /__ / /___";
+	qDebug() << "/ _____//_/ |_|/_____//_____/   /____//_____/";
+
+	qDebug() << "    ____   ______ _   __ ____   ______ ____";
+	qDebug() << "   / __ | / ____// | / // __ | / ____// __ |";
+	qDebug() << "  / /_/ // __/  /  |/ // / / // __/  / /_/ /";
+	qDebug() << " / _, _// /___ / /|  // /_/ // /___ / _, _/";
+	qDebug() << "/ _/ |_|/_____//_/ |_//_____//_____//_/ |_|";
+
+	qDebug() << "    ______ _   __ ______ ____ _   __ ______";
+	qDebug() << "   / ____// | / // ____//  _// | / // ____/";
+	qDebug() << "  / __/  /  |/ // / __  / / /  |/ // __/";
+	qDebug() << " / /___ / /|  // /_/ /_/ / / /|  // /___";
+	qDebug() << "/ _____//_/ |_/ |____//___//_/ |_//_____/";
+
+	
+	qDebug() << "\nBy Christopher Hosken, 2022 | Version 1.0.0";
+
 	return app.exec();
 }
 
@@ -44,8 +66,9 @@ void loadSettings() {
 	QSettings settings;
 	settings.setValue("app/width", 1600);
 	settings.setValue("app/height", 900);
+	settings.setValue("app/log", false);
 
-	settings.setValue("app/splashTime", 2000);
+	settings.setValue("app/splashTime", 12000);
 
 	settings.setValue("app/borderRadius", 35.0f);
 
