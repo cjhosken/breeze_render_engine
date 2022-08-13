@@ -1,5 +1,6 @@
 #include "src/interface/mainwindow.h"
 #include <QFontDatabase>
+#include <QSystemTrayIcon>
 
 void loadSettings();
 
@@ -32,11 +33,10 @@ int main(int argc, char** argv) {;
 	loadSettings();
 
 	MainWindow mainWindow = MainWindow();
+	mainWindow.setWindowIcon(QIcon(":/assets/images/logo.png"));
 
 	QTimer::singleShot(settings.value("app/splashTime").toInt(), splash, SLOT(close()));
 	QTimer::singleShot(settings.value("app/splashTime").toInt(), &mainWindow, SLOT(show()));
-
-	mainWindow.setWindowIcon(QIcon(":/assets/images/logo.png"));
 
 	qDebug() << "    ____   ____   ______ ______ _____    ______";
 	qDebug() << "   / __ ) / __ | / ____// ____//__  /   / ____/";
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {;
 	qDebug() << "/ _____//_/ |_/ |____//___//_/ |_//_____/";
 
 	
-	qDebug() << "\nBy Christopher Hosken, 2022 | Version 1.0.0";
+	qDebug() << "\nBy Christopher Hosken | Version 1.0.0 (Aug 13, 2022)";
 
 	return app.exec();
 }
