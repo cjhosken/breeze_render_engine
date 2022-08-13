@@ -267,15 +267,15 @@ public:
 
 class OBJModel : public Model {
 public:
-	OBJModel(std::string path, QString n) : Model(n) {
+	OBJModel(QString path, QString n) : Model(n) {
 		std::vector<Vertex> vertices;
 		
 		std::string line;
 
-		std::ifstream input_file(path);
+		std::ifstream input_file(path.toStdString());
 		if (!input_file.is_open()) {
 			std::cerr << "Could not open the file - '"
-				<< path << "'" << std::endl;
+				<< path.toStdString() << "'" << std::endl;
 			return;
 		}
 

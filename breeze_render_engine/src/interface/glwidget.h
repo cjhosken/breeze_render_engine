@@ -329,6 +329,7 @@ public:
     bool selecting = true;
     bool rendering = false;
     bool inCameraView = false;
+    bool renderCancel = false;
 };
 
 #endif // !GLWIDGET_H

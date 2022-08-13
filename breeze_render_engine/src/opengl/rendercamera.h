@@ -8,17 +8,14 @@
 
 class RenderCamera : public Model {
 public:
-	int width = 80;
-	int height = 60;
+	int width = 160;
+	int height = 120;
 
 	int channels = 3;
-	int samples = 4;
-	int bounces = 2;
+	int samples = 16;
+	int bounces = 4;
 
-	bool dof = false;
-	float distance = 1.0f;
-	float aperture = 2.0f;
-	float fov = 35.0f;
+	float fov = 50.0f;
 
 	RenderCamera(QString n) : Model(n) {
 		initializeOpenGLFunctions();
@@ -43,6 +40,16 @@ public:
 		Mesh cameraMesh = Mesh(vertices);
 
 		mesh = cameraMesh;
+
+		QSettings settings;
+
+		fov = settings.value("render/fov").toInt();
+
+		width = settings.value("render/width").toInt();
+		height = settings.value("render/height").toInt();
+
+		samples = settings.value("render/samples").toInt();
+		bounces = settings.value("render/bounces").toInt();
 
 		rescale();
 	}

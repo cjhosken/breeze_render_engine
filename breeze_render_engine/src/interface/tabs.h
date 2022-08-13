@@ -22,9 +22,9 @@ public:
         QGroupBox* dims = new QGroupBox("Dimensions");
         dims->setProperty("class", "group");
         dims->setStyleSheet(settings.value("styles/root").toString());
-        widthInput = new IntegerField("Width:", 1, 2147483647, 640);
+        widthInput = new IntegerField("Width:", 1, 2147483647, settings.value("render/width").toInt());
 
-        heightInput = new IntegerField("Height:", 1, 2147483647, 480);
+        heightInput = new IntegerField("Height:", 1, 2147483647, settings.value("render/height").toInt());
 
         QVBoxLayout* dimsVBox = new QVBoxLayout;
         dimsVBox->addWidget(widthInput);
@@ -36,9 +36,9 @@ public:
         rays->setProperty("class", "group");
         rays->setStyleSheet(settings.value("styles/root").toString());
 
-        samplesInput = new IntegerField("Samples:", 1, 2147483647, 16);
+        samplesInput = new IntegerField("Samples:", 1, 2147483647, settings.value("render/samples").toInt());
 
-        bouncesInput = new IntegerField("Bounces:", 1, 2147483647, 4);
+        bouncesInput = new IntegerField("Bounces:", 1, 2147483647, settings.value("render/bounces").toInt());
 
         QVBoxLayout* raysVBox = new QVBoxLayout;
         raysVBox->addWidget(samplesInput);
@@ -73,7 +73,7 @@ public:
         QGroupBox* view = new QGroupBox("Viewport Controls");
         view->setProperty("class", "group");
         view->setStyleSheet(settings.value("styles/root").toString());
-        fov = new SliderField("FOV:", 1, 180, 35);
+        fov = new SliderField("FOV:", 1, 180, settings.value("view/fov").toInt());
 
         QVBoxLayout* viewVBox = new QVBoxLayout;
         viewVBox->addWidget(fov);
@@ -160,7 +160,7 @@ public:
         camera = new QGroupBox("Camera");
         camera->setProperty("class", "group");
         camera->setStyleSheet(settings.value("styles/root").toString());
-        fov = new SliderField("FOV:", 0, 180, 35);
+        fov = new SliderField("FOV:", 0, 180, 50);
         dof = new BoolField("DOF:", true);
         aperture = new FloatField("Aperture: ", 0.0f, INFINITY, 2.0f);
         distance = new FloatField("Distance: ", 0.0f, INFINITY, 2.0f);
@@ -198,9 +198,6 @@ public:
 
     QGroupBox* camera;
     SliderField* fov;
-    BoolField* dof;
-    FloatField* aperture;
-    FloatField* distance;
 
     QVBoxLayout* vbox;
 
@@ -227,17 +224,11 @@ public:
         camera = new QGroupBox("Camera");
         camera->setProperty("class", "group");
         camera->setStyleSheet(settings.value("styles/root").toString());
-        fov = new SliderField("FOV:", 0, 180, 35);
-        dof = new BoolField("DOF:", true);
-        aperture = new FloatField("Aperture: ", 0.0f, INFINITY, 2.0f);
-        distance = new FloatField("Distance: ", 0.0f, INFINITY, 2.0f);
+        fov = new SliderField("FOV:", 0, 180, settings.value("render/fov").toInt());
 
 
         QVBoxLayout* camVBox = new QVBoxLayout;
         camVBox->addWidget(fov);
-        camVBox->addWidget(dof);
-        camVBox->addWidget(aperture);
-        camVBox->addWidget(distance);
 
         camera->setLayout(camVBox);
 
@@ -254,9 +245,6 @@ public:
         rot->fromQVector3D(c->rotation);
 
         fov->set(c->fov);
-        dof->edit->setChecked(c->dof);
-        distance->set(c->distance);
-        aperture->set(c->aperture);
 
         repaint();
     }

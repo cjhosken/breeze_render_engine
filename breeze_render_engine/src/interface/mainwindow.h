@@ -38,8 +38,6 @@ public:
 		connect(ui->addCircle, SIGNAL(triggered()), this, SLOT(onAddCircleButtonClick()));
 		connect(ui->addTriangle, SIGNAL(triggered()), this, SLOT(onAddTriangleButtonClick()));
 		connect(ui->addCylinder, SIGNAL(triggered()), this, SLOT(onAddCylinderButtonClick()));
-		connect(ui->addMonkey, SIGNAL(triggered()), this, SLOT(onAddMonkeyButtonClick()));
-		connect(ui->addTeapot, SIGNAL(triggered()), this, SLOT(onAddTeapotButtonClick()));
 
 		connect(ui->wireViewButton, SIGNAL(clicked()), this, SLOT(onWireViewButtonClick()));
 		connect(ui->solidViewButton, SIGNAL(clicked()), this, SLOT(onSolidViewButtonClick()));
@@ -176,24 +174,6 @@ private slots:
 		ui->glCanvas->repaint();
 	}
 
-	void setSelectedObjectDOF(bool b) {
-		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->dof = b;
-		}
-	}
-
-	void setSelectedObjectDistance(QString num_f) {
-		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->distance = num_f.toFloat();
-		}
-	}
-
-	void setSelectedObjectAperture(QString num_f) {
-		if (ui->glCanvas->selectType == CAMERA) {
-			ui->glCanvas->world.getCameraFromID(ui->glCanvas->selectID)->aperture = num_f.toFloat();
-		}
-	}
-
 	void setRenderWidth(QString num_s) {
 
 		ui->glCanvas->world.getCamera(0)->setWidth(num_s.toInt());
@@ -243,11 +223,6 @@ private slots:
 			connect(ui->propertiesPanel->cameraTab->rot, SIGNAL(edited(QVector3D)), this, SLOT(setSelectedObjectRotation(QVector3D)));
 
 			connect(ui->propertiesPanel->cameraTab->fov->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectFOV(int)));
-
-			//connect(ui->propertiesPanel->cameraTab->dof->edit, SIGNAL(valueChanged(int)), this, SLOT(setSelectedObjectDOF(int)));
-
-			connect(ui->propertiesPanel->cameraTab->distance->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectDistance(QString)));
-			connect(ui->propertiesPanel->cameraTab->aperture->edit, SIGNAL(textEdited(QString)), this, SLOT(setSelectedObjectAperture(QString)));
 
 			ui->propertiesPanel->root->addTab(ui->propertiesPanel->cameraTab, "Camera");
 		}
@@ -306,16 +281,8 @@ private slots:
 		ui->glCanvas->world.add(std::make_shared<Triangle>("Triangle"));
 	}
 
-	void onAddMonkeyButtonClick() {
-		ui->glCanvas->world.add(std::make_shared <OBJModel> (":/assets/models/monkey.obj","Monkey"));
-	}
-
-	void onAddTeapotButtonClick() {
-		ui->glCanvas->world.add(std::make_shared <OBJModel>(":/assets/models/teapot.obj", "Utah Teapot"));
-	}
-
 	void onAddOBJButtonClick() {
-		std::string path = QFileDialog::getOpenFileName(this, tr("Open File"), ":/assets/models", tr(".OBJ Files (*.obj)")).toStdString();
+		QString path = QFileDialog::getOpenFileName(this, tr("Open File"), ":/assets/models", tr(".OBJ Files (*.obj)"));
 
 		ui->glCanvas->world.add(std::make_shared <OBJModel>(path, "Custom OBJ"));
 	}
@@ -375,6 +342,7 @@ private:
 			QConfirmBox* confirm = new QConfirmBox("Quit?", "Are you sure you want to quit? Your progress wil not be saved. (for now)");
 
 			if (confirm->exec() == QMessageBox::Yes) {
+				ui->glCanvas->renderCancel = true;
 				this->close();
 			}
 			else {

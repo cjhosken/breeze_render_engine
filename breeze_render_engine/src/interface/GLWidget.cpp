@@ -86,6 +86,13 @@ void GLWidget::render() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 QCoreApplication::processEvents();
+
+                if (renderCancel || progressPopup->wasCanceled()) {
+                    rendering = false;
+                    progressPopup->close();
+                    return;
+                }
+
                 int pct = x + (y * width);
                 progressPopup->setValue(pct);
 

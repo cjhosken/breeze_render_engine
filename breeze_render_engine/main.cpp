@@ -5,7 +5,7 @@ void loadSettings();
 
 int main(int argc, char** argv) {;
 	QCoreApplication::setApplicationName("Breeze Render Engine");
-	QCoreApplication::setApplicationVersion("2022.11.8");
+	QCoreApplication::setApplicationVersion("2022.13.8");
 	QCoreApplication::setOrganizationName("cjhosken");
 	QCoreApplication::setOrganizationDomain("cjhosken.io");
 	QSettings settings;
@@ -53,6 +53,16 @@ void loadSettings() {
 	settings.setValue("color/wireDefault", QColor(170, 170, 170));
 	settings.setValue("color/viewportGradientInner", QColor(25, 25, 25));;
 	settings.setValue("color/viewportGradientOuter", QColor(13, 13, 20));
+
+	settings.setValue("render/width", 160);
+	settings.setValue("render/height", 120);
+
+	settings.setValue("render/samples", 16);
+	settings.setValue("render/bounces", 4);
+
+	settings.setValue("render/fov", 50);
+
+	settings.setValue("view/fov", 35);
 
 	QFile File(":/assets/styles/styles.css");
 	File.open(QFile::ReadOnly);

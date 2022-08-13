@@ -49,9 +49,6 @@ public:
     QAction* addCircle;
     QAction* addTriangle;
     QAction* addCylinder;
-    QAction* addMonkey;
-    QAction* addTeapot;
-    QAction* addOBJ;
 
     void setupUi(QMainWindow* Window)
     {
@@ -117,10 +114,6 @@ public:
         extraButtonsMenu->addAction(addTriangle);
         addCylinder = new QAction("Cylinder");
         extraButtonsMenu->addAction(addCylinder);
-        addMonkey = new QAction("Monkey");
-        extraButtonsMenu->addAction(addMonkey);
-        addTeapot = new QAction("Teapot");
-        extraButtonsMenu->addAction(addTeapot);
 
         addExtrasButton->setMenu(extraButtonsMenu);
 
