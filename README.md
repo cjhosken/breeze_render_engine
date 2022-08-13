@@ -129,6 +129,7 @@ The *Properties Panel* is where you control all aspects of the scene. There are 
 ## Tested Systems
 
 - *Windows 10*, *8GB RAM*, *Intel I7-7500U*, *NVIDIA GeForce 940MX*
+- *Windows 10*, *24GB RAM*, *Intel I5-7400*, *NVIDIA GeForce 1060 TI*
 
 If you come across any bugs don't report them because they're *features*.
 
